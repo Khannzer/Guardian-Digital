@@ -2,8 +2,6 @@ body,html{
 	height: 100%;
 	margin: 0;
 	background: rgb(44, 47, 59);
-   background: -webkit-linear-gradient(to right, rgb(40, 59, 34), rgb(54, 60, 70), rgb(32, 32, 43));
-	background: linear-gradient(to right, rgb(38, 51, 61), rgb(50, 55, 65), rgb(33, 33, 78));
 }
 
 .chat{
@@ -11,7 +9,7 @@ body,html{
 	margin-bottom: auto;
 }
 .card{
-	height: 500px;
+	height: 80vh;
 	border-radius: 15px !important;
 	background-color: rgba(0,0,0,0.4) !important;
 }
@@ -41,8 +39,8 @@ border-radius: 0 0 15px 15px !important;
 	color:white !important;
 }
 .search:focus{
-	 box-shadow:none !important;
-   outline:0px !important;
+	box-shadow:none !important;
+    outline:0px !important;
 }
 .type_msg{
 	background-color: rgba(0,0,0,0.3) !important;
@@ -52,8 +50,8 @@ border-radius: 0 0 15px 15px !important;
 	overflow-y: auto;
 }
 	.type_msg:focus{
-	 box-shadow:none !important;
-   outline:0px !important;
+	box-shadow:none !important;
+    outline:0px !important;
 }
 .attach_btn{
 	border-radius: 15px 0 0 15px !important;

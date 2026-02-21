@@ -1,0 +1,46 @@
+body {
+            background: #343a40;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .register-card {
+            width: 450px;
+            background: #2c3034;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0px 0px 20px rgba(0,0,0,0.4);
+        }
+
+        .register-title {
+            color: white;
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .form-control {
+            background-color: #3a3f44;
+            border: none;
+            color: white;
+        }
+
+        .form-control:focus {
+            background-color: #3a3f44;
+            color: white;
+            box-shadow: none;
+        }
+
+        label {
+            color: #ccc;
+        }
+
+        .btn-register {
+            background-color: #28a745;
+            border: none;
+        }
+
+        .btn-register:hover {
+            background-color: #1e7e34;
+        }

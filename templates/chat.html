@@ -9,11 +9,95 @@
 		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+		<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>  
+
 		<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css')}}"/>
 	</head>
 	
 	
 	<body>
+
+		<!-- MODAL TÉRMINOS Y CONDICIONES -->
+	<div class="modal fade" id="termsModal" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false">
+	<div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+		<div class="modal-content shadow-lg">
+		
+		<div class="modal-header bg-dark text-white">
+			<h5 class="modal-title">
+			<i class="fas fa-file-contract"></i> Términos y Condiciones
+			</h5>
+		</div>
+
+		<div class="modal-body" style="max-height: 400px; overflow-y: auto;">
+
+			<p>
+			Bienvenido a Guardian Digital.
+			</p>
+
+			<p>
+			1.- Naturaleza del Servicio (No médico):
+            Guardián Digital es una herramienta de inteligencia artificial diseñada para brindar contención emocional inicial basándose en guías clínicas (mhGAP). No es un sustituto de diagnóstico, terapia psicológica ni atención médica profesional. 
+			Guardián Digital está diseñado exclusivamente para brindar orientación psicológica general, apoyo emocional inicial y contención basada en guías clínicas reconocidas. El servicio no está destinado a responder consultas médicas especializadas, asesoramiento legal, diagnóstico clínico, prescripción de tratamientos, ni resolver asuntos ajenos al ámbito del bienestar emocional y la salud mental.
+			</p>
+
+			<p>
+			2.- Casos de Emergencia:
+            Si te encuentras en una situación de crisis severa, riesgo de autolesión o suicidio, este chat no es el medio adecuado. Por favor, comunícate de inmediato a la **Línea 113 (Opción 5) del MINSA**, al **105 (Policía)**, o acude a urgencias.
+			</p>
+
+			<p>
+			3.- Privacidad y Anonimato
+            Tu uso de la plataforma es confidencial y anónimo. Los datos de la conversación se procesan temporalmente bajo la **Ley N° 29733 (Ley de Protección de Datos Personales del Perú)** con el único fin de generar respuestas, sin vincularlos a tu identidad.
+			</p>
+
+			<p>
+		    4.- Limitación de Responsabilidad y Naturaleza de la IA**
+            Al interactuar con una Inteligencia Artificial, comprendes que las respuestas pueden presentar imprecisiones tecnológicas. El equipo desarrollador no se hace responsable por las decisiones o acciones tomadas en base a la información del chat.
+			</p>
+
+			<p>
+			5.- Disponibilidad del Servicio:
+			El servicio puede presentar interrupciones técnicas o mantenimiento sin previo aviso. No se garantiza disponibilidad continua o libre de errores.
+		    </p>
+
+			<p>
+			6.- Modificaciones a los Términos:
+			Los términos y condiciones pueden actualizarse en cualquier momento. El uso continuado del servicio implica la aceptación de las modificaciones.
+			</p>
+
+			<p>
+			En caso de emergencia, comuníquese con los servicios de salud correspondientes.
+			Guardián Digital no sustituye redes de apoyo humano. Se recomienda mantener contacto con familiares, amigos o profesionales de salud ante cualquier situación emocional difícil.
+			</p>
+
+			<hr>
+
+			<div class="form-check mt-3">
+			<input type="checkbox" class="form-check-input" id="acceptCheck">
+			<label class="form-check-label" for="acceptCheck">
+				He leído y acepto los términos y condiciones
+			</label>
+			</div>
+
+		</div>
+
+		<div class="modal-footer">
+			<button type="button" id="rejectBtn" class="btn btn-danger">
+			Rechazar
+			</button>
+
+			<button type="button" id="acceptBtn" class="btn btn-success" disabled>
+			Aceptar
+			</button>
+		</div>
+
+		</div>
+	</div>
+	</div>
+
 		<div class="container-fluid h-100">
 			<div class="row justify-content-center h-100">		
 				<div class="col-md-8 col-xl-6 chat">
@@ -21,13 +105,13 @@
 						<div class="card-header msg_head">
 							<div class="d-flex bd-highlight">
 								<div class="img_cont">
-									<img src="https://cdn-icons-png.flaticon.com/512/387/387569.png" class="rounded-circle user_img">
+									<img src="https://cdn-icons-png.flaticon.com/512/9439/9439123.png" class="rounded-circle user_img">
 									<!-- <img src="https://www.prdistribution.com/spirit/uploads/pressreleases/2019/newsreleases/d83341deb75c4c4f6b113f27b1e42cd8-chatbot-florence-already-helps-thousands-of-patients-to-remember-their-medication.png" class="rounded-circle user_img"> -->
 									<span class="online_icon"></span>
 								</div>
 								<div class="user_info">
-									<span>Guardian Digital</span>
-									<p>¿En que te puedo ayudar el dia de hoy?</p>
+									<span>Guardián Digital</span>
+									<p>¿En que te puedo ayudar el día de hoy?</p>
 								</div>
 							</div>
 						</div>
@@ -37,7 +121,7 @@
 						</div>
 						<div class="card-footer">
 							<form id="messageArea" class="input-group">
-                                <input type="text" id="text" name="msg" placeholder="Type your message..." autocomplete="off" class="form-control type_msg" required/>
+                                <input type="text" id="text" name="msg" placeholder="..." autocomplete="off" class="form-control type_msg" required/>
 								<div class="input-group-append">
 									<button type="submit" id="send" class="input-group-text send_btn"><i class="fas fa-location-arrow"></i></button>
 								</div>
@@ -75,6 +159,45 @@
 					event.preventDefault();
 				});
 			});
+
+
+			$(document).ready(function(){
+
+		// Mostrar modal automáticamente
+		$('#termsModal').modal({
+			backdrop: 'static',
+			keyboard: false
+		});
+
+		$('#termsModal').modal('show');
+
+		// Habilitar botón aceptar solo si marca el checkbox
+		$('#acceptCheck').change(function(){
+			if($(this).is(':checked')){
+				$('#acceptBtn').prop('disabled', false);
+			} else {
+				$('#acceptBtn').prop('disabled', true);
+			}
+		});
+
+		// Aceptar
+		$('#acceptBtn').click(function(){
+			localStorage.setItem("termsAccepted", "true");
+			$('#termsModal').modal('hide');
+		});
+
+		// Rechazar
+		$('#rejectBtn').click(function(){
+			$("#messageArea :input").prop("disabled", true);
+			alert("Debes aceptar los términos para usar el chatbot.");
+		});
+
+		// Si ya aceptó antes
+		if(localStorage.getItem("termsAccepted") === "true"){
+			$('#termsModal').modal('hide');
+		}
+
+	});
 		</script>
         
     </body>
