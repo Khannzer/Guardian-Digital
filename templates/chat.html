@@ -10,15 +10,9 @@
 		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
 		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css">
 
-		<!-- jQuery (VERSIÓN COMPLETA, NO SLIM) -->
 		<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-
-		<!-- Popper -->
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
-
-		<!-- Bootstrap JS -->
 		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
-
 		<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css')}}"/>
 	</head>
 	
@@ -48,16 +42,16 @@
 
 				<p>
 				2.- Casos de Emergencia:
-				Si te encuentras en una situación de crisis severa, riesgo de autolesión o suicidio, este chat no es el medio adecuado. Por favor, comunícate de inmediato a la *Línea 113 (Opción 5) del MINSA, al **105 (Policía)*, o acude a urgencias.
+				Si te encuentras en una situación de crisis severa, riesgo de autolesión o suicidio, este chat no es el medio adecuado. Por favor, comunícate de inmediato a la *Línea 113 (Opción 5) del MINSA, al 105 (Policía), o acude a urgencias.
 				</p>
 
 				<p>
 				3.- Privacidad y Anonimato
-				Tu uso de la plataforma es confidencial y anónimo. Los datos de la conversación se procesan temporalmente bajo la *Ley N° 29733 (Ley de Protección de Datos Personales del Perú)* con el único fin de generar respuestas, sin vincularlos a tu identidad.
+				Tu uso de la plataforma es confidencial y anónimo. Los datos de la conversación se procesan temporalmente bajo la Ley N° 29733 (Ley de Protección de Datos Personales del Perú) con el único fin de generar respuestas, sin vincularlos a tu identidad.
 				</p>
 
 				<p>
-				4.- Limitación de Responsabilidad y Naturaleza de la IA**
+				4.- Limitación de Responsabilidad y Naturaleza de la IA
 				Al interactuar con una Inteligencia Artificial, comprendes que las respuestas pueden presentar imprecisiones tecnológicas. El equipo desarrollador no se hace responsable por las decisiones o acciones tomadas en base a la información del chat.
 				</p>
 
@@ -102,37 +96,62 @@
 		</div>
 
 		<div class="container-fluid h-100">
-			<div class="row justify-content-center h-100">		
-				<div class="col-md-8 col-xl-6 chat">
-					<div class="card">
-						<div class="card-header msg_head">
-							<div class="d-flex bd-highlight">
-								<div class="img_cont">
-									<img src="https://cdn-icons-png.flaticon.com/512/9439/9439123.png" class="rounded-circle user_img">
-									<span class="online_icon"></span>
-								</div>
-								<div class="user_info">
-									<span>Guardián Digital</span>
-									<p>¿En que te puedo ayudar el día de hoy?</p>
+			<div class="row h-100">
+
+		<!-- PANEL IZQUIERDO -->
+		<div class="col-md-4 col-xl-3 border-right p-3" id="infoPanel">
+			<h5 class="mb-3"><i class="fas fa-info-circle"></i> Información</h5>
+			<hr>
+
+			<div id="chatInfo">
+				<p><strong>Estado:</strong> Activo</p>
+				<p><strong>Mensajes enviados:</strong> <span id="msgCount">0</span></p>
+				<p><strong>Hora inicio:</strong> <span id="startTime"></span></p>
+			</div>
+
+			<hr>
+
+			<button class="btn btn-outline-primary btn-sm btn-block" id="">
+				Cambiar a tema 
+			</button>
+
+			<button class="btn btn-outline-danger btn-sm btn-block" id="clearChat">
+				Limpiar conversación
+			</button>
+			
+		</div>
+
+		<!-- CHAT (DERECHA) -->
+		<div class="col-md-8 col-xl-9 chat">
+						<div class="card">
+							<div class="card-header msg_head">
+								<div class="d-flex bd-highlight">
+									<div class="img_cont">
+										<img src="https://cdn-icons-png.flaticon.com/512/9439/9439123.png" class="rounded-circle user_img">
+										<span class="online_icon"></span>
+									</div>
+									<div class="user_info">
+										<span>Tu asistente virtual</span>
+										<p>¿En que te puedo ayudar el día de hoy?</p>
+									</div>
 								</div>
 							</div>
-						</div>
-						<div id="messageFormeight" class="card-body msg_card_body">
-							
-							
-						</div>
-						<div class="card-footer">
-							<form id="messageArea" class="input-group">
-                                <input type="text" id="text" name="msg" placeholder="..." autocomplete="off" class="form-control type_msg" required/>
-								<div class="input-group-append">
-									<button type="submit" id="send" class="input-group-text send_btn"><i class="fas fa-location-arrow"></i></button>
-								</div>
-							</form>
+							<div id="messageFormeight" class="card-body msg_card_body">
+								
+								
+							</div>
+							<div class="card-footer">
+								<form id="messageArea" class="input-group">
+									<input type="text" id="text" name="msg" placeholder="..." autocomplete="off" class="form-control type_msg" required/>
+									<div class="input-group-append">
+										<button type="submit" id="send" class="input-group-text send_btn"><i class="fas fa-location-arrow"></i></button>
+									</div>
+								</form>
+							</div>
 						</div>
 					</div>
 				</div>
 			</div>
-		</div>
 		
 			<script>
 				$(document).ready(function() {
@@ -155,7 +174,7 @@
 							type: "POST",
 							url: "/get",
 						}).done(function(data) {
-							var botHtml = '<div class="d-flex justify-content-start mb-4"><div class="img_cont_msg"><img src="https://cdn-icons-png.flaticon.com/512/387/387569.png" class="rounded-circle user_img_msg"></div><div class="msg_cotainer">' + data + '<span class="msg_time">' + str_time + '</span></div></div>';
+							var botHtml = '<div class="d-flex justify-content-start mb-4"><div class="img_cont_msg"><img src="https://cdn-icons-png.flaticon.com/512/9439/9439123.png" class="rounded-circle user_img_msg"></div><div class="msg_cotainer">' + data + '<span class="msg_time">' + str_time + '</span></div></div>';
 							$("#messageFormeight").append($.parseHTML(botHtml));
 						});
 						event.preventDefault();
@@ -198,6 +217,19 @@
 			if(localStorage.getItem("termsAccepted") === "true"){
 				$('#termsModal').modal('hide');
 			}
+
+		});
+
+		//Limpiar conversación
+
+		$("#clearChat").click(function(){
+
+			// Vaciar los mensajes del chat
+			$("#messageFormeight").empty();
+
+			// Reiniciar contador 
+			messageCount = 0;
+			$("#msgCount").text("0");
 
 		});
 			</script>

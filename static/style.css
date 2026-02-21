@@ -10,8 +10,10 @@ body,html{
 }
 .card{
 	height: 80vh;
+	width: 70%;
 	border-radius: 15px !important;
 	background-color: rgba(0,0,0,0.4) !important;
+	margin: 0 auto;
 }
 .contacts_body{
 	padding:  0.75rem 0 !important;
@@ -22,7 +24,7 @@ body,html{
 	overflow-y: auto;
 }
 .card-header{
-	border-radius: 15px 15px 0 0 !important;
+	border-radius: 15px 15px 15px 15px !important;
 	border-bottom: 0 !important;
 }
 .card-footer{
@@ -218,4 +220,8 @@ border-radius: 0 0 15px 15px !important;
 	.contacts_card{
 	margin-bottom: 15px !important;
 }
+}
+#infoPanel{
+	background-color: rgba(0,0,0,0.4);
+	color: white;
 }
