@@ -79,6 +79,17 @@ def get_response():
 
 
 # ----------------------------
+# REGISTER
+# ----------------------------
+@app.route("/registro")
+def register_page():
+    return render_template("registro.html")
+
+# ----------------------------
+@app.route("/inicio")
+def inicio_page():
+    return render_template("inicio.html")
+# ----------------------------
 
 if __name__ == '__main__':
     app.run(host="0.0.0.0", port=8080, debug=True)
