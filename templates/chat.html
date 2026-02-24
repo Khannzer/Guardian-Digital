@@ -4,185 +4,291 @@
 
 <!DOCTYPE html>
 <html>
-	<head>
-		<title>Agente Guardian Digital</title>
 
-		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
-		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css">
+<head>
+	<title>Agente Guardian Digital</title>
 
-		<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
-		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
-		<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css')}}"/>
-	</head>
-	
-	
-	<body>
-		<div class="modal fade" id="termsModal" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false">
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css">
+
+	<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css')}}" />
+</head>
+
+
+<body>
+	<div class="modal fade" id="termsModal" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false">
 		<div class="modal-dialog modal-lg modal-dialog-centered" role="document">
 			<div class="modal-content shadow-lg">
-			
-			<div class="modal-header bg-dark text-white">
-				<h5 class="modal-title">
-				<i class="fas fa-file-contract"></i> Términos y Condiciones
-				</h5>
+
+				<div class="modal-header bg-dark text-white">
+					<h5 class="modal-title">
+						<i class="fas fa-file-contract"></i> Términos y Condiciones
+					</h5>
+				</div>
+
+				<div class="modal-body" style="max-height: 400px; overflow-y: auto;">
+
+					<p>
+						Bienvenido a Guardian Digital.
+					</p>
+
+					<p>
+						1.- Naturaleza del Servicio (No médico):
+						Guardián Digital es una herramienta de inteligencia artificial diseñada para brindar contención
+						emocional inicial basándose en guías clínicas (mhGAP). No es un sustituto de diagnóstico,
+						terapia psicológica ni atención médica profesional.
+						Guardián Digital está diseñado exclusivamente para brindar orientación psicológica general,
+						apoyo emocional inicial y contención basada en guías clínicas reconocidas. El servicio no está
+						destinado a responder consultas médicas especializadas, asesoramiento legal, diagnóstico
+						clínico, prescripción de tratamientos, ni resolver asuntos ajenos al ámbito del bienestar
+						emocional y la salud mental.
+					</p>
+
+					<p>
+						2.- Casos de Emergencia:
+						Si te encuentras en una situación de crisis severa, riesgo de autolesión o suicidio, este chat
+						no es el medio adecuado. Por favor, comunícate de inmediato a la *Línea 113 (Opción 5) del
+						MINSA, al 105 (Policía), o acude a urgencias.
+					</p>
+
+					<p>
+						3.- Privacidad y Anonimato
+						Tu uso de la plataforma es confidencial y anónimo. Los datos de la conversación se procesan
+						temporalmente bajo la Ley N° 29733 (Ley de Protección de Datos Personales del Perú) con el único
+						fin de generar respuestas, sin vincularlos a tu identidad.
+					</p>
+
+					<p>
+						4.- Limitación de Responsabilidad y Naturaleza de la IA
+						Al interactuar con una Inteligencia Artificial, comprendes que las respuestas pueden presentar
+						imprecisiones tecnológicas. El equipo desarrollador no se hace responsable por las decisiones o
+						acciones tomadas en base a la información del chat.
+					</p>
+
+					<p>
+						5.- Disponibilidad del Servicio:
+						El servicio puede presentar interrupciones técnicas o mantenimiento sin previo aviso. No se
+						garantiza disponibilidad continua o libre de errores.
+					</p>
+
+					<p>
+						6.- Modificaciones a los Términos:
+						Los términos y condiciones pueden actualizarse en cualquier momento. El uso continuado del
+						servicio implica la aceptación de las modificaciones.
+					</p>
+
+					<p>
+						En caso de emergencia, comuníquese con los servicios de salud correspondientes.
+						Guardián Digital no sustituye redes de apoyo humano. Se recomienda mantener contacto con
+						familiares, amigos o profesionales de salud ante cualquier situación emocional difícil.
+					</p>
+
+					<hr>
+
+					<div class="form-check mt-3">
+						<input type="checkbox" class="form-check-input" id="acceptCheck">
+						<label class="form-check-label" for="acceptCheck">
+							He leído y acepto los términos y condiciones
+						</label>
+					</div>
+
+				</div>
+
+				<div class="modal-footer">
+					<button type="button" id="rejectBtn" class="btn btn-danger">
+						Rechazar
+					</button>
+
+					<button type="button" id="acceptBtn" class="btn btn-success" disabled>
+						Aceptar
+					</button>
+				</div>
+
 			</div>
+		</div>
+	</div>
+	<div class="modal fade" id="emergencyModal" tabindex="-1" role="dialog" data-backdrop="static"
+		data-keyboard="false">
+		<div class="modal-dialog modal-dialog-centered" role="document">
+			<div class="modal-content border-danger shadow-lg" style="border-width: 3px;">
 
-			<div class="modal-body" style="max-height: 400px; overflow-y: auto;">
+				<div class="modal-header bg-danger text-white">
+					<h5 class="modal-title">
+						<i class="fas fa-exclamation-triangle"></i> ¡Importante! Tarjeta de Emergencia
+					</h5>
+					<button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
 
-				<p>
-				Bienvenido a Guardian Digital.
-				</p>
+				<div class="modal-body text-center">
+					<h4 class="text-danger mb-4">No estás solo/a, queremos ayudarte.</h4>
+					<p class="lead">Hemos detectado que podrías estar pasando por un momento muy difícil.</p>
+					<p>Por favor, considera hablar con un profesional inmediatamente:</p>
 
-				<p>
-				1.- Naturaleza del Servicio (No médico):
-				Guardián Digital es una herramienta de inteligencia artificial diseñada para brindar contención emocional inicial basándose en guías clínicas (mhGAP). No es un sustituto de diagnóstico, terapia psicológica ni atención médica profesional. 
-				Guardián Digital está diseñado exclusivamente para brindar orientación psicológica general, apoyo emocional inicial y contención basada en guías clínicas reconocidas. El servicio no está destinado a responder consultas médicas especializadas, asesoramiento legal, diagnóstico clínico, prescripción de tratamientos, ni resolver asuntos ajenos al ámbito del bienestar emocional y la salud mental.
-				</p>
+					<div class="alert alert-danger mt-4" role="alert">
+						<h5><i class="fas fa-phone-alt"></i> Línea 113 (Opción 5) - MINSA</h5>
+						<p class="mb-0">Atención psicológica gratuita las 24 horas.</p>
+					</div>
 
-				<p>
-				2.- Casos de Emergencia:
-				Si te encuentras en una situación de crisis severa, riesgo de autolesión o suicidio, este chat no es el medio adecuado. Por favor, comunícate de inmediato a la *Línea 113 (Opción 5) del MINSA, al 105 (Policía), o acude a urgencias.
-				</p>
+					<div class="alert alert-dark" role="alert">
+						<h5><i class="fas fa-phone-alt"></i> 105 - Policía Nacional</h5>
+						<p class="mb-0">En caso de una emergencia inmediata.</p>
+					</div>
+				</div>
 
-				<p>
-				3.- Privacidad y Anonimato
-				Tu uso de la plataforma es confidencial y anónimo. Los datos de la conversación se procesan temporalmente bajo la Ley N° 29733 (Ley de Protección de Datos Personales del Perú) con el único fin de generar respuestas, sin vincularlos a tu identidad.
-				</p>
+				<div class="modal-footer justify-content-center">
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">Entendido, cerrar esta
+						ventana</button>
+				</div>
 
-				<p>
-				4.- Limitación de Responsabilidad y Naturaleza de la IA
-				Al interactuar con una Inteligencia Artificial, comprendes que las respuestas pueden presentar imprecisiones tecnológicas. El equipo desarrollador no se hace responsable por las decisiones o acciones tomadas en base a la información del chat.
-				</p>
+			</div>
+		</div>
+	</div>
 
-				<p>
-				5.- Disponibilidad del Servicio:
-				El servicio puede presentar interrupciones técnicas o mantenimiento sin previo aviso. No se garantiza disponibilidad continua o libre de errores.
-				</p>
+	<div class="modal fade" id="recursosModal" tabindex="-1" role="dialog" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+			<div class="modal-content shadow-lg border-info">
 
-				<p>
-				6.- Modificaciones a los Términos:
-				Los términos y condiciones pueden actualizarse en cualquier momento. El uso continuado del servicio implica la aceptación de las modificaciones.
-				</p>
+				<div class="modal-header bg-info text-white">
+					<h5 class="modal-title">
+						<i class="fas fa-map-marked-alt"></i> Centros de Ayuda en <span id="ciudadTitulo">...</span>
+					</h5>
+					<button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
 
-				<p>
-				En caso de emergencia, comuníquese con los servicios de salud correspondientes.
-				Guardián Digital no sustituye redes de apoyo humano. Se recomienda mantener contacto con familiares, amigos o profesionales de salud ante cualquier situación emocional difícil.
-				</p>
+				<div class="modal-body p-0" id="mapaContenedor">
+					<div class="text-center p-4">
+						<div class="spinner-border text-info" role="status">
+							<span class="sr-only">Cargando mapa...</span>
+						</div>
+						<p class="mt-2 text-muted">Buscando centros cercanos...</p>
+					</div>
+				</div>
+
+				<div class="modal-footer bg-light">
+					<small class="text-muted mr-auto"><i class="fas fa-info-circle"></i> Estos resultados son generados
+						automáticamente por Google Maps.</small>
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar mapa</button>
+				</div>
+
+			</div>
+		</div>
+	</div>
+
+	<div class="container-fluid h-100">
+		<div class="row h-100">
+
+			<!-- PANEL IZQUIERDO -->
+			<div class="col-md-4 col-xl-3 border-right p-3" id="infoPanel">
+				<h5 class="mb-3"><i class="fas fa-info-circle"></i> Información</h5>
+				<hr>
+
+				<div id="chatInfo">
+					<p><strong>Estado:</strong> Activo</p>
+					<p><strong>Mensajes enviados:</strong> <span id="msgCount">0</span></p>
+					<p><strong>Hora inicio:</strong> <span id="startTime"></span></p>
+				</div>
 
 				<hr>
 
-				<div class="form-check mt-3">
-				<input type="checkbox" class="form-check-input" id="acceptCheck">
-				<label class="form-check-label" for="acceptCheck">
-					He leído y acepto los términos y condiciones
-				</label>
-				</div>
-
-			</div>
-
-			<div class="modal-footer">
-				<button type="button" id="rejectBtn" class="btn btn-danger">
-				Rechazar
+				<button class="btn btn-outline-primary btn-sm btn-block" id="">
+					Cambiar a tema
 				</button>
 
-				<button type="button" id="acceptBtn" class="btn btn-success" disabled>
-				Aceptar
+				<button class="btn btn-outline-danger btn-sm btn-block" id="clearChat">
+					Limpiar conversación
 				</button>
-			</div>
+				<button class="btn btn-outline-info btn-sm btn-block mt-3" data-toggle="modal"
+					data-target="#recursosModal">
+					<i class="fas fa-map-marker-alt"></i> Centros de Ayuda Cercanos
+				</button>
 
 			</div>
-		</div>
-		</div>
 
-		<div class="container-fluid h-100">
-			<div class="row h-100">
-
-		<!-- PANEL IZQUIERDO -->
-		<div class="col-md-4 col-xl-3 border-right p-3" id="infoPanel">
-			<h5 class="mb-3"><i class="fas fa-info-circle"></i> Información</h5>
-			<hr>
-
-			<div id="chatInfo">
-				<p><strong>Estado:</strong> Activo</p>
-				<p><strong>Mensajes enviados:</strong> <span id="msgCount">0</span></p>
-				<p><strong>Hora inicio:</strong> <span id="startTime"></span></p>
-			</div>
-
-			<hr>
-
-			<button class="btn btn-outline-primary btn-sm btn-block" id="">
-				Cambiar a tema 
-			</button>
-
-			<button class="btn btn-outline-danger btn-sm btn-block" id="clearChat">
-				Limpiar conversación
-			</button>
-			
-		</div>
-
-		<!-- CHAT (DERECHA) -->
-		<div class="col-md-8 col-xl-9 chat">
-						<div class="card">
-							<div class="card-header msg_head">
-								<div class="d-flex bd-highlight">
-									<div class="img_cont">
-										<img src="https://cdn-icons-png.flaticon.com/512/9439/9439123.png" class="rounded-circle user_img">
-										<span class="online_icon"></span>
-									</div>
-									<div class="user_info">
-										<span>Tu asistente virtual</span>
-										<p>¿En que te puedo ayudar el día de hoy?</p>
-									</div>
-								</div>
+			<!-- CHAT (DERECHA) -->
+			<div class="col-md-8 col-xl-9 chat">
+				<div class="card">
+					<div class="card-header msg_head">
+						<div class="d-flex bd-highlight">
+							<div class="img_cont">
+								<img src="https://cdn-icons-png.flaticon.com/512/9439/9439123.png"
+									class="rounded-circle user_img">
+								<span class="online_icon"></span>
 							</div>
-							<div id="messageFormeight" class="card-body msg_card_body">
-								
-								
-							</div>
-							<div class="card-footer">
-								<form id="messageArea" class="input-group">
-									<input type="text" id="text" name="msg" placeholder="..." autocomplete="off" class="form-control type_msg" required/>
-									<div class="input-group-append">
-										<button type="submit" id="send" class="input-group-text send_btn"><i class="fas fa-location-arrow"></i></button>
-									</div>
-								</form>
+							<div class="user_info">
+								<span>Tu asistente virtual</span>
+								<p>¿En que te puedo ayudar el día de hoy?</p>
 							</div>
 						</div>
 					</div>
+					<div id="messageFormeight" class="card-body msg_card_body">
+
+
+					</div>
+					<div class="card-footer">
+						<form id="messageArea" class="input-group">
+							<input type="text" id="text" name="msg" placeholder="..." autocomplete="off"
+								class="form-control type_msg" required />
+							<div class="input-group-append">
+								<button type="submit" id="send" class="input-group-text send_btn"><i
+										class="fas fa-location-arrow"></i></button>
+							</div>
+						</form>
+					</div>
 				</div>
 			</div>
-		
-			<script>
-				$(document).ready(function() {
-					$("#messageArea").on("submit", function(event) {
-						const date = new Date();
-						const hour = date.getHours();
-						const minute = date.getMinutes();
-						const str_time = hour+":"+minute;
-						var rawText = $("#text").val();
+		</div>
+	</div>
 
-						var userHtml = '<div class="d-flex justify-content-end mb-4"><div class="msg_cotainer_send">' + rawText + '<span class="msg_time_send">'+ str_time + '</span></div><div class="img_cont_msg"><img src="https://i.ibb.co/d5b84Xw/Untitled-design.png" class="rounded-circle user_img_msg"></div></div>';
-						
-						$("#text").val("");
-						$("#messageFormeight").append(userHtml);
+	<script>
+		$(document).ready(function () {
+			$("#messageArea").on("submit", function (event) {
+				const date = new Date();
+				const hour = date.getHours();
+				const minute = date.getMinutes();
+				const str_time = hour + ":" + minute;
+				var rawText = $("#text").val();
 
-						$.ajax({
-							data: {
-								msg: rawText,	
-							},
-							type: "POST",
-							url: "/get",
-						}).done(function(data) {
-							var botHtml = '<div class="d-flex justify-content-start mb-4"><div class="img_cont_msg"><img src="https://cdn-icons-png.flaticon.com/512/9439/9439123.png" class="rounded-circle user_img_msg"></div><div class="msg_cotainer">' + data + '<span class="msg_time">' + str_time + '</span></div></div>';
-							$("#messageFormeight").append($.parseHTML(botHtml));
-						});
-						event.preventDefault();
-					});
+				var userHtml = '<div class="d-flex justify-content-end mb-4"><div class="msg_cotainer_send">' + rawText + '<span class="msg_time_send">' + str_time + '</span></div><div class="img_cont_msg"><img src="https://i.ibb.co/d5b84Xw/Untitled-design.png" class="rounded-circle user_img_msg"></div></div>';
+
+				$("#text").val("");
+				$("#messageFormeight").append(userHtml);
+
+				$.ajax({
+					data: {
+						msg: rawText,
+					},
+					type: "POST",
+					url: "/get",
+				}).done(function (data) {
+					// 1. Extraemos SOLO el texto de la respuesta para el globo de chat
+					var textoBot = data.answer;
+
+					var botHtml = '<div class="d-flex justify-content-start mb-4"><div class="img_cont_msg"><img src="https://cdn-icons-png.flaticon.com/512/9439/9439123.png" class="rounded-circle user_img_msg"></div><div class="msg_cotainer">' + textoBot + '<span class="msg_time">' + str_time + '</span></div></div>';
+					$("#messageFormeight").append($.parseHTML(botHtml));
+
+					// Hacer scroll automático hacia abajo (opcional pero muy recomendado)
+					$("#messageFormeight").scrollTop($("#messageFormeight")[0].scrollHeight);
+
+					// 2. LÓGICA DE LA TARJETA DE EMERGENCIA
+					// Revisamos si la IA activó la bandera de riesgo inminente
+					if (data.riesgo_inminente === true) {
+						// Mostramos el modal de emergencia
+						$('#emergencyModal').modal('show');
+					}
 				});
+				event.preventDefault();
+			});
+		});
 
 
-				$(document).ready(function(){
+		$(document).ready(function () {
 
 			// Mostrar modal automáticamente
 			$('#termsModal').modal({
@@ -193,8 +299,8 @@
 			$('#termsModal').modal('show');
 
 			// Habilitar botón aceptar solo si marca el checkbox
-			$('#acceptCheck').change(function(){
-				if($(this).is(':checked')){
+			$('#acceptCheck').change(function () {
+				if ($(this).is(':checked')) {
 					$('#acceptBtn').prop('disabled', false);
 				} else {
 					$('#acceptBtn').prop('disabled', true);
@@ -202,19 +308,19 @@
 			});
 
 			// Aceptar
-			$('#acceptBtn').click(function(){
+			$('#acceptBtn').click(function () {
 				localStorage.setItem("termsAccepted", "true");
 				$('#termsModal').modal('hide');
 			});
 
 			// Rechazar
-			$('#rejectBtn').click(function(){
+			$('#rejectBtn').click(function () {
 				$("#messageArea :input").prop("disabled", true);
 				alert("Debes aceptar los términos para usar el chatbot.");
 			});
 
 			// Si ya aceptó antes
-			if(localStorage.getItem("termsAccepted") === "true"){
+			if (localStorage.getItem("termsAccepted") === "true") {
 				$('#termsModal').modal('hide');
 			}
 
@@ -222,7 +328,7 @@
 
 		//Limpiar conversación
 
-		$("#clearChat").click(function(){
+		$("#clearChat").click(function () {
 
 			// Vaciar los mensajes del chat
 			$("#messageFormeight").empty();
@@ -232,7 +338,59 @@
 			$("#msgCount").text("0");
 
 		});
-			</script>
-        
-    </body>
+		
+		$(document).ready(function () {
+
+			// 1. SIMULACIÓN DE BASE DE DATOS
+			// En el futuro, esta variable vendrá de tu backend/login. Por ahora la fijamos en "Arequipa"
+			let ciudadDesdeBaseDeDatos = "Lima";
+
+			// 2. Evento que se dispara al abrir el modal del mapa
+			$('#recursosModal').on('show.bs.modal', function () {
+
+				// Actualizamos el título del modal para que se vea personalizado
+				$('#ciudadTitulo').text(ciudadDesdeBaseDeDatos);
+
+				// 3. Construimos la búsqueda exacta para Google Maps
+				// Le pedimos explícitamente centros de salud mental en la ciudad del usuario
+				let terminoBusqueda = "centros de salud mental en " + ciudadDesdeBaseDeDatos;
+
+				// Codificamos el texto para que las URLs no se rompan con los espacios
+				let urlMapa = "https://maps.google.com/maps?q=" + encodeURIComponent(terminoBusqueda) + "&output=embed";
+
+				// 4. Creamos el Iframe de Google Maps y lo inyectamos en el HTML
+				let iframeMapa = `
+            <iframe 
+                width="100%" 
+                height="450" 
+                frameborder="0" 
+                style="border:0;" 
+                src="${urlMapa}" 
+                allowfullscreen>
+            </iframe>
+        `;
+
+				// Usamos un pequeño retraso (setTimeout) solo para que se vea la animación de "Cargando..." 
+				// Esto hace que la app se vea mucho más profesional
+				setTimeout(function () {
+					$('#mapaContenedor').html(iframeMapa);
+				}, 800);
+
+			});
+
+			// Evento para limpiar el mapa cuando se cierra el modal (ahorra memoria del navegador)
+			$('#recursosModal').on('hidden.bs.modal', function () {
+				$('#mapaContenedor').html(`
+            <div class="text-center p-4">
+                <div class="spinner-border text-info" role="status"></div>
+                <p class="mt-2 text-muted">Buscando centros cercanos...</p>
+            </div>
+        `);
+			});
+
+		});
+	</script>
+
+</body>
+
 </html>
