@@ -338,47 +338,49 @@
 			$("#msgCount").text("0");
 
 		});
-		
+
 		$(document).ready(function () {
 
-			// 1. SIMULACIÓN DE BASE DE DATOS
-			// En el futuro, esta variable vendrá de tu backend/login. Por ahora la fijamos en "Arequipa"
-			let ciudadDesdeBaseDeDatos = "Lima";
+			// 1. SIMULACIÓN DE BASE DE DATOS (Nivel de precisión: Distrito)
+			// En el futuro, estas 3 variables vendrán del perfil del usuario logueado.
+			let departamentoDB = "Lima";
+			let provinciaDB = "Lima";
+			let distritoDB = "Ancón"; // Prueba cambiar esto a "Cerro Colorado" o "Miraflores"
 
 			// 2. Evento que se dispara al abrir el modal del mapa
 			$('#recursosModal').on('show.bs.modal', function () {
 
-				// Actualizamos el título del modal para que se vea personalizado
-				$('#ciudadTitulo').text(ciudadDesdeBaseDeDatos);
+				// Actualizamos el título para que sea muy específico
+				$('#ciudadTitulo').text(distritoDB + ", " + provinciaDB);
 
-				// 3. Construimos la búsqueda exacta para Google Maps
-				// Le pedimos explícitamente centros de salud mental en la ciudad del usuario
-				let terminoBusqueda = "centros de salud mental en " + ciudadDesdeBaseDeDatos;
+				// 3. LA MAGIA DE LA CONCATENACIÓN
+				// Le pedimos a Google una ubicación jerárquica exacta: Distrito, Provincia, Departamento
+				let ubicacionExacta = distritoDB + ", " + provinciaDB + ", " + departamentoDB;
+				let terminoBusqueda = "centros de salud mental en " + ubicacionExacta;
 
-				// Codificamos el texto para que las URLs no se rompan con los espacios
-				let urlMapa = "https://maps.google.com/maps?q=" + encodeURIComponent(terminoBusqueda) + "&output=embed";
+				// Codificamos el texto para la URL
+				let urlMapa = "https://maps.google.com/maps?q=" + encodeURIComponent(terminoBusqueda) + "&t=&z=13&ie=UTF8&iwloc=&output=embed";
 
-				// 4. Creamos el Iframe de Google Maps y lo inyectamos en el HTML
+				// 4. Creamos el Iframe de Google Maps
 				let iframeMapa = `
             <iframe 
                 width="100%" 
                 height="450" 
                 frameborder="0" 
-                style="border:0;" 
+                style="border:0; border-radius: 8px;" 
                 src="${urlMapa}" 
                 allowfullscreen>
             </iframe>
         `;
 
-				// Usamos un pequeño retraso (setTimeout) solo para que se vea la animación de "Cargando..." 
-				// Esto hace que la app se vea mucho más profesional
+				// Retraso para la animación de carga
 				setTimeout(function () {
 					$('#mapaContenedor').html(iframeMapa);
 				}, 800);
 
 			});
 
-			// Evento para limpiar el mapa cuando se cierra el modal (ahorra memoria del navegador)
+			// Evento para limpiar el mapa al cerrar
 			$('#recursosModal').on('hidden.bs.modal', function () {
 				$('#mapaContenedor').html(`
             <div class="text-center p-4">
