@@ -248,10 +248,30 @@
 
 	<script>
 		$(document).ready(function () {
+
+			// Jinja2 inyectará el nombre real del usuario logueado aquí
+			const nombreUsuario = "{{ usuario.nombre }}";
+
+			// Obtenemos la hora actual para ponerla en la burbuja
+			const dateWelcome = new Date();
+			const hourWelcome = dateWelcome.getHours();
+			const minuteWelcome = dateWelcome.getMinutes() < 10 ? '0' + dateWelcome.getMinutes() : dateWelcome.getMinutes();
+			const str_timeWelcome = hourWelcome + ":" + minuteWelcome;
+
+			// Redactamos el mensaje de contención inicial
+			const mensajeBienvenida = `¡Hola, <b>${nombreUsuario}</b>! 👋 Soy Guardián Digital. Este es un espacio seguro y confidencial, libre de juicios, solo para ti. Estoy aquí para escucharte, sin importar lo que te preocupe o si solo quieres desahogarte. ¿Cómo te sientes el día de hoy?`;
+
+			// Armamos el HTML 
+			var botWelcomeHtml = '<div class="d-flex justify-content-start mb-4"><div class="img_cont_msg"><img src="https://cdn-icons-png.flaticon.com/512/9439/9439123.png" class="rounded-circle user_img_msg"></div><div class="msg_cotainer">' + mensajeBienvenida + '<span class="msg_time">' + str_timeWelcome + '</span></div></div>';
+
+			// Lo mostramos en la pantalla del chat automáticamente
+			$("#messageFormeight").append(botWelcomeHtml);
+
+			// Logica para los mensajes enviados por el usuario
 			$("#messageArea").on("submit", function (event) {
 				const date = new Date();
 				const hour = date.getHours();
-				const minute = date.getMinutes();
+				const minute = date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes();
 				const str_time = hour + ":" + minute;
 				var rawText = $("#text").val();
 
@@ -260,31 +280,32 @@
 				$("#text").val("");
 				$("#messageFormeight").append(userHtml);
 
+				// Hacemos scroll hacia abajo cuando el usuario envía
+				$("#messageFormeight").scrollTop($("#messageFormeight")[0].scrollHeight);
+
 				$.ajax({
-					data: {
-						msg: rawText,
-					},
+					data: { msg: rawText },
 					type: "POST",
 					url: "/get",
 				}).done(function (data) {
-					// 1. Extraemos SOLO el texto de la respuesta para el globo de chat
+					// Extraemos SOLO el texto de la respuesta
 					var textoBot = data.answer;
 
 					var botHtml = '<div class="d-flex justify-content-start mb-4"><div class="img_cont_msg"><img src="https://cdn-icons-png.flaticon.com/512/9439/9439123.png" class="rounded-circle user_img_msg"></div><div class="msg_cotainer">' + textoBot + '<span class="msg_time">' + str_time + '</span></div></div>';
+
 					$("#messageFormeight").append($.parseHTML(botHtml));
 
-					// Hacer scroll automático hacia abajo (opcional pero muy recomendado)
+					// Hacer scroll automático hacia abajo al recibir respuesta
 					$("#messageFormeight").scrollTop($("#messageFormeight")[0].scrollHeight);
 
-					// 2. LÓGICA DE LA TARJETA DE EMERGENCIA
-					// Revisamos si la IA activó la bandera de riesgo inminente
+					// LÓGICA DE LA TARJETA DE EMERGENCIA
 					if (data.riesgo_inminente === true) {
-						// Mostramos el modal de emergencia
 						$('#emergencyModal').modal('show');
 					}
 				});
 				event.preventDefault();
 			});
+
 		});
 
 
@@ -341,11 +362,11 @@
 
 		$(document).ready(function () {
 
-			// 1. SIMULACIÓN DE BASE DE DATOS (Nivel de precisión: Distrito)
-			// En el futuro, estas 3 variables vendrán del perfil del usuario logueado.
-			let departamentoDB = "Lima";
-			let provinciaDB = "Lima";
-			let distritoDB = "Ancón"; // Prueba cambiar esto a "Cerro Colorado" o "Miraflores"
+			// 1. DATOS REALES DE LA BASE DE DATOS (Inyectados por Flask/Jinja2)
+			// Cuando Flask renderiza la página, cambiará estas llaves por el texto real (ej. "Ate")
+			let departamentoDB = "{{ usuario.departamento }}";
+			let provinciaDB = "{{ usuario.provincia }}";
+			let distritoDB = "{{ usuario.distrito }}";
 
 			// 2. Evento que se dispara al abrir el modal del mapa
 			$('#recursosModal').on('show.bs.modal', function () {
