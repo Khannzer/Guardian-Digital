@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Registro de Usuario</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrapValidator.css') }}">
+
+    <script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/bootstrapValidator.js') }}"></script>
+</head>
+
+<body style="background-color:#f4f6f9; height:100vh;">
+
+<!--MENSAJE EXITOSO O FALLIDO AL REGISTRAR UN USUARIO-->
+<!-- Modal -->
+<div class="modal fade" id="modalMensaje" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+        
+        <div class="modal-header" id="modalHeader">
+            <h5 class="modal-title" id="modalTitulo">Mensaje</h5>
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+
+        <div class="modal-body" id="modalBody">
+            Mensaje aquí
+        </div>
+
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">
+            Cerrar
+            </button>
+        </div>
+
+        </div>
+    </div>
+</div>
+
+<div class="container h-100">
+    <div class="row justify-content-center align-items-center h-100">
+        <div class="col-md-6">
+
+            <div class="panel panel-default" style="padding:30px; border-radius:15px;">
+                <h3 class="text-center">Registro de Usuario</h3>
+
+                <form id="formRegistro" action="/registrar" method="POST">
+
+                    <div class="form-group">
+                        <input type="text" name="txtNombre" class="form-control" placeholder="Nombre o Usuario" required>
+                    </div>
+
+                    <div class="form-group">
+                        <input type="text" name="txtApellidos" class="form-control" placeholder="Apellidos" required>
+                    </div>
+
+                    <div class="form-group">
+                        <input type="text" name="txtContrasenia" class="form-control" placeholder="Contraseña" required>
+                    </div>
+
+                    <div class="form-group">
+                        <input type="email" name="txtCorreo" class="form-control" placeholder="Correo" required>
+                    </div>
+
+                    <div class="form-group">
+                        <input type="number" name="txtEdad" class="form-control" placeholder="Edad" min="1" max="100" required>
+                    </div>
+
+                    <!-- Departamento -->
+                    <select name="selectDepartamento" id="departamento" class="form-control">
+                        <option value="">Seleccione Departamento</option>
+                        {% for d in departamentos %}
+                            <option value="{{ d.id_departamento }}">{{ d.nombre }}</option>
+                        {% endfor %}
+                        </select>
+
+                        <select name="selectProvincia" id="provincia" class="form-control">
+                            <option value="">Seleccione Provincia</option>
+                        </select>
+
+                        <select name="selectDistrito" id="distrito" class="form-control">
+                            <option value="">Seleccione Distrito</option>
+                        </select>
+
+                    <button type="submit" class="btn btn-primary btn-block">
+                        Registrar
+                    </button>
+
+                    <button type="button" 
+                        class="btn btn-secondary btn-block"
+                        onclick="window.location.href='/inicio'">
+                        Iniciar Sesión
+                    </button>
+
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script>
+$(document).ready(function() {
+    $('#formRegistro').bootstrapValidator({
+        fields:{
+            txtNombre: {
+                validators: {
+                    notEmpty: { message: 'El nombre es requerido' },
+                    stringLength: {
+                        min: 3,
+                        max: 30,
+                        message: 'Debe tener entre 3 y 30 caracteres'
+                    }
+                }
+            },
+            txtApellidos: {
+                validators: {
+                    notEmpty: { message: 'Los apellidos son requeridos' }
+                }
+            },
+            txtContrasenia: {
+                validators: {
+                    notEmpty: { message: 'La contreña es requerida' }
+                }
+            },
+            txtCorreo: {
+                validators: {
+                    notEmpty: { message: 'El correo es requerido' },
+                    emailAddress: { message: 'Ingrese un correo válido' }
+                }
+            },
+            txtEdad: {
+                validators: {
+                    notEmpty: { message: 'La edad es requerida' },
+                    between: {
+                        min: 1,
+                        max: 100,
+                        message: 'Edad inválida'
+                    }
+                }
+            },
+
+            selectDepartamento: {
+                validators: {
+                    notEmpty: {
+                        message: 'Seleccione un departamento'
+                    }
+                }
+            },
+
+            selectProvincia: {
+                validators: {
+                    notEmpty: {
+                        message: 'Seleccione una provincia'
+                    }
+                }
+            },
+
+            selectDistrito: {
+                validators: {
+                    notEmpty: {
+                        message: 'Seleccione un distrito'
+                    }
+                }
+            }
+        }
+    });
+});
+
+//Departamentos, provincias y distrito
+$(document).ready(function(){
+
+    // Cuando cambia departamento
+    $("#departamento").change(function(){
+
+        let id_departamento = $(this).val();
+
+        $("#provincia").html('<option value="">Cargando...</option>');
+        $("#distrito").html('<option value="">Seleccione Distrito</option>');
+
+        if(id_departamento){
+            $.get("/provincias/" + id_departamento, function(data){
+
+                let opciones = '<option value="">Seleccione Provincia</option>';
+
+                data.forEach(function(prov){
+                    opciones += `<option value="${prov.id_provincia}">${prov.nombre}</option>`;
+                });
+
+                $("#provincia").html(opciones);
+            });
+        }
+    });
+
+
+    // Cuando cambia provincia
+    $("#provincia").change(function(){
+
+        let id_provincia = $(this).val();
+
+        $("#distrito").html('<option value="">Cargando...</option>');
+
+        if(id_provincia){
+            $.get("/distritos/" + id_provincia, function(data){
+
+                let opciones = '<option value="">Seleccione Distrito</option>';
+
+                data.forEach(function(dist){
+                    opciones += `<option value="${dist.id_distrito}">${dist.nombre}</option>`;
+                });
+
+                $("#distrito").html(opciones);
+            });
+        }
+    });
+
+});
+
+//Registrar usuario
+$("#formRegistro").submit(function(e){
+    e.preventDefault();
+
+    $.ajax({
+        url: "/registrar",
+        type: "POST",
+        data: $(this).serialize(),
+        success: function(response){
+
+            if(response.success){
+
+                $("#modalHeader").removeClass().addClass("modal-header bg-success text-white");
+                $("#modalTitulo").text("Registro Exitoso");
+                $("#modalBody").text(response.message);
+
+                $("#formRegistro")[0].reset();
+
+                $('#modalMensaje').off('hidden.bs.modal').on('hidden.bs.modal', function () {
+                    window.location.href = "/inicio";
+                });
+                //si hubo exito se redirige
+                $('#modalMensaje').on('hidden.bs.modal', function () {
+                    window.location.href = "/inicio";
+                });
+
+            } else {
+
+                $("#modalHeader").removeClass().addClass("modal-header bg-danger text-white");
+                $("#modalTitulo").text("Error");
+                $("#modalBody").text(response.message);
+            }
+
+            $("#modalMensaje").modal("show");
+        }
+    });
+});
+</script>
+
+</body>
+</html>

@@ -7,6 +7,8 @@ from langchain_core.runnables import RunnablePassthrough
 from pydantic import BaseModel, Field
 from dotenv import load_dotenv
 from src.prompt import system_prompt # Importando tu prompt
+from conexionDb.conexionDb import ConexionDb
+from werkzeug.security import check_password_hash
 import os
 
 
@@ -70,33 +72,45 @@ rag_chain = (
 
 
 
-# ----------------------------
-# LOGIN
-# ----------------------------
 
+# ----------------------------
+# TE MANDA AUTOMATICAMENTE AL INICIO
+# ----------------------------
 @app.route("/")
 def home():
     return render_template("inicio.html")  # tu login
 
-
-@app.route("/login", methods=["POST"])
-def login():
-    username = request.form["username"]
-    password = request.form["password"]
-
-    if username == "admin" and password == "1234":
-        return redirect(url_for("chat_page"))
-    else:
-        return "Usuario o contraseña incorrectos"
-
-
 # ----------------------------
 # CHAT PAGE
 # ----------------------------
-
 @app.route("/chat")
 def chat_page():
     return render_template("chat.html")
+
+# ----------------------------
+# LOGIN
+# ----------------------------
+@app.route("/login", methods=["POST"])
+def login():
+    nombre = request.form.get("txtNombre")
+    contrasenia = request.form.get("txtContrasenia")
+
+    try:
+        conexion = ConexionDb.conexionBaseDeDatos()
+        cursor = conexion.cursor(dictionary=True)
+
+        sql = "SELECT * FROM usuario WHERE nombre = %s AND contrasenia = %s"
+        cursor.execute(sql, (nombre, contrasenia))
+        usuario = cursor.fetchone()
+
+        if usuario:
+            return redirect(url_for("chat_page"))
+        else:
+            return "Usuario o contraseña incorrectos"
+
+    except Exception as e:
+        return f"Usuario o contraseña incorrectos. Detalle del error: {e}"
+# ---------------------------
 
 @app.route("/get", methods=["POST"])
 def get_response():
@@ -123,19 +137,107 @@ def get_response():
         })
 
 # ----------------------------
-# REGISTER
+# REGISTRA LOS DEPARTAMENTOS EN EL FORMULARIO DE REGITRO DE USUARIOS
 # ----------------------------
-@app.route("/registro")
-def register_page():
-    return render_template("registro.html")
+@app.route("/registroUsuario")
+def registro():
+    conexion = ConexionDb.conexionBaseDeDatos()
+    cursor = conexion.cursor(dictionary=True)
 
+    cursor.execute("SELECT * FROM departamento")
+    departamentos = cursor.fetchall()
+    
+    cursor.close()
+    conexion.close()
+
+    return render_template("registroUsuario.html", departamentos=departamentos)
+
+# ----------------------------
+# SE USA PARA DIRIGIR AL INICIO DE UNA PESTAÑA A OTRA
 # ----------------------------
 @app.route("/inicio")
 def inicio_page():
     return render_template("inicio.html")
 # ----------------------------
 
+
+# ----------------------------
+# CARGA DE LOS DEPARTAMENTOS
+# ----------------------------
+@app.route("/provincias/<int:id_departamento>")
+def obtener_provincias(id_departamento):
+    conexion = ConexionDb.conexionBaseDeDatos()
+    cursor = conexion.cursor(dictionary=True)
+
+    sql = "SELECT id_provincia, nombre FROM provincia WHERE id_departamento = %s"
+    cursor.execute(sql, (id_departamento,))
+    provincias = cursor.fetchall()
+    
+    cursor.close()
+    conexion.close()
+
+    return jsonify(provincias)
+
+# ----------------------------
+# CARGA DE LOS DISTRITOS
+# ----------------------------
+@app.route("/distritos/<int:id_provincia>")
+def obtener_distritos(id_provincia):
+    conexion = ConexionDb.conexionBaseDeDatos()
+    cursor = conexion.cursor(dictionary=True)
+
+    sql = "SELECT id_distrito, nombre FROM distrito WHERE id_provincia = %s"
+    cursor.execute(sql, (id_provincia,))
+    distritos = cursor.fetchall()
+    
+    cursor.close()
+    conexion.close()
+
+    return jsonify(distritos)
+
+
+# ----------------------------
+# REGISTRAR AL USUARIO
+# ----------------------------
+@app.route("/registrar", methods=["POST"])
+def registrar_usuario():
+    try:
+        conexion = ConexionDb.conexionBaseDeDatos()
+        cursor = conexion.cursor()
+
+        nombre = request.form["txtNombre"]
+        apellidos = request.form["txtApellidos"]
+        contrasenia = request.form["txtContrasenia"]
+        correo = request.form["txtCorreo"]
+        edad = request.form["txtEdad"]
+        #departamento = request.form["selectDepartamento"]
+        #provincia = request.form["selectProvincia"]
+        distrito = request.form["selectDistrito"]
+
+        sql = """
+            INSERT INTO usuario
+            (nombre, apellidos, correo, contrasenia, edad, id_distrito)
+            VALUES (%s, %s, %s, %s, %s, %s)
+        """
+
+        valores = (nombre, apellidos, correo, contrasenia, edad, distrito)
+
+        cursor.execute(sql, valores)
+        conexion.commit()
+
+        cursor.close()
+        conexion.close()
+
+        return jsonify({"success": True, "message": "Usuario registrado correctamente"})
+
+    except Exception as e:
+        print("Error al registrar:", e)
+        return jsonify({"success": False, "message": "No se pudo registrar el usuario"})
+
+
+
+
+
+
 if __name__ == '__main__':
     app.run(host="0.0.0.0", port=8080, debug=True)
-    
-    
