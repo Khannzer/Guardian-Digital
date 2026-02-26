@@ -125,11 +125,9 @@ def chat_page():
         print(f"Error al cargar el chat: {e}")
         return "Hubo un error al cargar tu perfil."
 
+
 # ----------------------------
-# LOGIN
-# ----------------------------
-# ----------------------------
-# LOGIN MODIFICADO
+# LOGIN 
 # ----------------------------
 @app.route("/login", methods=["POST"])
 def login():
@@ -153,11 +151,9 @@ def login():
 
     except Exception as e:
         return f"Usuario o contraseña incorrectos. Detalle del error: {e}"
-# ---------------------------
 
-# ---------------------------
-# RUTA /GET MEJORADA (CON INYECCIÓN DE PERFIL)
-# ---------------------------
+# RUTA /GET (CON INYECCIÓN DE PERFIL)
+
 @app.route("/get", methods=["POST"])
 def get_response():
     try:
