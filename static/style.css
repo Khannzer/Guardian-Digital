@@ -1,157 +1,184 @@
-body,html{
+body,
+html {
 	height: 100%;
 	margin: 0;
 	background: rgb(44, 47, 59);
 }
 
-.chat{
+.chat {
 	margin-top: auto;
 	margin-bottom: auto;
 	color: white;
 }
-.card{
+
+.card {
 	height: 80%;
 	width: 70%;
 	border-radius: 25px !important;
-	background-color: rgba(0,0,0,0.4) !important;
+	background-color: rgba(0, 0, 0, 0.4) !important;
 	margin: 0 auto;
 }
-.contacts_body{
-	padding:  0.75rem 0 !important;
+
+.contacts_body {
+	padding: 0.75rem 0 !important;
 	overflow-y: auto;
 	white-space: nowrap;
 }
-.msg_card_body{
+
+.msg_card_body {
 	overflow-y: auto;
 }
+
 .card-header {
-    background: rgba(255,255,255,0.05) !important;
+	background: rgba(255, 255, 255, 0.05) !important;
 }
 
 .card-footer {
-    background: rgba(255,255,255,0.05) !important;
+	background: rgba(255, 255, 255, 0.05) !important;
 }
-.container{
+
+.container {
 	align-content: center;
 }
-.search{
+
+.search {
 	border-radius: 15px 0 0 15px !important;
-	background-color: rgba(0,0,0,0.3) !important;
-	border:0 !important;
-	color:white !important;
+	background-color: rgba(0, 0, 0, 0.3) !important;
+	border: 0 !important;
+	color: white !important;
 }
-.search:focus{
-	box-shadow:none !important;
-    outline:0px !important;
+
+.search:focus {
+	box-shadow: none !important;
+	outline: 0px !important;
 }
-.type_msg{
-	background-color: rgba(0,0,0,0.3) !important;
-	border:0 !important;
-	color:white !important;
+
+.type_msg {
+	background-color: rgba(0, 0, 0, 0.3) !important;
+	border: 0 !important;
+	color: white !important;
 	height: 60px !important;
 	overflow-y: auto;
 }
-	.type_msg:focus{
-	box-shadow:none !important;
-    outline:0px !important;
+
+.type_msg:focus {
+	box-shadow: none !important;
+	outline: 0px !important;
 }
-.attach_btn{
+
+.attach_btn {
 	border-radius: 15px 0 0 15px !important;
-	background-color: rgba(0,0,0,0.3) !important;
-	border:0 !important;
+	background-color: rgba(0, 0, 0, 0.3) !important;
+	border: 0 !important;
 	color: white !important;
 	cursor: pointer;
 }
-.send_btn{
+
+.send_btn {
 	border-radius: 0 15px 15px 0 !important;
 	background-color: rgb(21, 54, 116) !important;
-    transition: all 0.3s ease;
-	border:0 !important;
+	transition: all 0.3s ease;
+	border: 0 !important;
 	color: white !important;
 	cursor: pointer;
 }
 
 .send_btn:hover {
-    transform: scale(1.1);
+	transform: scale(1.1);
 }
 
-.search_btn{
+.search_btn {
 	border-radius: 0 15px 15px 0 !important;
-	background-color: rgba(0,0,0,0.3) !important;
-	border:0 !important;
+	background-color: rgba(0, 0, 0, 0.3) !important;
+	border: 0 !important;
 	color: white !important;
 	cursor: pointer;
 }
-.contacts{
+
+.contacts {
 	list-style: none;
 	padding: 0;
 }
-.contacts li{
+
+.contacts li {
 	width: 100% !important;
 	padding: 5px 10px;
 	margin-bottom: 15px !important;
 }
-.active{
-	background-color: rgba(0,0,0,0.3);
+
+.active {
+	background-color: rgba(0, 0, 0, 0.3);
 }
-.user_img{
+
+.user_img {
 	height: 70px;
 	width: 70px;
-	border:1.5px solid #f5f6fa;
+	border: 1.5px solid #f5f6fa;
 
 }
-.user_img_msg{
+
+.user_img_msg {
 	height: 40px;
 	width: 40px;
-	border:1.5px solid #f5f6fa;
+	border: 1.5px solid #f5f6fa;
 
 }
-.img_cont{
+
+.img_cont {
 	position: relative;
 	height: 70px;
 	width: 70px;
 }
-.img_cont_msg{
+
+.img_cont_msg {
 	height: 40px;
 	width: 40px;
 }
-.online_icon{
+
+.online_icon {
 	position: absolute;
 	height: 15px;
-	width:15px;
+	width: 15px;
 	background-color: #4cd137;
 	border-radius: 50%;
 	bottom: 0.2em;
 	right: 0.4em;
-	border:1.5px solid white;
+	border: 1.5px solid white;
 }
-.offline{
+
+.offline {
 	background-color: #c23616 !important;
 }
-.user_info{
+
+.user_info {
 	margin-top: auto;
 	margin-bottom: auto;
 	margin-left: 15px;
 }
-.user_info span{
+
+.user_info span {
 	font-size: 20px;
 	color: white;
 }
-.user_info p{
+
+.user_info p {
 	font-size: 10px;
-	color: rgba(255,255,255,0.6);
+	color: rgba(255, 255, 255, 0.6);
 }
-.video_cam{
+
+.video_cam {
 	margin-left: 50px;
 	margin-top: 5px;
 }
-.video_cam span{
+
+.video_cam span {
 	color: white;
 	font-size: 20px;
 	cursor: pointer;
 	margin-right: 20px;
 }
-.msg_cotainer{
+
+.msg_cotainer {
 	margin-top: auto;
 	margin-bottom: auto;
 	margin-left: 10px;
@@ -160,7 +187,8 @@ body,html{
 	padding: 10px;
 	position: relative;
 }
-.msg_cotainer_send{
+
+.msg_cotainer_send {
 	margin-top: auto;
 	margin-bottom: auto;
 	margin-right: 10px;
@@ -169,24 +197,28 @@ body,html{
 	padding: 10px;
 	position: relative;
 }
-.msg_time{
+
+.msg_time {
 	position: absolute;
 	left: 0;
 	bottom: -15px;
-	color: rgba(255,255,255,0.5);
+	color: rgba(255, 255, 255, 0.5);
 	font-size: 10px;
 }
-.msg_time_send{
+
+.msg_time_send {
 	position: absolute;
-	right:0;
+	right: 0;
 	bottom: -15px;
-	color: rgba(255,255,255,0.5);
+	color: rgba(255, 255, 255, 0.5);
 	font-size: 10px;
 }
-.msg_head{
+
+.msg_head {
 	position: relative;
 }
-#action_menu_btn{
+
+#action_menu_btn {
 	position: absolute;
 	right: 10px;
 	top: 10px;
@@ -194,70 +226,79 @@ body,html{
 	cursor: pointer;
 	font-size: 20px;
 }
-.action_menu{
+
+.action_menu {
 	z-index: 1;
 	position: absolute;
 	padding: 15px 0;
-	background-color: rgba(0,0,0,0.5);
+	background-color: rgba(0, 0, 0, 0.5);
 	color: white;
 	border-radius: 15px;
 	top: 30px;
 	right: 15px;
 	display: none;
 }
-.action_menu ul{
+
+.action_menu ul {
 	list-style: none;
 	padding: 0;
 	margin: 0;
 }
-.action_menu ul li{
+
+.action_menu ul li {
 	width: 100%;
 	padding: 10px 15px;
 	margin-bottom: 5px;
 }
-.action_menu ul li i{
+
+.action_menu ul li i {
 	padding-right: 10px;
 }
-.action_menu ul li:hover{
+
+.action_menu ul li:hover {
 	cursor: pointer;
-	background-color: rgba(0,0,0,0.2);
+	background-color: rgba(0, 0, 0, 0.2);
 }
-@media(max-width: 576px){
-	.contacts_card{
-	margin-bottom: 15px !important;
+
+@media(max-width: 576px) {
+	.contacts_card {
+		margin-bottom: 15px !important;
+	}
 }
-}
-#infoPanel{
-	background-color: rgba(0,0,0,0.4);
+
+#infoPanel {
+	background-color: rgba(0, 0, 0, 0.4);
 	color: white;
 }
 
 @keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(10px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+	from {
+		opacity: 0;
+		transform: translateY(10px);
+	}
+
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
 }
+
 /**/
 /* ========================= */
 /*  MODAL EMERGENCIA         */
 /* ========================= */
 
 #emergencyModal .modal-content {
-    background: rgba(30, 41, 59, 0.95);
-    backdrop-filter: blur(15px);
-    border-radius: 20px;
-    color: white;
+	background: rgba(30, 41, 59, 0.95);
+	backdrop-filter: blur(15px);
+	border-radius: 20px;
+	color: white;
 }
 
 #emergencyModal .modal-header {
-    background: linear-gradient(90deg, #7f1d1d, #991b1b);
-    border-top-left-radius: 20px;
-    border-top-right-radius: 20px;
+	background: linear-gradient(90deg, #7f1d1d, #991b1b);
+	border-top-left-radius: 20px;
+	border-top-right-radius: 20px;
 }
 
 /* ========================= */
@@ -265,14 +306,15 @@ body,html{
 /* ========================= */
 
 @keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(5px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+	from {
+		opacity: 0;
+		transform: translateY(5px);
+	}
+
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
 }
 
 /* ===============================
@@ -280,88 +322,89 @@ body,html{
 ================================= */
 
 .modal-content {
-    background: rgba(15, 23, 42, 0.95);
-    backdrop-filter: blur(18px);
-    border-radius: 18px;
-    border: 1px solid rgba(255,255,255,0.08);
-    color: #e2e8f0;
+	background: rgba(15, 23, 42, 0.95);
+	backdrop-filter: blur(18px);
+	border-radius: 18px;
+	border: 1px solid rgba(255, 255, 255, 0.08);
+	color: #e2e8f0;
 }
 
 /* HEADER */
 .modal-header {
-    border-bottom: 1px solid rgba(255,255,255,0.08);
-    background: linear-gradient(90deg, #1e293b, #0f172a);
+	border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+	background: linear-gradient(90deg, #1e293b, #0f172a);
 }
 
 .modal-title {
-    font-weight: 600;
-    letter-spacing: 0.5px;
+	font-weight: 600;
+	letter-spacing: 0.5px;
 }
 
 /* BODY */
 .modal-body {
-    font-size: 14px;
-    line-height: 1.6;
-    color: rgba(255,255,255,0.85);
+	font-size: 14px;
+	line-height: 1.6;
+	color: rgba(255, 255, 255, 0.85);
 }
 
 .modal-body p {
-    margin-bottom: 15px;
+	margin-bottom: 15px;
 }
 
 /* Scroll elegante */
 .modal-body::-webkit-scrollbar {
-    width: 6px;
+	width: 6px;
 }
 
 .modal-body::-webkit-scrollbar-thumb {
-    background: rgba(255,255,255,0.2);
-    border-radius: 20px;
+	background: rgba(255, 255, 255, 0.2);
+	border-radius: 20px;
 }
 
 /* CHECKBOX MODERNO */
 .form-check-input {
-    background-color: transparent;
-    border: 1px solid rgba(255,255,255,0.4);
+	background-color: transparent;
+	border: 1px solid rgba(255, 255, 255, 0.4);
 }
 
 .form-check-input:checked {
-    background-color: #3b82f6;
-    border-color: #3b82f6;
+	background-color: #3b82f6;
+	border-color: #3b82f6;
 }
 
 .form-check-label {
-    color: rgba(255,255,255,0.8);
+	color: rgba(255, 255, 255, 0.8);
 }
 
 /* FOOTER */
 .modal-footer {
-    border-top: 1px solid rgba(255,255,255,0.08);
-    background: transparent;
+	border-top: 1px solid rgba(255, 255, 255, 0.08);
+	background: transparent;
 }
 
 /* BOTONES MODERNOS */
 .modal-footer .btn-danger {
-    background: rgba(239,68,68,0.2);
-    border: 1px solid rgba(239,68,68,0.5);
-    color: #f87171;
-    border-radius: 25px;
-    padding: 6px 18px;
+	background: rgba(239, 68, 68, 0.2);
+	border: 1px solid rgba(239, 68, 68, 0.5);
+	color: #f87171;
+	border-radius: 25px;
+	padding: 6px 18px;
 }
 
 .modal-footer .btn-danger:hover {
-    background: #ef4444;
-    color: white;
+	background: #ef4444;
+	color: white;
 }
 
 .modal-footer .btn-success {
-    background: linear-gradient(135deg, #3b82f6, #2563eb);
-    border: none;
-    border-radius: 25px;
-    padding: 6px 20px;
+	background: linear-gradient(135deg, #3b82f6, #2563eb);
+	border: none;
+	border-radius: 25px;
+	padding: 6px 20px;
 }
 
 .modal-footer .btn-success:disabled {
-    background: rgba(255,255,255,0.1);
-    color: rgba(255,255,255,0.4);
+	background: rgba(255, 255, 255, 0.1);
+	color: rgba(255, 255, 255, 0.4);
 }
+

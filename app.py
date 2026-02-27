@@ -323,7 +323,43 @@ def registrar_usuario():
             "message": str(e)
         })
 
+@app.route("/logout")
+def logout():
+    # Eliminamos específicamente el id_usuario de la sesión
+    session.pop('id_usuario', None)
+    
+    # Redirigimos a la función que carga tu pantalla de login. 
+    return redirect(url_for("home"))
 
+# ----------------------------
+# BOTIQUÍN DE PRIMEROS AUXILIOS PSICOLÓGICOS (NIVEL 2)
+# ----------------------------
+@app.route('/botiquin') 
+def botiquin_page():
+    # 1. Verificamos que el usuario esté logueado
+    if 'id_usuario' not in session:
+        return redirect(url_for("home"))
+
+    id_usuario_logueado = session['id_usuario']
+
+    try:
+        conexion = ConexionDb.conexionBaseDeDatos()
+        cursor = conexion.cursor(dictionary=True)
+
+        # 2. Extraemos el nombre, gustos y mascota favorita para la "Caja de Esperanza"
+        sql = "SELECT nombre, gustos, mascota_favorita FROM usuario WHERE id_usuario = %s"
+        cursor.execute(sql, (id_usuario_logueado,))
+        datos_usuario = cursor.fetchone()
+        
+        cursor.close()
+        conexion.close()
+
+        # 3. Renderizamos la nueva plantilla y le pasamos los datos
+        return render_template("botiquin.html", usuario=datos_usuario)
+
+    except Exception as e:
+        print(f"Error al cargar el botiquín: {e}")
+        return "Hubo un error al cargar tu botiquín de calma."
 
 if __name__ == '__main__':
     app.run(host="0.0.0.0", port=8080, debug=True)

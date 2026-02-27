@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Tu Espacio de Calma - Guardián Digital</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.css') }}">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    
+    <style>
+        body {
+            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        /* === ANIMACIÓN DE RESPIRACIÓN (EL CÍRCULO) === */
+        /* === ANIMACIÓN DE RESPIRACIÓN (MÉTODO 4-4-8) === */
+        .circulo-respiracion {
+            width: 150px;
+            height: 150px;
+            background: linear-gradient(135deg, #6dd5ed, #2193b0);
+            border-radius: 50%;
+            margin: 50px auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 1.2rem;
+            text-align: center;
+            box-shadow: 0 0 20px rgba(33, 147, 176, 0.4);
+            
+            /* El ciclo total ahora dura 16 segundos */
+            /* Usamos 'linear' para que el crecimiento y contracción sean a una velocidad constante */
+            animation: breathe 16s infinite linear; 
+        }
+
+        /* 16 segundos es el 100%. 
+           - 4s (Inhala) es el 25% del tiempo.
+           - 4s (Retiene) es del 25% al 50%.
+           - 8s (Exhala) es del 50% al 100%.
+        */
+        @keyframes breathe {
+            0% {
+                transform: scale(1);
+                box-shadow: 0 0 20px rgba(33, 147, 176, 0.4);
+            }
+            25% {
+                /* Terminó de Inhalar (4s) */
+                transform: scale(1.6);
+                box-shadow: 0 0 50px rgba(33, 147, 176, 0.8);
+            }
+            50% {
+                /* Terminó de Retener (8s) - El círculo se mantiene inflado */
+                transform: scale(1.6);
+                box-shadow: 0 0 50px rgba(33, 147, 176, 0.8);
+            }
+            100% {
+                /* Terminó de Exhalar (16s) - Vuelve a su tamaño original lentamente */
+                transform: scale(1);
+                box-shadow: 0 0 20px rgba(33, 147, 176, 0.4);
+            }
+        }
+
+        /* Animación del texto para que coincida con las fases */
+        .texto-respiracion::after {
+            content: 'Inhala...';
+            animation: cambiaTexto 16s infinite;
+        }
+
+        @keyframes cambiaTexto {
+            0%, 24% { content: 'Inhala...'; }
+            25%, 49% { content: 'Retén...'; }
+            50%, 100% { content: 'Exhala...'; }
+        }
+
+        /* === CAJA DE ESPERANZA === */
+        .caja-esperanza {
+            background-color: #F2E1E1;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            border-left: 5px solid #ff9a9e;
+        }
+
+        .icono-caja {
+            font-size: 3rem;
+            color: #ff9a9e;
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container mt-5">
+    
+    <a href="/chat" class="btn btn-outline-secondary mb-4">
+        <i class="fas fa-arrow-left"></i> Volver al Chat
+    </a>
+
+    <div class="row">
+        <div class="col-md-6 text-center">
+            <div class="card shadow-sm border-0 p-4 h-100">
+                <h4 class="text-primary"><i class="fas fa-wind"></i> Ejercicio</h4>
+                <p class="text-muted">Sigue el ritmo del círculo. Concéntrate solo en tu respiración.</p>
+                <br>
+                <div class="circulo-respiracion">
+                    <span class="texto-respiracion"></span>
+                </div>
+                <br>
+                <p class="text-primary">Respira profundo desde el abdomen. Nota cómo el aire entra y sale de tu cuerpo.</p>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="caja-esperanza h-100 d-flex flex-column justify-content-center text-center">
+                <i class="fas fa-box-open icono-caja"></i>
+                <h3>Tu Caja de Esperanza, {{ usuario.nombre }}</h3>
+                <p class="text-muted mb-4">Cuando la ansiedad suba, recuerda las cosas, personas que te quieren mucho</p>
+
+                <div class="row text-left">
+                    <div class="col-sm-6 mb-3">
+                        <div class="p-3 bg-light rounded">
+                            <h6 class="text-primary"><i class="fas fa-heart"></i> Tus Intereses:</h6>
+                            <p class="mb-0 fw-bold">{{ usuario.gustos }}</p>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 mb-3">
+                        <div class="p-3 bg-light rounded">
+                            <h6 class="text-primary"><i class="fas fa-paw"></i> Lo que te alegra:</h6>
+                            <p class="mb-0 fw-bold">{{ usuario.mascota_favorita }}</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="alert alert-info mt-3" role="alert">
+                    <i class="fas fa-lightbulb"></i> <strong>Idea:</strong> Dedica los próximos 5 minutos a buscar una imagen, un video o una canción relacionada con estas cosas que amas ya sea desde tu celular o fisicas. Te ayudará a distraer tu mente.
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>

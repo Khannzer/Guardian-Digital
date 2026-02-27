@@ -7,7 +7,7 @@ class ConexionDb:
         try:
             conexion = mysql.connector.connect(
                 user='root',
-                password='mysql',
+                password='root',
                 host='localhost',
                 database='proyectoContraSuicidioV1',
                 port='3306'

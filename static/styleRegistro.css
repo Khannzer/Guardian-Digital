@@ -2,8 +2,12 @@
 body {
     background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    padding: 40px 0;
+    padding: 20px;
     min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
 }
 
 /* Panel principal oscuro */
@@ -116,21 +120,20 @@ select.input-moderno {
     }
 }
 
-html, body {
-    height: auto !important;
-    min-height: 100vh;
-    overflow-x: hidden;
-    overflow-y: auto !important;
-}
 
-.container {
-    height: auto !important;
-}
-
-.row {
-    height: auto !important;
-}
 
 .registro-panel {
     max-height: none !important;
+}
+
+.container {
+    max-width: 900px;
+}
+
+.registro-panel {
+    margin: auto;
+    max-width: 820px;
+}
+.registro-panel{
+    width: 100%;
 }
