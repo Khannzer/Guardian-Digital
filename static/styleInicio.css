@@ -1,46 +1,98 @@
+/* ===== FONDO GENERAL ===== */
+
 body {
-            background: #343a40;
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
+    margin: 0;
+    height: 100vh;
+    background: linear-gradient(135deg, #0f172a, #1e293b);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Segoe UI', sans-serif;
+    color: white;
+}
 
-        .login-card {
-            width: 400px;
-            background: #2c3034;
-            padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0px 0px 20px rgba(0,0,0,0.4);
-        }
+/* ===== CARD ===== */
 
-        .login-title {
-            color: white;
-            text-align: center;
-            margin-bottom: 30px;
-        }
+.login-card {
+    width: 400px;
+    background: rgba(255,255,255,0.05);
+    backdrop-filter: blur(15px);
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: 0 25px 60px rgba(0,0,0,0.6);
+    border: 1px solid rgba(255,255,255,0.08);
+}
 
-        .form-control {
-            background-color: #3a3f44;
-            border: none;
-            color: white;
-        }
+/* ===== TITULOS ===== */
 
-        .form-control:focus {
-            background-color: #3a3f44;
-            color: white;
-            box-shadow: none;
-        }
+.login-title {
+    color: white;
+    text-align: center;
+    margin-bottom: 5px;
+    font-weight: 600;
+}
 
-        .btn-login {
-            background-color: #007bff;
-            border: none;
-        }
+.login-subtitle {
+    color: rgba(255,255,255,0.6);
+    margin-bottom: 30px;
+}
 
-        .btn-login:hover {
-            background-color: #0056b3;
-        }
+/* ===== LABELS ===== */
 
-        label {
-            color: #ccc;
-        }
+label {
+    color: rgba(255,255,255,0.7);
+    font-size: 14px;
+}
+
+/* ===== INPUT GROUP MODERNO ===== */
+
+.input-moderno {
+    background: rgba(255,255,255,0.08);
+    border-radius: 30px;
+    padding: 5px 15px;
+    align-items: center;
+}
+
+.input-moderno .form-control {
+    background: transparent !important;
+    border: none !important;
+    color: white !important;
+    box-shadow: none !important;
+}
+
+.input-moderno .form-control::placeholder {
+    color: rgba(255,255,255,0.4);
+}
+
+.icon-moderno {
+    background: transparent !important;
+    border: none !important;
+    color: rgba(255,255,255,0.5);
+}
+
+/* ===== BOTONES ===== */
+
+.btn-login {
+    background: linear-gradient(135deg, #3b82f6, #2563eb);
+    border: none;
+    border-radius: 30px;
+    padding: 10px;
+    font-weight: 500;
+    transition: 0.3s ease;
+}
+
+.btn-login:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(37,99,235,0.4);
+}
+
+.btn-secundario-moderno {
+    border-radius: 30px;
+    border: 1px solid rgba(255,255,255,0.2);
+    color: rgba(255,255,255,0.7);
+}
+
+.btn-secundario-moderno:hover {
+    background: rgba(255,255,255,0.08);
+    color: white;
+}

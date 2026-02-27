@@ -272,7 +272,6 @@ def obtener_distritos(id_provincia):
 
     return jsonify(distritos)
 
-
 # ----------------------------
 # REGISTRAR AL USUARIO
 # ----------------------------
@@ -290,10 +289,7 @@ def registrar_usuario():
         gusto = request.form["txtgustos"]
         mascota = request.form["txtmascota"]
         lenguaje = request.form["txtlenguaje"]
-        #departamento = request.form["selectDepartamento"]
-        #provincia = request.form["selectProvincia"]
         distrito = request.form["selectDistrito"]
-
 
         sql = """
             INSERT INTO usuario
@@ -309,14 +305,23 @@ def registrar_usuario():
         cursor.close()
         conexion.close()
 
-        return jsonify({"success": True, "message": "Usuario registrado correctamente"})
+        return jsonify({
+            "success": True,
+            "message": "Usuario registrado correctamente"
+        })
 
     except Exception as e:
-        print("Error al registrar:", e)
-        return jsonify({"success": False, "message": "No se pudo registrar el usuario"})
+        import traceback
+        error_detallado = traceback.format_exc()
 
+        print("======== ERROR AL REGISTRAR USUARIO ========")
+        print(error_detallado)
+        print("=============================================")
 
-
+        return jsonify({
+            "success": False,
+            "message": str(e)
+        })
 
 
 

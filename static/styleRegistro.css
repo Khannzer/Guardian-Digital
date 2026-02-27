@@ -1,46 +1,136 @@
+/* Fondo general oscuro */
 body {
-            background: #343a40;
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
+    background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    padding: 40px 0;
+    min-height: 100vh;
+}
 
-        .register-card {
-            width: 450px;
-            background: #2c3034;
-            padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0px 0px 20px rgba(0,0,0,0.4);
-        }
+/* Panel principal oscuro */
+.registro-panel {
+    background: rgba(20, 20, 20, 0.95);
+    padding: 40px;
+    border-radius: 18px;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255,255,255,0.05);
+    animation: fadeIn 0.5s ease-in-out;
+}
 
-        .register-title {
-            color: white;
-            text-align: center;
-            margin-bottom: 25px;
-        }
+/* Títulos */
+.titulo-registro {
+    font-weight: 700;
+    color: #4da3ff;
+    margin-bottom: 5px;
+}
 
-        .form-control {
-            background-color: #3a3f44;
-            border: none;
-            color: white;
-        }
+.subtitulo-registro {
+    color: #b0b0b0;
+    font-size: 14px;
+    margin-bottom: 25px;
+}
 
-        .form-control:focus {
-            background-color: #3a3f44;
-            color: white;
-            box-shadow: none;
-        }
+/* Labels */
+label {
+    font-weight: 600;
+    color: #d1d1d1;
+}
 
-        label {
-            color: #ccc;
-        }
+/* Inputs modernos oscuros */
+.input-moderno {
+    background: #1f1f1f;
+    border: 1px solid #333;
+    color: #fff;
+    border-radius: 10px;
+    padding: 10px;
+    transition: all 0.3s ease;
+}
 
-        .btn-register {
-            background-color: #28a745;
-            border: none;
-        }
+.input-moderno::placeholder {
+    color: #777;
+}
 
-        .btn-register:hover {
-            background-color: #1e7e34;
-        }
+.input-moderno:focus {
+    background: #262626;
+    border-color: #4da3ff;
+    box-shadow: 0 0 10px rgba(77,163,255,0.5);
+    color: #fff;
+}
+
+/* Selects oscuros */
+select.input-moderno {
+    background: #1f1f1f;
+    color: #fff;
+}
+
+/* Botón principal */
+.btn-moderno {
+    background: linear-gradient(45deg, #4da3ff, #0066ff);
+    border: none;
+    border-radius: 12px;
+    padding: 12px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    color: white;
+}
+
+.btn-moderno:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px rgba(0,102,255,0.4);
+}
+
+/* Botón secundario */
+.btn-secundario-moderno {
+    background: transparent;
+    border: 2px solid #4da3ff;
+    color: #4da3ff;
+    border-radius: 12px;
+    padding: 12px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.btn-secundario-moderno:hover {
+    background: #4da3ff;
+    color: #111;
+    transform: translateY(-2px);
+}
+
+/* Modal oscuro */
+.modal-content {
+    background: #1a1a1a;
+    color: white;
+    border-radius: 15px;
+    border: 1px solid #333;
+}
+
+/* Animación */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+html, body {
+    height: auto !important;
+    min-height: 100vh;
+    overflow-x: hidden;
+    overflow-y: auto !important;
+}
+
+.container {
+    height: auto !important;
+}
+
+.row {
+    height: auto !important;
+}
+
+.registro-panel {
+    max-height: none !important;
+}

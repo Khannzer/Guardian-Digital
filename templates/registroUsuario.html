@@ -5,14 +5,15 @@
     <title>Registro de Usuario</title>
 
     <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrapValidator.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrapValidator.css') }}">   
 
     <script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
     <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
     <script src="{{ url_for('static', filename='js/bootstrapValidator.js') }}"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styleRegistro.css') }}">
 </head>
 
-<body style="background-color:#f4f6f9; height:100vh;">
+<body>
 
 <!--MENSAJE EXITOSO O FALLIDO AL REGISTRAR UN USUARIO-->
 <!-- Modal -->
@@ -43,68 +44,89 @@
     <div class="row justify-content-center align-items-center h-100">
         <div class="col-md-6">
 
-            <div class="panel panel-default" style="padding:30px; border-radius:15px;">
-                <h3 class="text-center">Registro de Usuario</h3>
+            <div class="panel panel-default registro-panel">
 
-                <form id="formRegistro" action="/registrar" method="POST">
+    <h3 class="text-center titulo-registro">Crear Cuenta</h3>
+    <p class="text-center subtitulo-registro">Completa tus datos para continuar</p>
 
-                    <div class="form-group">
-                        <input type="text" name="txtNombre" class="form-control" placeholder="Nombre o Usuario" required>
-                    </div>
+    <form id="formRegistro" action="/registrar" method="POST">
 
-                    <div class="form-group">
-                        <input type="text" name="txtApellidos" class="form-control" placeholder="Apellidos" required>
-                    </div>
+        <div class="form-group">
+            <label>Nombre o Usuario</label>
+            <input type="text" name="txtNombre" class="form-control input-moderno" required>
+        </div>
 
-                    <div class="form-group">
-                        <input type="text" name="txtContrasenia" class="form-control" placeholder="Contraseña" required>
-                    </div>
+        <div class="form-group">
+            <label>Apellidos</label>
+            <input type="text" name="txtApellidos" class="form-control input-moderno" required>
+        </div>
 
-                    <div class="form-group">
-                        <input type="email" name="txtCorreo" class="form-control" placeholder="Correo" required>
-                    </div>
+        <div class="form-group">
+            <label>Contraseña</label>
+            <input type="password" name="txtContrasenia" class="form-control input-moderno" required>
+        </div>
 
-                    <div class="form-group">
-                        <input type="number" name="txtEdad" class="form-control" placeholder="Edad" min="1" max="100" required>
-                    </div>
-                    <div class="form-group">
-                        <input type="text" name="txtgustos" class="form-control" placeholder="¿Cuales son tus gustos?" required>
-                    </div>
-                    <div class="form-group">
-                        <input type="text" name="txtmascota" class="form-control" placeholder="¿Tu mascota favorita es?"  required>
-                    </div>
-                    <div class="form-group">
-                        <input type="text" name="txtlenguaje" class="form-control" placeholder="tono de lenguaje" required>
-                    </div>
+        <div class="form-group">
+            <label>Correo</label>
+            <input type="email" name="txtCorreo" class="form-control input-moderno" required>
+        </div>
 
-                    <!-- Departamento -->
-                    <select name="selectDepartamento" id="departamento" class="form-control">
-                        <option value="">Seleccione Departamento</option>
-                        {% for d in departamentos %}
-                            <option value="{{ d.id_departamento }}">{{ d.nombre }}</option>
-                        {% endfor %}
-                        </select>
+        <div class="form-group">
+            <label>Edad</label>
+            <input type="text" name="txtEdad" class="form-control input-moderno" min="1" max="100" required>
+        </div>
 
-                        <select name="selectProvincia" id="provincia" class="form-control">
-                            <option value="">Seleccione Provincia</option>
-                        </select>
+        <div class="form-group">
+            <label>¿Cuáles son tus gustos?</label>
+            <input type="text" name="txtgustos" class="form-control input-moderno" required>
+        </div>
 
-                        <select name="selectDistrito" id="distrito" class="form-control">
-                            <option value="">Seleccione Distrito</option>
-                        </select>
+        <div class="form-group">
+            <label>¿Tu mascota favorita es?</label>
+            <input type="text" name="txtmascota" class="form-control input-moderno" required>
+        </div>
 
-                    <button type="submit" class="btn btn-primary btn-block">
-                        Registrar
-                    </button>
+        <div class="form-group">
+            <label>Tono de lenguaje</label>
+            <input type="text" name="txtlenguaje" class="form-control input-moderno" required>
+        </div>
 
-                    <button type="button" 
-                        class="btn btn-secondary btn-block"
-                        onclick="window.location.href='/inicio'">
-                        Iniciar Sesión
-                    </button>
+        <div class="form-group">
+            <label>Departamento</label>
+            <select name="selectDepartamento" id="departamento" class="form-control input-moderno">
+                <option value="">Seleccione Departamento</option>
+                {% for d in departamentos %}
+                    <option value="{{ d.id_departamento }}">{{ d.nombre }}</option>
+                {% endfor %}
+            </select>
+        </div>
 
-                </form>
-            </div>
+        <div class="form-group">
+            <label>Provincia</label>
+            <select name="selectProvincia" id="provincia" class="form-control input-moderno">
+                <option value="">Seleccione Provincia</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>Distrito</label>
+            <select name="selectDistrito" id="distrito" class="form-control input-moderno">
+                <option value="">Seleccione Distrito</option>
+            </select>
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-block btn-moderno">
+            Crear Cuenta
+        </button>
+
+        <button type="button" 
+            class="btn btn-secondary btn-block btn-secundario-moderno"
+            onclick="window.location.href='/inicio'">
+            Ya tengo cuenta
+        </button>
+
+    </form>
+</div>
 
         </div>
     </div>
@@ -148,6 +170,21 @@ $(document).ready(function() {
                         max: 100,
                         message: 'Edad inválida'
                     }
+                }
+            },
+            txtgustos: {
+                validators: {
+                    notEmpty: { message: 'Por favor ingrese sus gustos / intereses' }
+                }
+            },
+            txtmascota: {
+                validators: {
+                    notEmpty: { message: 'Ingrese su mascota / animal favorito' }
+                }
+            },
+            txtlenguaje: {
+                validators: {
+                    notEmpty: { message: 'Ingresa el tipo de lenguaje que quisieras con el que se dirija la IA hacia ti' }
                 }
             },
 

@@ -7670,3 +7670,263 @@ button.close {
 }
 
 /*# sourceMappingURL=bootstrap.min.css.map */
+/* ===== Fondo general ===== */
+body {
+    background: linear-gradient(135deg, #eef2f7, #d9e2ec);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* ===== Panel principal ===== */
+.registro-panel {
+    padding: 40px;
+    border-radius: 20px;
+    background: #ffffff;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.08);
+    border: none;
+    transition: 0.3s ease;
+}
+
+/* Animación suave al cargar */
+.registro-panel {
+    animation: fadeIn 0.6s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(15px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ===== Títulos ===== */
+.titulo-registro {
+    font-weight: 600;
+    margin-bottom: 5px;
+    color: #2c3e50;
+}
+
+.subtitulo-registro {
+    color: #6c757d;
+    margin-bottom: 25px;
+    font-size: 14px;
+}
+
+/* ===== Labels ===== */
+label {
+    font-weight: 500;
+    font-size: 13px;
+    margin-bottom: 6px;
+    color: #495057;
+}
+
+/* ===== Inputs modernos ===== */
+.input-moderno {
+    border-radius: 10px;
+    border: 1px solid #dee2e6;
+    padding: 10px 12px;
+    transition: all 0.3s ease;
+    font-size: 14px;
+}
+
+/* Focus elegante */
+.input-moderno:focus {
+    border-color: #4e73df;
+    box-shadow: 0 0 0 3px rgba(78,115,223,0.15);
+    outline: none;
+}
+
+/* Select */
+select.input-moderno {
+    height: 40px;
+}
+
+/* ===== Botón principal ===== */
+.btn-moderno {
+    border-radius: 10px;
+    padding: 10px;
+    font-weight: 600;
+    background-color: #4e73df;
+    border: none;
+    transition: all 0.3s ease;
+}
+
+.btn-moderno:hover {
+    background-color: #2e59d9;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(78,115,223,0.3);
+}
+
+/* ===== Botón secundario ===== */
+.btn-secundario-moderno {
+    border-radius: 10px;
+    padding: 10px;
+    transition: 0.3s ease;
+}
+
+.btn-secundario-moderno:hover {
+    transform: translateY(-2px);
+}
+
+/* ===== Espaciado entre grupos ===== */
+.form-group {
+    margin-bottom: 18px;
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 768px) {
+    .registro-panel {
+        padding: 25px;
+    }
+}
+
+/*inicio*/
+/* ===== Fondo con gradiente moderno ===== */
+body {
+    margin: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    font-family: 'Segoe UI', sans-serif;
+    overflow: hidden;
+}
+
+/* Efecto blur decorativo */
+body::before {
+    content: "";
+    position: absolute;
+    width: 600px;
+    height: 600px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 50%;
+    top: -200px;
+    left: -200px;
+    filter: blur(120px);
+}
+
+body::after {
+    content: "";
+    position: absolute;
+    width: 500px;
+    height: 500px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 50%;
+    bottom: -150px;
+    right: -150px;
+    filter: blur(100px);
+}
+
+/* ===== Card estilo vidrio ===== */
+.login-card {
+    width: 400px;
+    padding: 45px;
+    border-radius: 20px;
+    backdrop-filter: blur(15px);
+    background: rgba(255, 255, 255, 0.15);
+    box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+    color: white;
+    animation: fadeIn 0.8s ease;
+}
+
+/* Animación */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Título */
+.login-title {
+    text-align: center;
+    font-weight: 600;
+    margin-bottom: 5px;
+    color: white;
+}
+
+.login-subtitle {
+    text-align: center;
+    font-size: 14px;
+    margin-bottom: 30px;
+    opacity: 0.8;
+}
+
+/* Labels */
+label {
+    font-size: 13px;
+    margin-bottom: 5px;
+    color: rgba(255,255,255,0.8);
+}
+
+/* Inputs */
+.input-moderno {
+    border-radius: 10px;
+    border: 1px solid rgba(255,255,255,0.3);
+    background: rgba(255,255,255,0.2);
+    overflow: hidden;
+    transition: 0.3s;
+}
+
+.input-moderno .form-control {
+    background: transparent;
+    border: none;
+    color: white;
+}
+
+.input-moderno .form-control::placeholder {
+    color: rgba(255,255,255,0.6);
+}
+
+.input-moderno:focus-within {
+    border-color: white;
+    box-shadow: 0 0 0 3px rgba(255,255,255,0.2);
+}
+
+/* Iconos */
+.icon-moderno {
+    background: transparent;
+    border: none;
+    color: white;
+}
+
+/* Botón principal */
+.btn-login {
+    border-radius: 10px;
+    padding: 10px;
+    font-weight: 600;
+    border: none;
+    background: white;
+    color: #5f2c82;
+    transition: 0.3s;
+}
+
+.btn-login:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+}
+
+/* Botón secundario */
+.btn-secundario-moderno {
+    border-radius: 10px;
+    padding: 10px;
+    border: 1px solid rgba(255,255,255,0.4);
+    background: transparent;
+    color: white;
+    transition: 0.3s;
+}
+
+.btn-secundario-moderno:hover {
+    background: rgba(255,255,255,0.2);
+    transform: translateY(-3px);
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+    .login-card {
+        width: 90%;
+        padding: 30px;
+    }
+}

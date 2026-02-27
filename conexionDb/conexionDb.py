@@ -6,8 +6,8 @@ class ConexionDb:
     def conexionBaseDeDatos():
         try:
             conexion = mysql.connector.connect(
-                user='root', 
-                password='root',
+                user='root',
+                password='mysql',
                 host='localhost',
                 database='proyectoContraSuicidioV1',
                 port='3306'
@@ -17,4 +17,3 @@ class ConexionDb:
         except mysql.connector.Error as error:
             print("Error al conectar con la base de datos {}".format(error))
             return None
-        

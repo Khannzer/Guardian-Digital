@@ -1,5 +1,4 @@
 <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
 <!DOCTYPE html>
@@ -14,7 +13,7 @@
 	<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
-	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css')}}" />
+	<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 
 
@@ -351,14 +350,20 @@
 
 		$("#clearChat").click(function () {
 
-			// Vaciar los mensajes del chat
+			// Guardar el primer mensaje (bienvenida)
+			var mensajePrincipal = $("#messageFormeight").children().first().prop('outerHTML');
+
+			// Vaciar todos los mensajes
 			$("#messageFormeight").empty();
 
-			// Reiniciar contador 
+			// Volver a insertar el mensaje principal
+			$("#messageFormeight").append(mensajePrincipal);
+
+			// Reiniciar contador
 			messageCount = 0;
 			$("#msgCount").text("0");
 
-		});
+        });
 
 		$(document).ready(function () {
 
