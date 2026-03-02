@@ -12,31 +12,134 @@
     <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
     <script src="{{ url_for('static', filename='js/bootstrapValidator.js') }}"></script>
     <link rel="stylesheet" href="{{ url_for('static', filename='styleRegistro.css') }}">
+
+    <style>
+        /* ═══════════════════════════════════════════════
+           SELECTOR DE ENTORNO — adaptado al tema oscuro
+        ═══════════════════════════════════════════════ */
+
+        .entorno-titulo {
+            font-weight: 600;
+            color: #d1d1d1;
+            margin-bottom: 4px;
+            font-size: 15px;
+        }
+        .entorno-sub {
+            color: #777;
+            font-size: 12px;
+            margin-bottom: 14px;
+        }
+
+        /* Grid de tarjetas de tema */
+        .tema-grid {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+
+        /* Radio oculto */
+        .tema-radio { display: none; }
+
+        /* Tarjeta visible */
+        .tema-card {
+            border-radius: 12px;
+            overflow: hidden;
+            border: 2px solid rgba(255,255,255,0.08);
+            background: #1f1f1f;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            display: block;
+            position: relative;
+        }
+        .tema-card:hover {
+            transform: translateY(-3px);
+            border-color: rgba(255,255,255,0.2);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.5);
+        }
+        /* Seleccionado */
+        .tema-radio:checked + .tema-card {
+            border-color: #4da3ff;
+            box-shadow: 0 0 0 3px rgba(77,163,255,0.2), 0 8px 20px rgba(0,0,0,0.4);
+        }
+        /* Checkmark cuando está seleccionado */
+        .tema-radio:checked + .tema-card::after {
+            content: '✓';
+            position: absolute; top: 6px; right: 7px;
+            font-size: 0.58rem; font-weight: 900; color: #fff;
+            background: #4da3ff;
+            width: 15px; height: 15px; border-radius: 50%;
+            line-height: 15px; text-align: center; display: block;
+        }
+
+        /* Franja de color degradada */
+        .tema-swatch {
+            height: 48px; width: 100%;
+        }
+        .sw-brisa_mar        { background: linear-gradient(135deg, #1D6FD1, #5BA4F5); }
+        .sw-lavanda_suave    { background: linear-gradient(135deg, #7C3AED, #A78BFA); }
+        .sw-bosque_sereno    { background: linear-gradient(135deg, #1B7A3E, #4BAF6C); }
+        .sw-atardecer_calido { background: linear-gradient(135deg, #D05A00, #F9883E); }
+        .sw-rosa_amanecer    { background: linear-gradient(135deg, #C2185B, #F06292); }
+        .sw-noche_estrellada { background: linear-gradient(135deg, #1A2140, #7B9CFF); }
+
+        /* Texto dentro de la card */
+        .tema-info {
+            padding: 7px 8px;
+            background: #161616;
+        }
+        .tema-nombre {
+            font-size: 0.65rem;
+            font-weight: 600;
+            color: #d1d1d1;
+            display: block;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .tema-mood {
+            font-size: 0.58rem;
+            color: #555;
+            display: block;
+            margin-top: 1px;
+        }
+
+        /* Caja de psicología del color */
+        .psych-box {
+            background: rgba(77,163,255,0.06);
+            border: 1px solid rgba(77,163,255,0.15);
+            border-left: 3px solid #4da3ff;
+            border-radius: 10px;
+            padding: 10px 13px;
+            font-size: 0.78rem;
+            line-height: 1.55;
+            color: #888;
+            transition: opacity 0.18s ease;
+            min-height: 46px;
+        }
+        .psych-box strong { color: #4da3ff; }
+
+        /* Responsive: 3 columnas en mobile */
+        @media (max-width: 600px) {
+            .tema-grid { grid-template-columns: repeat(3, 1fr); }
+        }
+    </style>
 </head>
 
 <body>
 
-    <!--MENSAJE EXITOSO O FALLIDO AL REGISTRAR UN USUARIO-->
     <!-- Modal -->
     <div class="modal fade" id="modalMensaje" tabindex="-1">
         <div class="modal-dialog">
             <div class="modal-content">
-
                 <div class="modal-header" id="modalHeader">
                     <h5 class="modal-title" id="modalTitulo">Mensaje</h5>
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                 </div>
-
-                <div class="modal-body" id="modalBody">
-                    Mensaje aquí
-                </div>
-
+                <div class="modal-body" id="modalBody">Mensaje aquí</div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">
-                        Cerrar
-                    </button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
                 </div>
-
             </div>
         </div>
     </div>
@@ -86,6 +189,7 @@
             </div>
 
             <hr class="mt-2 mb-4">
+
             <div class="row">
                 <div class="col-md-4">
                     <div class="form-group">
@@ -115,6 +219,96 @@
             </div>
 
             <hr class="mt-2 mb-4">
+
+            <!-- ═══════════════════════════════════════════════
+                 SELECTOR DE ENTORNO DE CALMA ← NUEVO
+            ═══════════════════════════════════════════════ -->
+            <div class="row">
+                <div class="col-md-12">
+                    <p class="entorno-titulo">🎨 Elige el color de tu Espacio Seguro</p>
+                    <p class="entorno-sub">Define la atmósfera visual de tus sesiones. Podrás cambiarlo cuando quieras desde el chat.</p>
+
+                    <div class="tema-grid">
+
+                        <div>
+                            <input type="radio" name="txtTemaColor" value="brisa_mar" class="tema-radio" id="tema1" onchange="verPsych(this)" required>
+                            <label class="tema-card" for="tema1">
+                                <div class="tema-swatch sw-brisa_mar"></div>
+                                <div class="tema-info">
+                                    <span class="tema-nombre">🌊 Brisa de Mar</span>
+                                    <span class="tema-mood">Confianza · Calma</span>
+                                </div>
+                            </label>
+                        </div>
+
+                        <div>
+                            <input type="radio" name="txtTemaColor" value="lavanda_suave" class="tema-radio" id="tema2" onchange="verPsych(this)">
+                            <label class="tema-card" for="tema2">
+                                <div class="tema-swatch sw-lavanda_suave"></div>
+                                <div class="tema-info">
+                                    <span class="tema-nombre">🌸 Lavanda</span>
+                                    <span class="tema-mood">Creatividad · Calma</span>
+                                </div>
+                            </label>
+                        </div>
+
+                        <div>
+                            <input type="radio" name="txtTemaColor" value="bosque_sereno" class="tema-radio" id="tema3" onchange="verPsych(this)">
+                            <label class="tema-card" for="tema3">
+                                <div class="tema-swatch sw-bosque_sereno"></div>
+                                <div class="tema-info">
+                                    <span class="tema-nombre">🌿 Bosque</span>
+                                    <span class="tema-mood">Equilibrio · Natura</span>
+                                </div>
+                            </label>
+                        </div>
+
+                        <div>
+                            <input type="radio" name="txtTemaColor" value="atardecer_calido" class="tema-radio" id="tema4" onchange="verPsych(this)">
+                            <label class="tema-card" for="tema4">
+                                <div class="tema-swatch sw-atardecer_calido"></div>
+                                <div class="tema-info">
+                                    <span class="tema-nombre">🌅 Atardecer</span>
+                                    <span class="tema-mood">Energía · Calidez</span>
+                                </div>
+                            </label>
+                        </div>
+
+                        <div>
+                            <input type="radio" name="txtTemaColor" value="rosa_amanecer" class="tema-radio" id="tema5" onchange="verPsych(this)">
+                            <label class="tema-card" for="tema5">
+                                <div class="tema-swatch sw-rosa_amanecer"></div>
+                                <div class="tema-info">
+                                    <span class="tema-nombre">🌹 Rosa</span>
+                                    <span class="tema-mood">Compasión · Ternura</span>
+                                </div>
+                            </label>
+                        </div>
+
+                        <div>
+                            <input type="radio" name="txtTemaColor" value="noche_estrellada" class="tema-radio" id="tema6" onchange="verPsych(this)">
+                            <label class="tema-card" for="tema6">
+                                <div class="tema-swatch sw-noche_estrellada"></div>
+                                <div class="tema-info">
+                                    <span class="tema-nombre">🌌 Noche</span>
+                                    <span class="tema-mood">Descanso · Serenidad</span>
+                                </div>
+                            </label>
+                        </div>
+
+                    </div>
+
+                    <!-- Descripción psicológica del color elegido -->
+                    <div class="psych-box" id="psychBox">
+                        👆 Selecciona un color para ver su <strong>efecto psicológico</strong> en tu bienestar.
+                    </div>
+
+                </div>
+            </div>
+            <!-- ═══ FIN SELECTOR ═══ -->
+
+            <hr class="mt-4 mb-4">
+
             <div class="row">
                 <div class="col-md-4">
                     <div class="form-group">
@@ -163,28 +357,45 @@
     </div>
 
     <script>
+        /* ═══════════════════════════════════════════════
+           PSICOLOGÍA DEL COLOR
+        ═══════════════════════════════════════════════ */
+        const PSYCH = {
+            brisa_mar:         '<strong>🌊 Brisa de Mar</strong> — El azul transmite <strong>confianza, calma y seguridad</strong>. Ideal para reducir la ansiedad y fomentar la comunicación abierta.',
+            lavanda_suave:     '<strong>🌸 Lavanda Suave</strong> — El violeta evoca <strong>creatividad e introspección</strong>. Favorece la reflexión profunda y la conexión emocional.',
+            bosque_sereno:     '<strong>🌿 Bosque Sereno</strong> — El verde simboliza <strong>equilibrio y crecimiento</strong>. Reduce el cortisol y transmite renovación y esperanza.',
+            atardecer_calido:  '<strong>🌅 Atardecer Cálido</strong> — El naranja aporta <strong>energía y calidez</strong>. Estimula la conversación y el optimismo.',
+            rosa_amanecer:     '<strong>🌹 Rosa Amanecer</strong> — El rosa transmite <strong>compasión y ternura</strong>. Crea un ambiente de vulnerabilidad segura.',
+            noche_estrellada:  '<strong>🌌 Noche Estrellada</strong> — El azul oscuro invita a la <strong>introspección y el descanso profundo</strong>. Para procesar emociones en calma.'
+        };
+
+        function verPsych(radio) {
+            const box = document.getElementById('psychBox');
+            box.style.opacity = '0';
+            setTimeout(function () {
+                box.innerHTML = PSYCH[radio.value] || '';
+                box.style.transition = 'opacity 0.2s ease';
+                box.style.opacity = '1';
+            }, 140);
+        }
+
+        /* ═══════════════════════════════════════════════
+           BOOTSTRAP VALIDATOR + DEPARTAMENTOS
+        ═══════════════════════════════════════════════ */
         $(document).ready(function () {
             $('#formRegistro').bootstrapValidator({
                 fields: {
                     txtNombre: {
                         validators: {
                             notEmpty: { message: 'El nombre es requerido' },
-                            stringLength: {
-                                min: 3,
-                                max: 30,
-                                message: 'Debe tener entre 3 y 30 caracteres'
-                            }
+                            stringLength: { min: 3, max: 30, message: 'Debe tener entre 3 y 30 caracteres' }
                         }
                     },
                     txtApellidos: {
-                        validators: {
-                            notEmpty: { message: 'Los apellidos son requeridos' }
-                        }
+                        validators: { notEmpty: { message: 'Los apellidos son requeridos' } }
                     },
                     txtContrasenia: {
-                        validators: {
-                            notEmpty: { message: 'La contreña es requerida' }
-                        }
+                        validators: { notEmpty: { message: 'La contraseña es requerida' } }
                     },
                     txtCorreo: {
                         validators: {
@@ -195,143 +406,88 @@
                     txtEdad: {
                         validators: {
                             notEmpty: { message: 'La edad es requerida' },
-                            between: {
-                                min: 1,
-                                max: 100,
-                                message: 'Edad inválida'
-                            }
+                            between: { min: 1, max: 100, message: 'Edad inválida' }
                         }
                     },
                     txtgustos: {
-                        validators: {
-                            notEmpty: { message: 'Por favor ingrese sus gustos / intereses' }
-                        }
+                        validators: { notEmpty: { message: 'Por favor ingrese sus gustos / intereses' } }
                     },
                     txtmascota: {
-                        validators: {
-                            notEmpty: { message: 'Ingrese su mascota / animal favorito' }
-                        }
+                        validators: { notEmpty: { message: 'Ingrese su mascota / animal favorito' } }
                     },
                     txtlenguaje: {
-                        validators: {
-                            notEmpty: { message: 'Por favor, selecciona un tono de lenguaje' }
-                        }
+                        validators: { notEmpty: { message: 'Por favor, selecciona un tono de lenguaje' } }
                     },
-
+                    txtTemaColor: {
+                        validators: { notEmpty: { message: 'Por favor, elige un color para tu espacio seguro' } }
+                    },
                     selectDepartamento: {
-                        validators: {
-                            notEmpty: {
-                                message: 'Seleccione un departamento'
-                            }
-                        }
+                        validators: { notEmpty: { message: 'Seleccione un departamento' } }
                     },
-
                     selectProvincia: {
-                        validators: {
-                            notEmpty: {
-                                message: 'Seleccione una provincia'
-                            }
-                        }
+                        validators: { notEmpty: { message: 'Seleccione una provincia' } }
                     },
-
                     selectDistrito: {
-                        validators: {
-                            notEmpty: {
-                                message: 'Seleccione un distrito'
-                            }
-                        }
+                        validators: { notEmpty: { message: 'Seleccione un distrito' } }
                     }
                 }
             });
-        });
 
-        //Departamentos, provincias y distrito
-        $(document).ready(function () {
-
-            // Cuando cambia departamento
+            // Departamento → Provincia
             $("#departamento").change(function () {
-
                 let id_departamento = $(this).val();
-
                 $("#provincia").html('<option value="">Cargando...</option>');
                 $("#distrito").html('<option value="">Seleccione Distrito</option>');
-
                 if (id_departamento) {
                     $.get("/provincias/" + id_departamento, function (data) {
-
                         let opciones = '<option value="">Seleccione Provincia</option>';
-
                         data.forEach(function (prov) {
                             opciones += `<option value="${prov.id_provincia}">${prov.nombre}</option>`;
                         });
-
                         $("#provincia").html(opciones);
                     });
                 }
             });
 
-
-            // Cuando cambia provincia
+            // Provincia → Distrito
             $("#provincia").change(function () {
-
                 let id_provincia = $(this).val();
-
                 $("#distrito").html('<option value="">Cargando...</option>');
-
                 if (id_provincia) {
                     $.get("/distritos/" + id_provincia, function (data) {
-
                         let opciones = '<option value="">Seleccione Distrito</option>';
-
                         data.forEach(function (dist) {
                             opciones += `<option value="${dist.id_distrito}">${dist.nombre}</option>`;
                         });
-
                         $("#distrito").html(opciones);
                     });
                 }
             });
-
         });
 
-        //Registrar usuario
-        // OJO: Ya no usamos .submit(), usamos el evento de éxito de BootstrapValidator
+        // Submit con AJAX
         $('#formRegistro').on('success.form.bv', function (e) {
-            // 1. Prevenimos el envío automático
             e.preventDefault();
-
-            // 2. Obtenemos el formulario
             var $form = $(e.target);
-
-            // 3. Ejecutamos tu AJAX de forma segura (una sola vez)
             $.ajax({
                 url: $form.attr('action'),
                 type: "POST",
                 data: $form.serialize(),
                 success: function (response) {
-
                     if (response.success) {
                         $("#modalHeader").removeClass().addClass("modal-header bg-success text-white");
                         $("#modalTitulo").text("Registro Exitoso");
                         $("#modalBody").text(response.message);
-
-                        $form[0].reset(); // Limpiamos el form
-
-                        // Redirigir al cerrar el modal
+                        $form[0].reset();
                         $('#modalMensaje').off('hidden.bs.modal').on('hidden.bs.modal', function () {
                             window.location.href = "/inicio";
                         });
-
                     } else {
                         $("#modalHeader").removeClass().addClass("modal-header bg-danger text-white");
                         $("#modalTitulo").text("Error");
                         $("#modalBody").text(response.message);
-
-                        // IMPORTANTE: Si hubo un error real (ej. el usuario de verdad ya existía), 
-                        // volvemos a habilitar el botón para que pueda intentar de nuevo.
                         $form.data('bootstrapValidator').disableSubmitButtons(false);
                     }
-
                     $("#modalMensaje").modal("show");
                 }
             });
@@ -339,5 +495,4 @@
     </script>
 
 </body>
-
 </html>

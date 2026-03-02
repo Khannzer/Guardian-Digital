@@ -1,5 +1,5 @@
 class Usuario:
-    def __init__(self, nombre, apellidos, contrasenia, correo, edad, id_distrito, gustos, mascota_fav, tono_lenguaje):
+    def __init__(self, nombre, apellidos, contrasenia, correo, edad, id_distrito, gustos, mascota_fav, tono_lenguaje, tema_color):
         self.nombre = nombre
         self.apellidos = apellidos
         self.contrasenia = contrasenia
@@ -9,3 +9,4 @@ class Usuario:
         self.gustos = gustos
         self.mascota_fav = mascota_fav
         self.tono_lenguaje = tono_lenguaje
+        self.tema_color = tema_color

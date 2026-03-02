@@ -1,4 +1,9 @@
 import mysql.connector
+import os
+from dotenv import load_dotenv
+
+#cargar las variables de entorno desde el archivo .env
+load_dotenv()
 
 class ConexionDb:
     
@@ -6,11 +11,11 @@ class ConexionDb:
     def conexionBaseDeDatos():
         try:
             conexion = mysql.connector.connect(
-                user='root',
-                password='root',
-                host='localhost',
-                database='proyectoContraSuicidioV1',
-                port='3306'
+                user= os.getenv("DB_USER"),
+                password= os.getenv("DB_PASSWORD"),
+                host= os.getenv("DB_HOST"),
+                database= os.getenv("DB_NAME"),
+                port= os.getenv("DB_PORT")
             )
             return conexion
 

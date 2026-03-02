@@ -1,459 +1,1160 @@
-<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-
 <!DOCTYPE html>
-<html>
-
+<html lang="es">
 <head>
-	<title>Agente Guardian Digital</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Guardián Digital</title>
+
+  <!-- ✅ Un solo Bootstrap + jQuery (bugs corregidos) -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=Fraunces:ital,wght@0,300;0,600;1,300&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+
+  <style>
+    /* ══════════════════════════════════════════════════════════
+       VARIABLES DE TEMAS — Psicología del color
 
 
-	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
-    
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.min.js"></script>
-	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css">
+    /* 🌊 Brisa de Mar — Confianza, calma, seguridad */
+    body.tema-brisa_mar {
+      --c-bg:         linear-gradient(150deg, #EBF4FF 0%, #F8FCFF 100%);
+      --c-surface:    #FFFFFF;
+      --c-panel:      #F0F8FF;
+      --c-border:     #CCE5FF;
+      --c-accent:     #1D6FD1;
+      --c-accent2:    #5BA4F5;
+      --c-text:       #1a2e44;
+      --c-text-soft:  #5a7fa0;
+      --c-bot-bub:    #1D6FD1;
+      --c-bot-txt:    #ffffff;
+      --c-usr-bub:    #E0EFFF;
+      --c-usr-txt:    #0D3B7A;
+      --c-input-bg:   #F5FAFE;
+      --c-header:     linear-gradient(135deg, #1D6FD1 0%, #5BA4F5 100%);
+      --c-glow:       rgba(29,111,209,.15);
+      --c-online:     #4ade80;
+    }
 
-	<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
-	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
-	<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    /* 🌸 Lavanda Suave — Creatividad, calma espiritual */
+    body.tema-lavanda_suave {
+      --c-bg:         linear-gradient(150deg, #F5F0FF 0%, #FAF8FF 100%);
+      --c-surface:    #FFFFFF;
+      --c-panel:      #F9F5FF;
+      --c-border:     #E4D5FF;
+      --c-accent:     #7C3AED;
+      --c-accent2:    #A78BFA;
+      --c-text:       #2d1b4e;
+      --c-text-soft:  #7C5FA0;
+      --c-bot-bub:    #7C3AED;
+      --c-bot-txt:    #ffffff;
+      --c-usr-bub:    #EDE9FF;
+      --c-usr-txt:    #4C1D95;
+      --c-input-bg:   #FAF8FF;
+      --c-header:     linear-gradient(135deg, #7C3AED 0%, #A78BFA 100%);
+      --c-glow:       rgba(124,58,237,.15);
+      --c-online:     #a3e635;
+    }
+
+    /* 🌿 Bosque Sereno — Equilibrio, crecimiento, armonía */
+    body.tema-bosque_sereno {
+      --c-bg:         linear-gradient(150deg, #EDFBF0 0%, #F4FCF6 100%);
+      --c-surface:    #FFFFFF;
+      --c-panel:      #F2FBF4;
+      --c-border:     #C8EDD1;
+      --c-accent:     #1B7A3E;
+      --c-accent2:    #4BAF6C;
+      --c-text:       #132B1A;
+      --c-text-soft:  #4A7558;
+      --c-bot-bub:    #1B7A3E;
+      --c-bot-txt:    #ffffff;
+      --c-usr-bub:    #D4EDDA;
+      --c-usr-txt:    #0D3B1F;
+      --c-input-bg:   #F4FCF6;
+      --c-header:     linear-gradient(135deg, #1B7A3E 0%, #4BAF6C 100%);
+      --c-glow:       rgba(27,122,62,.15);
+      --c-online:     #86efac;
+    }
+
+    /* 🌅 Atardecer Cálido — Energía, calidez, confort */
+    body.tema-atardecer_calido {
+      --c-bg:         linear-gradient(150deg, #FFF6EE 0%, #FFFAF6 100%);
+      --c-surface:    #FFFFFF;
+      --c-panel:      #FFF9F4;
+      --c-border:     #FFE0C2;
+      --c-accent:     #D05A00;
+      --c-accent2:    #F9883E;
+      --c-text:       #3D1A00;
+      --c-text-soft:  #A05A30;
+      --c-bot-bub:    #D05A00;
+      --c-bot-txt:    #ffffff;
+      --c-usr-bub:    #FFE8D0;
+      --c-usr-txt:    #7A2E00;
+      --c-input-bg:   #FFFAF6;
+      --c-header:     linear-gradient(135deg, #D05A00 0%, #F9883E 100%);
+      --c-glow:       rgba(208,90,0,.15);
+      --c-online:     #fde68a;
+    }
+
+    /* 🌹 Rosa Amanecer — Compasión, ternura, esperanza */
+    body.tema-rosa_amanecer {
+      --c-bg:         linear-gradient(150deg, #FFF0F5 0%, #FFF8FA 100%);
+      --c-surface:    #FFFFFF;
+      --c-panel:      #FFF5F8;
+      --c-border:     #FFD6E5;
+      --c-accent:     #C2185B;
+      --c-accent2:    #F06292;
+      --c-text:       #3D0019;
+      --c-text-soft:  #A04060;
+      --c-bot-bub:    #C2185B;
+      --c-bot-txt:    #ffffff;
+      --c-usr-bub:    #FFD6E5;
+      --c-usr-txt:    #7A0030;
+      --c-input-bg:   #FFF8FA;
+      --c-header:     linear-gradient(135deg, #C2185B 0%, #F06292 100%);
+      --c-glow:       rgba(194,24,91,.15);
+      --c-online:     #fbcfe8;
+    }
+
+    /* 🌌 Noche Estrellada — Introspección, descanso, serenidad */
+    body.tema-noche_estrellada {
+      --c-bg:         linear-gradient(150deg, #0D1117 0%, #161B22 100%);
+      --c-surface:    #161B22;
+      --c-panel:      #0D1117;
+      --c-border:     #2A3140;
+      --c-accent:     #7B9CFF;
+      --c-accent2:    #A0BFFF;
+      --c-text:       #E6EDF3;
+      --c-text-soft:  #7D8590;
+      --c-bot-bub:    #1E2B4A;
+      --c-bot-txt:    #C9D8FF;
+      --c-usr-bub:    #2A3B6A;
+      --c-usr-txt:    #E6EDF3;
+      --c-input-bg:   #0D1117;
+      --c-header:     linear-gradient(135deg, #1A2140 0%, #2A3B6A 100%);
+      --c-glow:       rgba(123,156,255,.15);
+      --c-online:     #7B9CFF;
+    }
+
+    /* ══════════════════════════════════════════════════════════
+       RESET Y BASE
+    ══════════════════════════════════════════════════════════ */
+    *, *::before, *::after { box-sizing: border-box; }
+
+    body {
+      font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--c-bg) !important;
+      color: var(--c-text) !important;
+      transition: background 0.5s ease, color 0.4s ease;
+      margin: 0; padding: 0;
+      overflow: hidden;
+      height: 100vh;
+    }
+
+    /* ══════════════════════════════════════════════════════════
+       LAYOUT
+    ══════════════════════════════════════════════════════════ */
+    .gd-layout {
+      display: flex;
+      height: 100vh;
+      width: 100%;
+    }
+
+    /* ══════════════════════════════════════════════════════════
+       SIDEBAR
+    ══════════════════════════════════════════════════════════ */
+    .gd-sidebar {
+      width: 280px;
+      flex-shrink: 0;
+      background: var(--c-panel);
+      border-right: 1px solid var(--c-border);
+      display: flex;
+      flex-direction: column;
+      padding: 20px 16px;
+      gap: 12px;
+      overflow-y: auto;
+      transition: background 0.4s ease, border-color 0.4s ease, left 0.35s cubic-bezier(.4,0,.2,1);
+      z-index: 100;
+    }
+
+    .gd-sidebar::-webkit-scrollbar { width: 3px; }
+    .gd-sidebar::-webkit-scrollbar-thumb { background: var(--c-border); border-radius: 3px; }
+
+    /* Logo */
+    .gd-logo {
+      display: flex; align-items: center; gap: 10px;
+      padding-bottom: 4px;
+    }
+    .gd-logo-icon {
+      width: 38px; height: 38px; border-radius: 10px;
+      background: var(--c-accent);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.1rem; flex-shrink: 0;
+      box-shadow: 0 4px 12px var(--c-glow);
+      transition: background 0.4s ease;
+    }
+    .gd-logo-text {
+      font-family: 'Fraunces', serif;
+      font-size: 1rem; font-weight: 600;
+      color: var(--c-accent);
+      transition: color 0.4s ease;
+      line-height: 1.2;
+    }
+    .gd-logo-sub {
+      font-size: 0.65rem;
+      color: var(--c-text-soft);
+      display: block;
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 400;
+    }
+
+    /* Divisor */
+    .gd-divider {
+      height: 1px; background: var(--c-border);
+      transition: background 0.4s ease;
+      flex-shrink: 0;
+    }
+
+    /* Etiqueta de sección */
+    .gd-section-label {
+      font-size: 0.65rem; font-weight: 600;
+      text-transform: uppercase; letter-spacing: .1em;
+      color: var(--c-text-soft);
+      padding: 0 2px;
+      flex-shrink: 0;
+    }
+
+    /* Stats */
+    .gd-stats {
+      background: var(--c-surface);
+      border: 1px solid var(--c-border);
+      border-radius: 12px;
+      padding: 12px 14px;
+      transition: background 0.4s ease, border-color 0.4s ease;
+    }
+    .gd-stats p {
+      font-size: 0.8rem; color: var(--c-text-soft) !important;
+      margin: 0; line-height: 1.9;
+      transition: color 0.4s ease;
+    }
+    .gd-stats strong { color: var(--c-text) !important; }
+    .gd-stats #msgCount, .gd-stats #startTime {
+      color: var(--c-accent) !important; font-weight: 600;
+      transition: color 0.4s ease;
+    }
+
+    /* Botones del sidebar */
+    .gd-btn {
+      display: flex; align-items: center; gap: 9px;
+      padding: 9px 14px;
+      border-radius: 10px;
+      border: 1px solid var(--c-border);
+      background: var(--c-surface);
+      color: var(--c-text) !important;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.82rem; font-weight: 500;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      text-decoration: none !important;
+      width: 100%;
+      text-align: left;
+    }
+    .gd-btn:hover {
+      background: var(--c-accent);
+      color: #fff !important;
+      border-color: var(--c-accent);
+      transform: translateX(3px);
+      box-shadow: 0 4px 12px var(--c-glow);
+      text-decoration: none !important;
+    }
+    .gd-btn i { width: 14px; text-align: center; flex-shrink: 0; }
+    .gd-btn.danger:hover { background: #dc2626 !important; border-color: #dc2626 !important; }
+
+    /* Spacer */
+    .gd-spacer { flex: 1; min-height: 8px; }
+
+    /* ── SELECTOR DE TEMAS MEJORADO ── */
+    .gd-theme-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 7px;
+    }
+
+    .gd-theme-card {
+      border-radius: 10px;
+      padding: 7px 5px;
+      cursor: pointer;
+      border: 2px solid var(--c-border);
+      background: var(--c-surface);
+      transition: all 0.25s ease;
+      text-align: center;
+      position: relative;
+    }
+    .gd-theme-card:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(0,0,0,.1); }
+    .gd-theme-card.active {
+      border-color: var(--c-accent) !important;
+      box-shadow: 0 0 0 3px var(--c-glow);
+    }
+    .gd-theme-card.active::after {
+      content: '✓';
+      position: absolute; top: 3px; right: 5px;
+      font-size: 0.6rem; font-weight: 700; color: #fff;
+      background: var(--c-accent);
+      width: 13px; height: 13px; border-radius: 50%;
+      line-height: 13px; display: block;
+    }
+
+    .gd-swatch {
+      width: 100%; height: 26px; border-radius: 6px;
+      margin-bottom: 5px;
+    }
+    /* Colores estáticos de cada swatch */
+    .sw-brisa_mar       { background: linear-gradient(135deg, #1D6FD1, #5BA4F5); }
+    .sw-lavanda_suave   { background: linear-gradient(135deg, #7C3AED, #A78BFA); }
+    .sw-bosque_sereno   { background: linear-gradient(135deg, #1B7A3E, #4BAF6C); }
+    .sw-atardecer_calido{ background: linear-gradient(135deg, #D05A00, #F9883E); }
+    .sw-rosa_amanecer   { background: linear-gradient(135deg, #C2185B, #F06292); }
+    .sw-noche_estrellada{ background: linear-gradient(135deg, #1A2140, #7B9CFF); }
+
+    .gd-theme-name  { font-size: 0.62rem; font-weight: 600; color: var(--c-text); display: block; line-height: 1.2; }
+    .gd-theme-mood  { font-size: 0.56rem; color: var(--c-text-soft); display: block; margin-top: 1px; }
+
+    /* Caja de psicología del color */
+    .gd-psych-box {
+      background: var(--c-surface);
+      border: 1px solid var(--c-border);
+      border-left: 3px solid var(--c-accent);
+      border-radius: 10px;
+      padding: 10px 12px;
+      font-size: 0.75rem;
+      line-height: 1.55;
+      color: var(--c-text-soft);
+      transition: all 0.4s ease;
+    }
+    .gd-psych-box strong { color: var(--c-accent); }
+
+    /* ══════════════════════════════════════════════════════════
+       ÁREA DE CHAT
+    ══════════════════════════════════════════════════════════ */
+    .gd-chat {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+      background: var(--c-bg);
+      transition: background 0.5s ease;
+    }
+
+    /* Header del chat */
+    .gd-header {
+      background: var(--c-header);
+      padding: 14px 22px;
+      display: flex; align-items: center; gap: 14px;
+      box-shadow: 0 4px 20px var(--c-glow);
+      flex-shrink: 0;
+      transition: background 0.4s ease, box-shadow 0.4s ease;
+    }
+
+    .gd-header-avatar {
+      width: 42px; height: 42px;
+      border-radius: 50%;
+      background: rgba(255,255,255,.2);
+      border: 2px solid rgba(255,255,255,.35);
+      display: flex; align-items: center; justify-content: center;
+      overflow: hidden; flex-shrink: 0;
+    }
+    .gd-header-avatar img { width: 28px; height: 28px; filter: brightness(0) invert(1); }
+
+    .gd-header-info { flex: 1; }
+    .gd-header-info h2 {
+      font-family: 'Fraunces', serif;
+      font-size: 1rem; font-weight: 600;
+      color: #fff; margin: 0;
+    }
+    .gd-header-info p {
+      font-size: 0.72rem;
+      color: rgba(255,255,255,.75);
+      margin: 0;
+    }
+
+    .gd-online-dot {
+      width: 9px; height: 9px; border-radius: 50%;
+      background: var(--c-online);
+      box-shadow: 0 0 0 3px rgba(255,255,255,.25);
+      animation: gd-pulse 2s infinite;
+      flex-shrink: 0;
+    }
+    @keyframes gd-pulse {
+      0%,100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.35); opacity: .7; }
+    }
+
+    /* Botón hamburger mobile */
+    .gd-hamburger {
+      display: none;
+      background: rgba(255,255,255,.2);
+      border: none; border-radius: 8px;
+      padding: 7px 8px; cursor: pointer; color: #fff;
+      transition: background 0.2s; flex-shrink: 0;
+    }
+    .gd-hamburger:hover { background: rgba(255,255,255,.3); }
+
+    /* ── Área de mensajes ── */
+    .gd-messages {
+      flex: 1;
+      overflow-y: auto;
+      padding: 22px 24px;
+      display: flex; flex-direction: column; gap: 14px;
+      scroll-behavior: smooth;
+    }
+    .gd-messages::-webkit-scrollbar { width: 4px; }
+    .gd-messages::-webkit-scrollbar-track { background: transparent; }
+    .gd-messages::-webkit-scrollbar-thumb { background: var(--c-border); border-radius: 4px; }
+
+    /* Burbujas */
+    .gd-msg-row {
+      display: flex; align-items: flex-end; gap: 10px;
+      animation: gd-fade-up 0.3s ease;
+    }
+    @keyframes gd-fade-up {
+      from { opacity: 0; transform: translateY(8px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .gd-msg-row.bot  { justify-content: flex-start; }
+    .gd-msg-row.user { justify-content: flex-end; }
+
+    .gd-msg-avatar {
+      width: 32px; height: 32px; border-radius: 50%;
+      background: var(--c-accent);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; overflow: hidden;
+      box-shadow: 0 2px 8px var(--c-glow);
+      transition: background 0.4s ease;
+    }
+    .gd-msg-avatar img { width: 20px; height: 20px; filter: brightness(0) invert(1); }
+    .gd-msg-avatar.user-av {
+      background: var(--c-usr-bub);
+      box-shadow: none;
+    }
+    .gd-msg-avatar.user-av img { filter: none; width: 100%; height: 100%; object-fit: cover; }
+
+    .gd-bubble {
+      max-width: 65%;
+      padding: 11px 15px;
+      border-radius: 18px;
+      font-size: 0.875rem; line-height: 1.6;
+      word-break: break-word;
+      position: relative;
+      box-shadow: 0 2px 10px rgba(0,0,0,.06);
+      transition: background 0.4s ease, color 0.4s ease;
+    }
+    .gd-msg-row.bot  .gd-bubble {
+      background: var(--c-bot-bub);
+      color: var(--c-bot-txt);
+      border-bottom-left-radius: 4px;
+    }
+    .gd-msg-row.user .gd-bubble {
+      background: var(--c-usr-bub);
+      color: var(--c-usr-txt);
+      border-bottom-right-radius: 4px;
+    }
+
+    .gd-time {
+      font-size: 0.62rem; opacity: .55;
+      display: block; margin-top: 4px; text-align: right;
+    }
+
+    /* Typing indicator */
+    #typing-indicator .gd-bubble {
+      padding: 13px 18px;
+    }
+    .gd-dots { display: flex; gap: 4px; align-items: center; }
+    .gd-dots span {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: currentColor; opacity: .5;
+      animation: gd-dot 1.2s infinite;
+    }
+    .gd-dots span:nth-child(2) { animation-delay: .2s; }
+    .gd-dots span:nth-child(3) { animation-delay: .4s; }
+    @keyframes gd-dot {
+      0%,80%,100% { transform: translateY(0); }
+      40% { transform: translateY(-5px); opacity: 1; }
+    }
+
+    /* Separador de fecha */
+    .gd-date-sep {
+      text-align: center; font-size: 0.68rem;
+      color: var(--c-text-soft); position: relative; padding: 4px 0;
+    }
+    .gd-date-sep::before, .gd-date-sep::after {
+      content: ''; position: absolute; top: 50%;
+      width: 38%; height: 1px; background: var(--c-border);
+    }
+    .gd-date-sep::before { left: 0; }
+    .gd-date-sep::after  { right: 0; }
+
+    /* ── Área de input ── */
+    .gd-input-area {
+      padding: 14px 22px 16px;
+      background: var(--c-surface);
+      border-top: 1px solid var(--c-border);
+      flex-shrink: 0;
+      transition: background 0.4s ease, border-color 0.4s ease;
+    }
+
+    .gd-input-row {
+      display: flex; align-items: center; gap: 8px;
+      background: var(--c-input-bg);
+      border: 1.5px solid var(--c-border);
+      border-radius: 50px;
+      padding: 5px 5px 5px 18px;
+      transition: border-color 0.25s ease, box-shadow 0.25s ease, background 0.4s ease;
+    }
+    .gd-input-row:focus-within {
+      border-color: var(--c-accent);
+      box-shadow: 0 0 0 3px var(--c-glow);
+    }
+
+    .gd-input-row input {
+      flex: 1; border: none; background: transparent;
+      font-family: 'DM Sans', sans-serif; font-size: 0.875rem;
+      color: var(--c-text); outline: none; min-width: 0;
+    }
+    .gd-input-row input::placeholder { color: var(--c-text-soft); opacity: .7; }
+
+    .gd-btn-icon {
+      width: 36px; height: 36px; border-radius: 50%;
+      border: none; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: all 0.2s ease; flex-shrink: 0; font-size: 0.85rem;
+    }
+    .gd-btn-mic {
+      background: var(--c-border); color: var(--c-text-soft);
+    }
+    .gd-btn-mic:hover { background: var(--c-accent2); color: #fff; }
+    .gd-btn-mic.recording { background: #dc2626 !important; color: #fff !important; animation: gd-pulse 1s infinite; }
+
+    .gd-btn-send {
+      background: var(--c-accent); color: #fff;
+      box-shadow: 0 3px 10px var(--c-glow);
+      transition: background 0.4s ease, box-shadow 0.4s ease, transform 0.2s ease, filter 0.2s ease;
+    }
+    .gd-btn-send:hover { filter: brightness(1.1); transform: scale(1.06); }
+    .gd-btn-send:disabled { opacity: .5; cursor: not-allowed; transform: none; filter: none; }
+
+    .gd-input-hint {
+      text-align: center; font-size: 0.67rem;
+      color: var(--c-text-soft); margin-top: 7px; opacity: .8;
+    }
+
+    /* ══════════════════════════════════════════════════════════
+       RESPONSIVE (Mobile)
+    ══════════════════════════════════════════════════════════ */
+    @media (max-width: 768px) {
+      .gd-layout { display: block; height: 100vh; }
+
+      .gd-sidebar {
+        position: fixed; left: -300px; top: 0;
+        height: 100vh; width: 272px;
+        box-shadow: 4px 0 24px rgba(0,0,0,.2);
+      }
+      .gd-sidebar.open { left: 0; }
+
+      .gd-overlay {
+        display: none;
+        position: fixed; inset: 0;
+        background: rgba(0,0,0,.45);
+        z-index: 99;
+      }
+      .gd-sidebar.open ~ .gd-overlay { display: block; }
+
+      .gd-chat {
+        position: fixed; inset: 0;
+        z-index: 1;
+      }
+
+      .gd-hamburger { display: flex; }
+      .gd-messages  { padding: 16px; }
+      .gd-bubble    { max-width: 80%; }
+    }
+
+    @media (max-width: 480px) {
+      .gd-theme-grid { grid-template-columns: repeat(3,1fr); }
+      .gd-header { padding: 10px 14px; }
+      .gd-input-area { padding: 10px 14px 12px; }
+    }
+
+    /* ══════════════════════════════════════════════════════════
+       MODALES — Adaptados al tema
+    ══════════════════════════════════════════════════════════ */
+    .modal-content {
+      background: var(--c-surface) !important;
+      color: var(--c-text) !important;
+      border-color: var(--c-border) !important;
+      border-radius: 16px !important;
+      overflow: hidden;
+    }
+    .modal-header { border-color: var(--c-border) !important; }
+    .modal-footer { border-color: var(--c-border) !important; }
+    .modal-body p, .modal-body label { color: var(--c-text) !important; }
+
+  </style>
 </head>
 
+<!-- ══════════════════════════════════════════════════════════
+     BODY — Clase del tema viene de Flask
+══════════════════════════════════════════════════════════ -->
+<body class="tema-{{ usuario.tema_color }}">
 
-<body>
-	<div class="modal fade" id="termsModal" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false">
-		<div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-			<div class="modal-content shadow-lg">
-
-				<div class="modal-header bg-dark text-white">
-					<h5 class="modal-title">
-						<i class="fas fa-file-contract"></i> Términos y Condiciones
-					</h5>
-				</div>
-
-				<div class="modal-body" style="max-height: 400px; overflow-y: auto;">
-
-					<p>
-						Bienvenido a Guardian Digital.
-					</p>
-
-					<p>
-						1.-
-						Guardián Digital es una herramienta de inteligencia artificial diseñada para brindar contención
-						emocional inicial basándose en guías clínicas (mhGAP). No es un sustituto de diagnóstico,
-						terapia psicológica ni atención médica profesional.
-						Guardián Digital está diseñado exclusivamente para brindar orientación psicológica general,
-						apoyo emocional inicial y contención basada en guías clínicas reconocidas. El servicio no está
-						destinado a responder consultas médicas especializadas, asesoramiento legal, diagnóstico
-						clínico, prescripción de tratamientos, ni resolver asuntos ajenos al ámbito del bienestar
-						emocional y la salud mental.
-					</p>
-
-					<p>
-						2.-
-						Si te encuentras en una situación de crisis severa, riesgo de autolesión o suicidio, este chat
-						no es el medio adecuado. Por favor, comunícate de inmediato a la *Línea 113 (Opción 5) del
-						MINSA, al 105 (Policía), o acude a urgencias.
-					</p>
-
-					<p>
-						3.-
-						Tu uso de la plataforma es confidencial y anónimo. Los datos de la conversación se procesan
-						temporalmente bajo la Ley N° 29733 (Ley de Protección de Datos Personales del Perú) con el único
-						fin de generar respuestas, sin vincularlos a tu identidad.
-					</p>
-
-					<p>
-						4.-
-						Al interactuar con una Inteligencia Artificial, comprendes que las respuestas pueden presentar
-						imprecisiones tecnológicas. El equipo desarrollador no se hace responsable por las decisiones o
-						acciones tomadas en base a la información del chat.
-					</p>
-
-					<p>
-						5.-
-						El servicio puede presentar interrupciones técnicas o mantenimiento sin previo aviso. No se
-						garantiza disponibilidad continua o libre de errores.
-					</p>
-
-					<p>
-						6.-
-						Los términos y condiciones pueden actualizarse en cualquier momento. El uso continuado del
-						servicio implica la aceptación de las modificaciones.
-					</p>
-
-					<p>
-						En caso de emergencia, comuníquese con los servicios de salud correspondientes.
-						Guardián Digital no sustituye redes de apoyo humano. Se recomienda mantener contacto con
-						familiares, amigos o profesionales de salud ante cualquier situación emocional difícil.
-					</p>
-
-					<hr>
-
-					<div class="form-check mt-3">
-						<input type="checkbox" class="form-check-input" id="acceptCheck">
-						<label class="form-check-label" for="acceptCheck">
-							He leído y acepto los términos y condiciones
-						</label>
-					</div>
-
-				</div>
-
-				<div class="modal-footer">
-					<button type="button" id="rejectBtn" class="btn btn-danger">
-						Rechazar
-					</button>
-
-					<button type="button" id="acceptBtn" class="btn btn-success" disabled>
-						Aceptar
-					</button>
-				</div>
-
-			</div>
-		</div>
-	</div>
-	<div class="modal fade" id="emergencyModal" tabindex="-1" role="dialog" data-backdrop="static"
-		data-keyboard="false">
-		<div class="modal-dialog modal-dialog-centered" role="document">
-			<div class="modal-content border-danger shadow-lg" style="border-width: 3px;">
-
-				<div class="modal-header bg-danger text-white">
-					<h5 class="modal-title">
-						<i class="fas fa-exclamation-triangle"></i> ¡Importante! Tarjeta de Emergencia
-					</h5>
-					<button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
-						<span aria-hidden="true">&times;</span>
-					</button>
-				</div>
-
-				<div class="modal-body text-center">
-					<h4 class="text-danger mb-4">No estás solo/a, queremos ayudarte.</h4>
-					<p class="lead">Hemos detectado que podrías estar pasando por un momento muy difícil.</p>
-					<p>Por favor, considera hablar con un profesional inmediatamente:</p>
-
-					<div class="alert alert-danger mt-4" role="alert">
-						<h5><i class="fas fa-phone-alt"></i> Línea 113 (Opción 5) - MINSA</h5>
-						<p class="mb-0">Atención psicológica gratuita las 24 horas.</p>
-					</div>
-
-					<div class="alert alert-dark" role="alert">
-						<h5><i class="fas fa-phone-alt"></i> 105 - Policía Nacional</h5>
-						<p class="mb-0">En caso de una emergencia inmediata.</p>
-					</div>
-				</div>
-
-				<div class="modal-footer justify-content-center">
-					<button type="button" class="btn btn-secondary" data-dismiss="modal">Entendido, cerrar esta
-						ventana</button>
-				</div>
-
-			</div>
-		</div>
-	</div>
-
-	<div class="modal fade" id="recursosModal" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
-        <div class="modal-content shadow-lg border-0" style="border-radius: 15px; overflow: hidden;">
-
-            <div class="modal-header bg-primary text-white" style="border-bottom: none;">
-                <h5 class="modal-title font-weight-bold">
-                    <i class="fas fa-hands-helping mr-2"></i> Centros de Salud Mental en <span id="ciudadTitulo" class="text-warning">...</span>
-                </h5>
-                <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">×</span>
-                </button>
-            </div>
-
-            <div class="modal-body p-0">
-                <div class="row no-gutters">
-                    <div class="col-lg-8" id="mapaContenedor" style="min-height: 500px; background: #e9ecef; display: flex; align-items: center; justify-content: center;">
-                        <div class="text-center p-5">
-                            <div class="spinner-grow text-primary" style="width: 3rem; height: 3rem;" role="status">
-                                <span class="sr-only">Cargando...</span>
-                            </div>
-                            <h5 class="mt-3 text-muted">Buscando los centros más cercanos...</h5>
-                            <p class="text-black-50 small">Conectando con Google Maps</p>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-4 bg-light p-4 d-flex flex-column">
-                        <h5 class="text-dark border-bottom pb-2 mb-3">¿Cómo usar este mapa?</h5>
-                        
-                        <ul class="list-unstyled text-muted mb-4">
-                            <li class="mb-3"><i class="fas fa-map-pin text-danger mr-2"></i> Los pines rojos marcan los <strong>Centros de Salud Mental Comunitaria (CSMC)</strong> y hospitales.</li>
-                            <li class="mb-3"><i class="fas fa-hand-pointer text-info mr-2"></i> Haz clic en cualquier pin para ver el <strong>horario y teléfono</strong>.</li>
-                            <li class="mb-3"><i class="fas fa-walking text-success mr-2"></i> Usa el botón de "Como llegar" en el mapa para saber cómo llegar.</li>
-                        </ul>
-
-                        <div class="mt-auto">
-                            <a href="#" id="btnAbrirMaps" target="_blank" class="btn btn-primary btn-block shadow-sm mb-2">
-                                <i class="fas fa-external-link-alt mr-1"></i> Abrir en la app de Maps
-                            </a>
-                            <div class="alert alert-warning small mb-0 p-2 text-center" role="alert">
-                                <i class="fas fa-info-circle"></i> La atención en los CSMC del MINSA suele ser gratuita con SIS.
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
+<!-- ══════════════════════════════════════════════════════════
+     MODAL: TÉRMINOS Y CONDICIONES
+══════════════════════════════════════════════════════════ -->
+<div class="modal fade" id="termsModal" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false">
+  <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+    <div class="modal-content shadow-lg">
+      <div class="modal-header bg-dark text-white">
+        <h5 class="modal-title"><i class="fas fa-file-contract mr-2"></i>Términos y Condiciones</h5>
+      </div>
+      <div class="modal-body" style="max-height: 400px; overflow-y: auto;">
+        <p>Bienvenido a Guardián Digital.</p>
+        <p><strong>1.</strong> Guardián Digital es una herramienta de inteligencia artificial diseñada para brindar contención emocional inicial basándose en guías clínicas (mhGAP). No es un sustituto de diagnóstico, terapia psicológica ni atención médica profesional.</p>
+        <p><strong>2.</strong> Si te encuentras en una situación de crisis severa, riesgo de autolesión o suicidio, este chat no es el medio adecuado. Por favor, comunícate de inmediato a la <strong>Línea 113 (Opción 5) del MINSA</strong>, al <strong>105 (Policía)</strong>, o acude a urgencias.</p>
+        <p><strong>3.</strong> Tu uso de la plataforma es confidencial y anónimo. Los datos se procesan temporalmente bajo la Ley N° 29733 (Ley de Protección de Datos Personales del Perú).</p>
+        <p><strong>4.</strong> Al interactuar con una IA, comprendes que las respuestas pueden presentar imprecisiones. El equipo desarrollador no se hace responsable por decisiones tomadas en base a la información del chat.</p>
+        <p><strong>5.</strong> El servicio puede presentar interrupciones técnicas sin previo aviso. No se garantiza disponibilidad continua.</p>
+        <p><strong>6.</strong> Los términos pueden actualizarse en cualquier momento. El uso continuado implica aceptación de las modificaciones.</p>
+        <hr>
+        <div class="form-check mt-3">
+          <input type="checkbox" class="form-check-input" id="acceptCheck">
+          <label class="form-check-label" for="acceptCheck">He leído y acepto los términos y condiciones</label>
         </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" id="rejectBtn" class="btn btn-danger">Rechazar</button>
+        <button type="button" id="acceptBtn" class="btn btn-success" disabled>Aceptar</button>
+      </div>
     </div>
+  </div>
 </div>
 
-	<div class="container-fluid h-100">
-		<div class="row h-100">
+<!-- ══════════════════════════════════════════════════════════
+     MODAL: EMERGENCIA
+══════════════════════════════════════════════════════════ -->
+<div class="modal fade" id="emergencyModal" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content border-danger shadow-lg" style="border-width: 3px !important;">
+      <div class="modal-header bg-danger text-white">
+        <h5 class="modal-title"><i class="fas fa-exclamation-triangle mr-2"></i>¡Importante! Tarjeta de Emergencia</h5>
+        <button type="button" class="close text-white" data-dismiss="modal"><span>&times;</span></button>
+      </div>
+      <div class="modal-body text-center">
+        <h4 class="text-danger mb-3">No estás solo/a, queremos ayudarte.</h4>
+        <p class="lead">Hemos detectado que podrías estar pasando por un momento muy difícil.</p>
+        <p>Por favor, considera hablar con un profesional inmediatamente:</p>
+        <div class="alert alert-danger mt-3" role="alert">
+          <h5><i class="fas fa-phone-alt mr-1"></i> Línea 113 (Opción 5) — MINSA</h5>
+          <p class="mb-0">Atención psicológica gratuita las 24 horas.</p>
+        </div>
+        <div class="alert alert-dark" role="alert">
+          <h5><i class="fas fa-phone-alt mr-1"></i> 105 — Policía Nacional</h5>
+          <p class="mb-0">En caso de una emergencia inmediata.</p>
+        </div>
+      </div>
+      <div class="modal-footer justify-content-center">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Entendido, cerrar esta ventana</button>
+      </div>
+    </div>
+  </div>
+</div>
 
-			<!-- PANEL IZQUIERDO -->
-			<div class="col-md-4 col-xl-3 border-right p-3" id="infoPanel">
-				<h5 class="mb-3"><i class="fas fa-info-circle"></i> Información</h5>
-				<hr>
+<!-- ══════════════════════════════════════════════════════════
+     MODAL: CENTROS DE AYUDA (MAPA)
+══════════════════════════════════════════════════════════ -->
+<div class="modal fade" id="recursosModal" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+    <div class="modal-content shadow-lg border-0" style="border-radius: 16px !important; overflow: hidden;">
+      <div class="modal-header text-white" style="background: var(--c-header); border-bottom: none;">
+        <h5 class="modal-title font-weight-bold">
+          <i class="fas fa-hands-helping mr-2"></i>Centros de Salud Mental en
+          <span id="ciudadTitulo" class="ml-1" style="color: rgba(255,255,255,.85)">...</span>
+        </h5>
+        <button type="button" class="close text-white" data-dismiss="modal"><span>×</span></button>
+      </div>
+      <div class="modal-body p-0">
+        <div class="row no-gutters">
+          <div class="col-lg-8" id="mapaContenedor" style="min-height: 500px; background: #e9ecef; display: flex; align-items: center; justify-content: center;">
+            <div class="text-center p-5">
+              <div class="spinner-grow text-primary" style="width: 3rem; height: 3rem;" role="status"><span class="sr-only">Cargando...</span></div>
+              <h5 class="mt-3 text-muted">Buscando los centros más cercanos...</h5>
+              <p class="text-black-50 small">Conectando con Google Maps</p>
+            </div>
+          </div>
+          <div class="col-lg-4 p-4 d-flex flex-column" style="background: var(--c-panel);">
+            <h5 style="color: var(--c-text);" class="border-bottom pb-2 mb-3">¿Cómo usar este mapa?</h5>
+            <ul class="list-unstyled mb-4" style="color: var(--c-text-soft);">
+              <li class="mb-3"><i class="fas fa-map-pin text-danger mr-2"></i>Los pines rojos marcan los <strong>Centros de Salud Mental Comunitaria (CSMC)</strong>.</li>
+              <li class="mb-3"><i class="fas fa-hand-pointer text-info mr-2"></i>Haz clic en cualquier pin para ver <strong>horario y teléfono</strong>.</li>
+              <li class="mb-3"><i class="fas fa-walking text-success mr-2"></i>Usa "Cómo llegar" en el mapa para orientarte.</li>
+            </ul>
+            <div class="mt-auto">
+              <a href="#" id="btnAbrirMaps" target="_blank" class="btn btn-block shadow-sm mb-2 text-white" style="background: var(--c-accent);">
+                <i class="fas fa-external-link-alt mr-1"></i>Abrir en la app de Maps
+              </a>
+              <div class="alert alert-warning small mb-0 p-2 text-center" role="alert">
+                <i class="fas fa-info-circle"></i> La atención en los CSMC del MINSA suele ser gratuita con SIS.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
-				<div id="chatInfo">
-					<p><strong>Estado:</strong> Activo</p>
-					<p><strong>Mensajes enviados:</strong> <span id="msgCount">0</span></p>
-					<p><strong>Hora inicio:</strong> <span id="startTime"></span></p>
-				</div>
+<!-- ══════════════════════════════════════════════════════════
+     LAYOUT PRINCIPAL
+══════════════════════════════════════════════════════════ -->
+<div class="gd-layout">
 
-				<hr>
+  <!-- ── SIDEBAR ── -->
+  <aside class="gd-sidebar" id="gdSidebar">
 
-				<button class="btn btn-outline-primary btn-sm btn-block" id="">
-					Cambiar a tema
-				</button>
+    <!-- Logo -->
+    <div class="gd-logo">
+      <div class="gd-logo-icon">🛡️</div>
+      <div>
+        <span class="gd-logo-text">Guardián Digital</span>
+        <span class="gd-logo-sub">Espacio seguro · confidencial</span>
+      </div>
+    </div>
 
-				<button class="btn btn-outline-danger btn-sm btn-block" id="clearChat">
-					Limpiar conversación
-				</button>
-				<br>
-				<p><strong>Recursos de ayuda:</strong> <span id="startTime"></span></p>
-				<button class="btn btn-outline-info btn-sm btn-block mt-3" data-toggle="modal"
-					data-target="#recursosModal">
-					<i class="fas fa-map-marker-alt"></i> Centros de Ayuda Cercanos
-				</button>
-				<a href="/botiquin" class="btn btn-outline-success btn-sm btn-block mt-3 shadow-sm">
-                    <i class="fas fa-leaf"></i> Mi Botiquín
-                </a>
-				<br>
-				<a href="/logout" class="btn btn-danger btn-sm btn-block mt-auto shadow-sm">
-                    <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
-                </a>
+    <div class="gd-divider"></div>
 
-			</div>
+    <!-- Stats -->
+    <div class="gd-section-label">Sesión actual</div>
+    <div class="gd-stats">
+      <p><strong>Estado:</strong> Activo ●</p>
+      <p><strong>Mensajes:</strong> <span id="msgCount">0</span></p>
+      <p><strong>Inicio:</strong> <span id="startTime"></span></p>
+    </div>
 
-			<!-- CHAT (DERECHA) -->
-			<div class="col-md-8 col-xl-9 chat">
-				<div class="card">
-					<div class="card-header msg_head">
-						<div class="d-flex bd-highlight">
-							<div class="img_cont">
-								<img src="https://cdn-icons-png.flaticon.com/512/9439/9439123.png"
-									class="rounded-circle user_img">
-								<span class="online_icon"></span>
-							</div>
-							<div class="user_info">
-								<span>Tu asistente virtual</span>
-								<p>¿En que te puedo ayudar el día de hoy?</p>
-							</div>
-						</div>
-					</div>
-					<div id="messageFormeight" class="card-body msg_card_body">
+    <div class="gd-divider"></div>
+
+    <!-- Selector de temas -->
+    <div class="gd-section-label">🎨 Tu entorno de calma</div>
+
+    <div class="gd-theme-grid" id="gdThemeGrid">
+
+      <div class="gd-theme-card active" data-tema="brisa_mar">
+        <div class="gd-swatch sw-brisa_mar"></div>
+        <span class="gd-theme-name">🌊 Brisa</span>
+        <span class="gd-theme-mood">Confianza</span>
+      </div>
+
+      <div class="gd-theme-card" data-tema="lavanda_suave">
+        <div class="gd-swatch sw-lavanda_suave"></div>
+        <span class="gd-theme-name">🌸 Lavanda</span>
+        <span class="gd-theme-mood">Creatividad</span>
+      </div>
+
+      <div class="gd-theme-card" data-tema="bosque_sereno">
+        <div class="gd-swatch sw-bosque_sereno"></div>
+        <span class="gd-theme-name">🌿 Bosque</span>
+        <span class="gd-theme-mood">Equilibrio</span>
+      </div>
+
+      <div class="gd-theme-card" data-tema="atardecer_calido">
+        <div class="gd-swatch sw-atardecer_calido"></div>
+        <span class="gd-theme-name">🌅 Atardecer</span>
+        <span class="gd-theme-mood">Calidez</span>
+      </div>
+
+      <div class="gd-theme-card" data-tema="rosa_amanecer">
+        <div class="gd-swatch sw-rosa_amanecer"></div>
+        <span class="gd-theme-name">🌹 Rosa</span>
+        <span class="gd-theme-mood">Compasión</span>
+      </div>
+
+      <div class="gd-theme-card" data-tema="noche_estrellada">
+        <div class="gd-swatch sw-noche_estrellada"></div>
+        <span class="gd-theme-name">🌌 Noche</span>
+        <span class="gd-theme-mood">Serenidad</span>
+      </div>
+
+    </div>
+
+    <!-- Caja de psicología del color -->
+    <div class="gd-psych-box" id="gdPsychBox">
+      <strong>🌊 Brisa de Mar</strong><br>
+      El azul transmite <strong>confianza, calma y seguridad</strong>. Ideal para reducir la ansiedad y fomentar la comunicación abierta.
+    </div>
+
+    <div class="gd-divider"></div>
+
+    <!-- Acciones -->
+    <div class="gd-section-label">Acciones</div>
+
+    <button class="gd-btn" id="clearChat">
+      <i class="fas fa-trash-alt"></i> Limpiar conversación
+    </button>
+
+    <button class="gd-btn" data-toggle="modal" data-target="#recursosModal">
+      <i class="fas fa-map-marker-alt"></i> Centros de Ayuda
+    </button>
+
+    <a href="/botiquin" class="gd-btn">
+      <i class="fas fa-leaf"></i> Mi Botiquín
+    </a>
+
+    <div class="gd-spacer"></div>
+
+    <a href="/logout" class="gd-btn danger">
+      <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
+    </a>
+
+  </aside>
+
+  <!-- Overlay mobile -->
+  <div class="gd-overlay" id="gdOverlay"></div>
+
+  <!-- ── CHAT ── -->
+  <div class="gd-chat">
+
+    <!-- Header -->
+    <div class="gd-header">
+      <button class="gd-hamburger" id="gdHamburger" aria-label="Menú">
+        <i class="fas fa-bars"></i>
+      </button>
+      <div class="gd-header-avatar">
+        <img src="https://cdn-icons-png.flaticon.com/512/9439/9439123.png" alt="bot">
+      </div>
+      <div class="gd-header-info">
+        <h2>Tu asistente virtual</h2>
+        <p>¿En qué te puedo ayudar hoy?</p>
+      </div>
+      <div class="gd-online-dot"></div>
+    </div>
+
+    <!-- Mensajes -->
+    <div class="gd-messages" id="messageFormeight">
+      <div class="gd-date-sep" id="gdDateSep"></div>
+      <!-- Los mensajes se insertan aquí por JS -->
+    </div>
+
+    <!-- Input -->
+    <div class="gd-input-area">
+      <form id="messageArea">
+        <div class="gd-input-row">
+          <input type="text" id="text" name="msg" placeholder="Escribe cómo te sientes..." autocomplete="off" required>
+          <button type="button" id="recordBtn" class="gd-btn-icon gd-btn-mic" title="Mensaje de voz">
+            <i class="fas fa-microphone"></i>
+          </button>
+          <button type="submit" id="send" class="gd-btn-icon gd-btn-send" title="Enviar">
+            <i class="fas fa-paper-plane"></i>
+          </button>
+        </div>
+      </form>
+      <p class="gd-input-hint">🆘 Línea 113 Opción 5 (MINSA) · 105 Policía Nacional</p>
+    </div>
+
+  </div><!-- /gd-chat -->
+</div><!-- /gd-layout -->
 
 
-					</div>
-					<div class="card-footer">
-						<form id="messageArea" class="input-group">
-							<input type="text" id="text" name="msg" placeholder="..." autocomplete="off"
-								class="form-control type_msg" required />
-							<div class="input-group-append">
-								<button type="submit" id="send" class="input-group-text send_btn"><i
-										class="fas fa-location-arrow"></i></button>
-							</div>
-						</form>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
+<!-- ══════════════════════════════════════════════════════════
+     JAVASCRIPT
+══════════════════════════════════════════════════════════ -->
+<script>
+$(document).ready(function () {
 
-	<script>
-		$(document).ready(function () {
+  /* ──────────────────────────────────────────────
+     PSICOLOGÍA DEL COLOR — descripciones
+  ────────────────────────────────────────────── */
+  const PSYCH = {
+    brisa_mar:         '<strong>🌊 Brisa de Mar</strong><br>El azul transmite <strong>confianza, calma y seguridad</strong>. Ideal para reducir la ansiedad y fomentar la comunicación abierta.',
+    lavanda_suave:     '<strong>🌸 Lavanda Suave</strong><br>El violeta evoca <strong>creatividad e introspección</strong>. Favorece la reflexión profunda y la conexión emocional sin agobio.',
+    bosque_sereno:     '<strong>🌿 Bosque Sereno</strong><br>El verde simboliza <strong>equilibrio y crecimiento</strong>. Reduce el estrés y transmite sensación de renovación y esperanza.',
+    atardecer_calido:  '<strong>🌅 Atardecer Cálido</strong><br>El naranja aporta <strong>energía y calidez</strong>. Estimula la conversación y el optimismo, ideal para romper el hielo emocional.',
+    rosa_amanecer:     '<strong>🌹 Rosa Amanecer</strong><br>El rosa transmite <strong>compasión y ternura</strong>. Es el color de la empatía, ideal para momentos de vulnerabilidad.',
+    noche_estrellada:  '<strong>🌌 Noche Estrellada</strong><br>El azul oscuro invita a la <strong>introspección y el descanso profundo</strong>. Para quienes procesan sus emociones en calma.'
+  };
 
-			// Jinja2 inyectará el nombre real del usuario logueado aquí
-			const nombreUsuario = "{{ usuario.nombre }}";
+  /* ──────────────────────────────────────────────
+     1. BIENVENIDA
+  ────────────────────────────────────────────── */
+  const nombreUsuario = "{{ usuario.nombre }}";
+  const temaActual    = "{{ usuario.tema_color }}";
 
-			// Obtenemos la hora actual para ponerla en la burbuja
-			const dateWelcome = new Date();
-			const hourWelcome = dateWelcome.getHours();
-			const minuteWelcome = dateWelcome.getMinutes() < 10 ? '0' + dateWelcome.getMinutes() : dateWelcome.getMinutes();
-			const str_timeWelcome = hourWelcome + ":" + minuteWelcome;
+  // Marcar tema activo al cargar
+  $('#gdThemeGrid .gd-theme-card').removeClass('active');
+  $(`#gdThemeGrid .gd-theme-card[data-tema="${temaActual}"]`).addClass('active');
+  if (PSYCH[temaActual]) $('#gdPsychBox').html(PSYCH[temaActual]);
 
-			// Redactamos el mensaje de contención inicial
-			const mensajeBienvenida = `¡Hola, <b>${nombreUsuario}</b>! 👋 Soy Guardián Digital. Este es un espacio seguro y confidencial, libre de juicios, solo para ti. Estoy aquí para escucharte, sin importar lo que te preocupe o si solo quieres desahogarte. ¿Cómo te sientes el día de hoy?`;
+  // Hora de inicio
+  const ahora = new Date();
+  const horaInicio = ahora.getHours() + ':' + String(ahora.getMinutes()).padStart(2,'0');
+  $('#startTime').text(horaInicio);
 
-			// Armamos el HTML 
-			var botWelcomeHtml = '<div class="d-flex justify-content-start mb-4"><div class="img_cont_msg"><img src="https://cdn-icons-png.flaticon.com/512/9439/9439123.png" class="rounded-circle user_img_msg"></div><div class="msg_cotainer">' + mensajeBienvenida + '<span class="msg_time">' + str_timeWelcome + '</span></div></div>';
+  // Separador de fecha
+  const diasSemana = ['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'];
+  const meses = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+  $('#gdDateSep').text(`${diasSemana[ahora.getDay()]} ${ahora.getDate()} de ${meses[ahora.getMonth()]}`);
 
-			// Lo mostramos en la pantalla del chat automáticamente
-			$("#messageFormeight").append(botWelcomeHtml);
+  // Mensaje de bienvenida
+  const mensajeBienvenida = `¡Hola, <b>${nombreUsuario}</b>! 👋 Soy Guardián Digital. Este es un espacio seguro y confidencial, libre de juicios, solo para ti. Estoy aquí para escucharte, sin importar lo que te preocupe. ¿Cómo te sientes el día de hoy?`;
+  insertarBurbuja('bot', mensajeBienvenida, horaInicio);
 
-			// Logica para los mensajes enviados por el usuario
-			$("#messageArea").on("submit", function (event) {
-				const date = new Date();
-				const hour = date.getHours();
-				const minute = date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes();
-				const str_time = hour + ":" + minute;
-				var rawText = $("#text").val();
+  let messageCount = 0;
 
-				var userHtml = '<div class="d-flex justify-content-end mb-4"><div class="msg_cotainer_send">' + rawText + '<span class="msg_time_send">' + str_time + '</span></div><div class="img_cont_msg"><img src="https://i.ibb.co/d5b84Xw/Untitled-design.png" class="rounded-circle user_img_msg"></div></div>';
+  /* ──────────────────────────────────────────────
+     2. TÉRMINOS Y CONDICIONES
+  ────────────────────────────────────────────── */
+  if (localStorage.getItem("termsAccepted") !== "true") {
+    $('#termsModal').modal({ backdrop: 'static', keyboard: false }).modal('show');
+  }
+  $('#acceptCheck').change(function () {
+    $('#acceptBtn').prop('disabled', !$(this).is(':checked'));
+  });
+  $('#acceptBtn').click(function () {
+    localStorage.setItem("termsAccepted", "true");
+    $('#termsModal').modal('hide');
+  });
+  $('#rejectBtn').click(function () {
+    $("#messageArea :input").prop("disabled", true);
+    alert("Debes aceptar los términos para usar el chatbot.");
+  });
 
-				$("#text").val("");
-				$("#messageFormeight").append(userHtml);
+  /* ──────────────────────────────────────────────
+     3. GRABACIÓN DE AUDIO
+  ────────────────────────────────────────────── */
+  let mediaRecorder, audioChunks = [], isRecording = false;
 
-				// Hacemos scroll hacia abajo cuando el usuario envía
-				$("#messageFormeight").scrollTop($("#messageFormeight")[0].scrollHeight);
+  $("#recordBtn").click(async function () {
+    if (!isRecording) {
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        mediaRecorder = new MediaRecorder(stream);
+        mediaRecorder.ondataavailable = e => audioChunks.push(e.data);
+        mediaRecorder.onstop = () => {
+          const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
+          audioChunks = [];
+          enviarAudio(audioBlob);
+        };
+        mediaRecorder.start();
+        isRecording = true;
+        $(this).addClass('recording').html('<i class="fas fa-stop"></i>');
+        $("#text").attr("placeholder", "🔴 Grabando audio...").prop("disabled", true);
+        $("#send").prop("disabled", true);
+      } catch (err) {
+        alert("Por favor, permite el acceso al micrófono en tu navegador.");
+      }
+    } else {
+      mediaRecorder.stop();
+      isRecording = false;
+      $(this).removeClass('recording').html('<i class="fas fa-microphone"></i>');
+      $("#text").attr("placeholder", "Escribe cómo te sientes...").prop("disabled", false);
+      $("#send").prop("disabled", false);
+    }
+  });
 
-				$.ajax({
-					data: { msg: rawText },
-					type: "POST",
-					url: "/get",
-				}).done(function (data) {
-					// Extraemos SOLO el texto de la respuesta
-					var textoBot = data.answer;
+  function enviarAudio(audioBlob) {
+    const time = getTime();
+    const mensajeId = "audio_" + Date.now();
+    insertarBurbujaUsuarioAudio(mensajeId, time);
+    mostrarTyping();
 
-					var botHtml = '<div class="d-flex justify-content-start mb-4"><div class="img_cont_msg"><img src="https://cdn-icons-png.flaticon.com/512/9439/9439123.png" class="rounded-circle user_img_msg"></div><div class="msg_cotainer">' + textoBot + '<span class="msg_time">' + str_time + '</span></div></div>';
+    let formData = new FormData();
+    formData.append("audio", audioBlob, "mensaje_voz.webm");
 
-					$("#messageFormeight").append($.parseHTML(botHtml));
+    $.ajax({ url: "/get", type: "POST", data: formData, processData: false, contentType: false })
+      .done(function (data) {
+        if (data.texto_reconocido) {
+          $(`#${mensajeId}`).html(`🎤 ${data.texto_reconocido}<span class="gd-time">${time}</span>`);
+        }
+        manejarRespuestaBot(data);
+      })
+      .fail(function() { manejarError(); });
+  }
 
-					// Hacer scroll automático hacia abajo al recibir respuesta
-					$("#messageFormeight").scrollTop($("#messageFormeight")[0].scrollHeight);
+  /* ──────────────────────────────────────────────
+     4. ENVÍO DE TEXTO
+  ────────────────────────────────────────────── */
+  $("#messageArea").on("submit", function (e) {
+    e.preventDefault();
+    const rawText = $("#text").val().trim();
+    if (!rawText) return;
 
-					// LÓGICA DE LA TARJETA DE EMERGENCIA
-					if (data.riesgo_inminente === true) {
-						$('#emergencyModal').modal('show');
-					}
-				});
-				event.preventDefault();
-			});
+    const time = getTime();
+    insertarBurbujaUsuario(rawText, time);
+    $("#text").val("");
+    mostrarTyping();
 
-		});
+    // Deshabilitar mientras espera ✅ (bug corregido)
+    $("#send, #text").prop("disabled", true);
 
+    let formData = new FormData();
+    formData.append("msg", rawText);
 
-		$(document).ready(function () {
+    $.ajax({ url: "/get", type: "POST", data: formData, processData: false, contentType: false })
+      .done(function (data) { manejarRespuestaBot(data); })
+      .fail(function()       { manejarError(); })
+      .always(function()     { $("#send, #text").prop("disabled", false); $("#text").focus(); });
+  });
 
-            // 1. PRIMERO REVISAMOS LA MEMORIA
-            // Si NO es igual a "true", significa que no ha aceptado aún
-            if (localStorage.getItem("termsAccepted") !== "true") {
-                
-                // Inicializamos y mostramos el modal
-                $('#termsModal').modal({
-                    backdrop: 'static',
-                    keyboard: false
-                });
-                $('#termsModal').modal('show');
-            }
+  function manejarRespuestaBot(data) {
+    $('#typing-indicator').remove();
+    const time = getTime(); // ✅ hora correcta al recibir respuesta (bug corregido)
+    insertarBurbuja('bot', data.answer, time);
 
-            // 2. Habilitar botón aceptar solo si marca el checkbox
-            $('#acceptCheck').change(function () {
-                if ($(this).is(':checked')) {
-                    $('#acceptBtn').prop('disabled', false);
-                } else {
-                    $('#acceptBtn').prop('disabled', true);
-                }
-            });
+    if (data.riesgo_inminente === true) {  // ✅ solo true real activa emergencia (bug corregido)
+      $('#emergencyModal').modal('show');
+    }
+    messageCount++;
+    $("#msgCount").text(messageCount);
+  }
 
-            // 3. Acción al hacer clic en ACEPTAR
-            $('#acceptBtn').click(function () {
-                // GUARDAMOS EL RECORDATORIO EN EL NAVEGADOR
-                localStorage.setItem("termsAccepted", "true");
-                $('#termsModal').modal('hide');
-            });
+  function manejarError() {
+    $('#typing-indicator').remove();
+    insertarBurbuja('bot', 'Tuve un pequeño problema técnico. ¿Puedes repetirlo? 🙏', getTime());
+    $("#send, #text").prop("disabled", false);
+  }
 
-            // 4. Acción al hacer clic en RECHAZAR
-            $('#rejectBtn').click(function () {
-                $("#messageArea :input").prop("disabled", true);
-                alert("Debes aceptar los términos para usar el chatbot.");
-            });
+  /* ──────────────────────────────────────────────
+     5. HELPERS DE BURBUJA
+  ────────────────────────────────────────────── */
+  function insertarBurbuja(tipo, texto, time) {
+    const img = tipo === 'bot'
+      ? 'https://cdn-icons-png.flaticon.com/512/9439/9439123.png'
+      : 'https://i.ibb.co/d5b84Xw/Untitled-design.png';
 
-        });
+    let html;
+    if (tipo === 'bot') {
+      html = `<div class="gd-msg-row bot">
+        <div class="gd-msg-avatar"><img src="${img}" alt="bot"></div>
+        <div class="gd-bubble">${texto}<span class="gd-time">${time}</span></div>
+      </div>`;
+    } else {
+      html = `<div class="gd-msg-row user">
+        <div class="gd-bubble">${texto}<span class="gd-time">${time}</span></div>
+        <div class="gd-msg-avatar user-av"><img src="${img}" alt="user"></div>
+      </div>`;
+    }
+    $("#messageFormeight").append(html);
+    scrollChat();
+  }
 
-		//Limpiar conversación
+  function insertarBurbujaUsuario(texto, time) {
+    insertarBurbuja('user', texto, time);
+  }
 
-		$("#clearChat").click(function () {
+  function insertarBurbujaUsuarioAudio(id, time) {
+    const html = `<div class="gd-msg-row user">
+      <div class="gd-bubble" id="${id}">🎤 <i>Procesando audio...</i><span class="gd-time">${time}</span></div>
+      <div class="gd-msg-avatar user-av"><img src="https://i.ibb.co/d5b84Xw/Untitled-design.png" alt="user"></div>
+    </div>`;
+    $("#messageFormeight").append(html);
+    scrollChat();
+  }
 
-			// Guardar el primer mensaje (bienvenida)
-			var mensajePrincipal = $("#messageFormeight").children().first().prop('outerHTML');
+  function mostrarTyping() {
+    const html = `<div class="gd-msg-row bot" id="typing-indicator">
+      <div class="gd-msg-avatar"><img src="https://cdn-icons-png.flaticon.com/512/9439/9439123.png" alt="bot"></div>
+      <div class="gd-bubble"><div class="gd-dots"><span></span><span></span><span></span></div></div>
+    </div>`;
+    $("#messageFormeight").append(html);
+    scrollChat();
+  }
 
-			// Vaciar todos los mensajes
-			$("#messageFormeight").empty();
+  function scrollChat() {
+    const el = document.getElementById('messageFormeight');
+    el.scrollTop = el.scrollHeight;
+  }
 
-			// Volver a insertar el mensaje principal
-			$("#messageFormeight").append(mensajePrincipal);
+  function getTime() {
+    const d = new Date();
+    return d.getHours() + ':' + String(d.getMinutes()).padStart(2,'0');
+  }
 
-			// Reiniciar contador
-			messageCount = 0;
-			$("#msgCount").text("0");
+  /* ──────────────────────────────────────────────
+     6. LIMPIAR CHAT
+  ────────────────────────────────────────────── */
+  $("#clearChat").click(function () {
+    const sep  = $('#gdDateSep').prop('outerHTML');
+    const bienvenida = $('#messageFormeight .gd-msg-row').first().prop('outerHTML');
+    $("#messageFormeight").html(sep + bienvenida);
+    messageCount = 0;
+    $("#msgCount").text("0");
+  });
 
-        });
+  /* ──────────────────────────────────────────────
+     7. MAPAS Y RECURSOS
+  ────────────────────────────────────────────── */
+  const departamentoDB = "{{ usuario.departamento }}";
+  const provinciaDB    = "{{ usuario.provincia }}";
+  const distritoDB     = "{{ usuario.distrito }}";
 
-		$(document).ready(function () {
-            // 1. DATOS REALES DE LA BASE DE DATOS
-            let departamentoDB = "{{ usuario.departamento }}";
-            let provinciaDB = "{{ usuario.provincia }}";
-            let distritoDB = "{{ usuario.distrito }}";
+  const loaderHTML = `<div class="text-center p-5">
+    <div class="spinner-grow text-primary" style="width:3rem;height:3rem;" role="status"><span class="sr-only">Cargando...</span></div>
+    <h5 class="mt-3 text-muted">Buscando los centros más cercanos...</h5>
+    <p class="text-black-50 small">Conectando con Google Maps</p>
+  </div>`;
 
-            // Guardamos el HTML original de carga para reutilizarlo
-            const loaderHTML = `
-                <div class="text-center p-5">
-                    <div class="spinner-grow text-primary" style="width: 3rem; height: 3rem;" role="status">
-                        <span class="sr-only">Cargando...</span>
-                    </div>
-                    <h5 class="mt-3 text-muted">Buscando los centros más cercanos...</h5>
-                    <p class="text-black-50 small">Conectando con Google Maps</p>
-                </div>
-            `;
+  $('#recursosModal').on('show.bs.modal', function () {
+    $('#ciudadTitulo').text(distritoDB + ', ' + provinciaDB);
+    const busqueda = encodeURIComponent('centros de salud mental comunitaria en ' + distritoDB + ', ' + provinciaDB + ', ' + departamentoDB);
+    $('#btnAbrirMaps').attr('href', 'https://maps.google.com/maps?q=' + busqueda);
+    setTimeout(function () {
+      $('#mapaContenedor').html(`<iframe width="100%" height="100%" frameborder="0" style="border:0;min-height:500px;" src="https://maps.google.com/maps?q=${busqueda}&t=&z=14&ie=UTF8&iwloc=&output=embed" allowfullscreen></iframe>`);
+    }, 800);
+  });
+  $('#recursosModal').on('hidden.bs.modal', function () {
+    $('#mapaContenedor').html(loaderHTML);
+  });
 
-            $('#recursosModal').on('show.bs.modal', function () {
-                // Actualizamos el título
-                $('#ciudadTitulo').text(distritoDB + ", " + provinciaDB);
+  /* ──────────────────────────────────────────────
+     8. CAMBIO DE TEMA (selector inline mejorado)
+  ────────────────────────────────────────────── */
+  $('#gdThemeGrid .gd-theme-card').click(function () {
+    const nuevoTema = $(this).data('tema');
 
-                // Concatenación exacta
-                let ubicacionExacta = distritoDB + ", " + provinciaDB + ", " + departamentoDB;
-                let terminoBusqueda = "centros de salud mental comunitaria en " + ubicacionExacta;
+    // Actualizar body y grid
+    $('body').removeClass(function (i, cls) {
+      return (cls.match(/(^|\s)tema-\S+/g) || []).join(' ');
+    }).addClass('tema-' + nuevoTema);
 
-                // URL para el Iframe (Embed)
-                let urlMapaEmbed = "https://maps.google.com/maps?q=" + encodeURIComponent(terminoBusqueda) + "&t=&z=14&ie=UTF8&iwloc=&output=embed";
-                
-                // URL para el botón "Abrir en la app" (Redirección directa a Google Maps)
-                let urlMapaDirecto = "https://www.google.com/maps/search/" + encodeURIComponent(terminoBusqueda);
+    $('#gdThemeGrid .gd-theme-card').removeClass('active');
+    $(this).addClass('active');
 
-                // Actualizamos el enlace del botón lateral
-                $('#btnAbrirMaps').attr('href', urlMapaDirecto);
+    // Mostrar descripción psicológica
+    if (PSYCH[nuevoTema]) {
+      $('#gdPsychBox').fadeOut(150, function () {
+        $(this).html(PSYCH[nuevoTema]).fadeIn(200);
+      });
+    }
 
-                let iframeMapa = `
-                    <iframe 
-                        width="100%" 
-                        height="100%" 
-                        frameborder="0" 
-                        style="border:0; min-height: 500px;" 
-                        src="${urlMapaEmbed}" 
-                        allowfullscreen>
-                    </iframe>
-                `;
+    // Guardar en backend
+    let formData = new FormData();
+    formData.append("tema", nuevoTema);
+    $.ajax({ url: "/actualizar_tema", type: "POST", data: formData, processData: false, contentType: false })
+      .done(function (r) { if (r.success) console.log("Tema guardado: " + nuevoTema); });
+  });
 
-                // Simulamos un tiempo de carga suave
-                setTimeout(function () {
-                    $('#mapaContenedor').html(iframeMapa);
-                }, 1000);
-            });
+  /* ──────────────────────────────────────────────
+     9. MOBILE — Hamburger sidebar
+  ────────────────────────────────────────────── */
+  $('#gdHamburger').click(function () {
+    $('#gdSidebar').addClass('open');
+  });
+  $('#gdOverlay').click(function () {
+    $('#gdSidebar').removeClass('open');
+  });
 
-            // Limpiamos y restauramos el loader al cerrar
-            $('#recursosModal').on('hidden.bs.modal', function () {
-                $('#mapaContenedor').html(loaderHTML);
-            });
-        });
-	</script>
+});
+</script>
 
 </body>
-
 </html>
