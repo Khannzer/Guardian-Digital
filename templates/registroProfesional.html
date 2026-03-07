@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Registro Profesional — Guardian Digital</title>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,600;0,700;1,400&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --bg:           #f0ede8;
+      --surface:      #faf9f7;
+      --border:       #e2ddd6;
+      --border-focus: #0d9488;
+      --text:         #1c1917;
+      --text2:        #57534e;
+      --muted:        #a8a29e;
+      --teal:         #0d9488;
+      --teal-light:   #ccfbf1;
+      --green:        #16a34a;
+      --green-light:  #dcfce7;
+      --red:          #dc2626;
+      --red-light:    #fee2e2;
+      --navy:         #0f3460;
+      --radius:       14px;
+      --shadow:       0 4px 24px rgba(0,0,0,.09);
+    }
+    * { margin:0; padding:0; box-sizing:border-box; }
+
+    body {
+      min-height: 100vh;
+      background: var(--bg);
+      font-family: 'Outfit', sans-serif;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+    }
+
+    /* ── PANEL IZQUIERDO (decorativo) ── */
+    .left-panel {
+      background: var(--navy);
+      padding: 48px;
+      display: flex; flex-direction: column;
+      justify-content: space-between;
+      position: sticky; top: 0; height: 100vh;
+    }
+    .left-logo {
+      display: flex; align-items: center; gap: 12px;
+    }
+    .logo-icon {
+      width: 44px; height: 44px; border-radius: 12px;
+      background: var(--teal);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 22px;
+    }
+    .logo-text {
+      font-family: 'Fraunces', serif;
+      font-size: 20px; font-weight: 700; color: #fff;
+    }
+    .logo-sub { font-size: 12px; color: rgba(255,255,255,.4); }
+
+    .left-content { flex: 1; display: flex; flex-direction: column; justify-content: center; }
+    .left-title {
+      font-family: 'Fraunces', serif;
+      font-size: clamp(26px, 3vw, 36px);
+      font-weight: 700; color: #fff;
+      line-height: 1.2; margin-bottom: 16px;
+    }
+    .left-title em { color: var(--teal-light); font-style: italic; }
+    .left-desc {
+      font-size: 14px; color: rgba(255,255,255,.5);
+      line-height: 1.7; max-width: 320px; margin-bottom: 32px;
+    }
+
+    .feature-list { display: flex; flex-direction: column; gap: 14px; }
+    .feature-item {
+      display: flex; align-items: flex-start; gap: 12px;
+    }
+    .feature-dot {
+      width: 32px; height: 32px; border-radius: 8px;
+      background: rgba(255,255,255,.06);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 16px; flex-shrink: 0;
+    }
+    .feature-title { font-size: 13px; font-weight: 600; color: #fff; margin-bottom: 2px; }
+    .feature-desc  { font-size: 12px; color: rgba(255,255,255,.4); line-height: 1.5; }
+
+    .left-footer {
+      font-size: 12px; color: rgba(255,255,255,.25);
+    }
+
+    /* ── PANEL DERECHO (formulario) ── */
+    .right-panel {
+      overflow-y: auto;
+      padding: 48px 40px;
+      display: flex; flex-direction: column; justify-content: center;
+    }
+
+    .form-header { margin-bottom: 32px; }
+    .form-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: var(--teal-light); color: var(--teal);
+      font-size: 11px; font-weight: 600; letter-spacing: 1px;
+      text-transform: uppercase; padding: 4px 12px;
+      border-radius: 100px; margin-bottom: 14px;
+    }
+    .form-title {
+      font-family: 'Fraunces', serif;
+      font-size: 26px; font-weight: 700;
+      color: var(--text); margin-bottom: 6px;
+    }
+    .form-sub { font-size: 13.5px; color: var(--text2); }
+
+    /* SECCIONES */
+    .section-label {
+      display: flex; align-items: center; gap: 8px;
+      font-size: 11px; font-weight: 600; letter-spacing: 1.5px;
+      text-transform: uppercase; color: var(--muted);
+      margin: 28px 0 16px;
+    }
+    .section-label::after {
+      content: ''; flex: 1; height: 1px; background: var(--border);
+    }
+
+    /* GRID DE CAMPOS */
+    .fields-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+    .fields-grid .full { grid-column: 1 / -1; }
+
+    /* CAMPO */
+    .field { display: flex; flex-direction: column; gap: 6px; }
+    .field-label {
+      font-size: 12px; font-weight: 600; color: var(--text2);
+    }
+    .field-label span { color: var(--red); margin-left: 2px; }
+
+    .field-input {
+      width: 100%; padding: 11px 14px;
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      background: var(--surface);
+      color: var(--text);
+      font-family: 'Outfit', sans-serif; font-size: 14px;
+      transition: border-color .2s, box-shadow .2s;
+      outline: none;
+      appearance: none;
+    }
+    .field-input:focus {
+      border-color: var(--border-focus);  
+      box-shadow: 0 0 0 3px rgba(13,148,136,.1);
+    }
+    .field-input::placeholder { color: var(--muted); }
+    .field-hint { font-size: 11px; color: var(--muted); }
+
+    /* SELECT personalizado */
+    .field-select {
+      width: 100%; padding: 11px 14px;
+      border: 1.5px solid var(--border); border-radius: 10px;
+      background: var(--surface); color: var(--text);
+      font-family: 'Outfit', sans-serif; font-size: 14px;
+      outline: none; cursor: pointer;
+      transition: border-color .2s;
+    }
+    .field-select:focus { border-color: var(--border-focus); }
+
+    /* BOTÓN SUBMIT */
+    .submit-btn {
+      width: 100%; padding: 14px;
+      background: var(--teal); color: #fff;
+      border: none; border-radius: 12px;
+      font-family: 'Outfit', sans-serif;
+      font-size: 15px; font-weight: 600;
+      cursor: pointer; margin-top: 28px;
+      transition: all .2s;
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+    }
+    .submit-btn:hover {
+      background: #0f766e;
+      transform: translateY(-1px);
+      box-shadow: 0 6px 20px rgba(13,148,136,.3);
+    }
+    .submit-btn:disabled {
+      background: var(--muted); cursor: not-allowed; transform: none;
+    }
+
+    /* FEEDBACK */
+    .feedback {
+      margin-top: 16px; padding: 12px 16px;
+      border-radius: 10px; font-size: 13.5px;
+      display: none; align-items: center; gap: 8px;
+    }
+    .feedback.ok  { background: var(--green-light); color: var(--green); display: flex; }
+    .feedback.err { background: var(--red-light);   color: var(--red);   display: flex; }
+
+    /* LINK A LOGIN */
+    .login-link {
+      text-align: center; margin-top: 24px;
+      font-size: 13px; color: var(--text2);
+    }
+    .login-link a { color: var(--teal); font-weight: 600; text-decoration: none; }
+    .login-link a:hover { text-decoration: underline; }
+
+    /* SPINNER */
+    .spinner {
+      width: 18px; height: 18px;
+      border: 2px solid rgba(255,255,255,.4);
+      border-top-color: #fff; border-radius: 50%;
+      animation: spin .7s linear infinite; display: none;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* RESPONSIVE */
+    @media(max-width: 768px) {
+      body { grid-template-columns: 1fr; }
+      .left-panel { display: none; }
+      .right-panel { padding: 32px 24px; }
+      .fields-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── PANEL IZQUIERDO ─────────────────────── -->
+<div class="left-panel">
+  <div class="left-logo">
+    <div class="logo-icon">🛡️</div>
+    <div>
+      <div class="logo-text">Guardian Digital</div>
+      <div class="logo-sub">Panel Clínico</div>
+    </div>
+  </div>
+
+  <div class="left-content">
+    <h2 class="left-title">
+      Acompañamiento<br>emocional con<br><em>inteligencia artificial</em>
+    </h2>
+    <p class="left-desc">
+      Como profesional de salud mental, tendrás acceso a un panel clínico para monitorear el bienestar emocional de tus pacientes en tiempo real.
+    </p>
+  </div>
+</div>
+
+<!-- ── PANEL DERECHO (FORMULARIO) ─────────── -->
+<div class="right-panel">
+
+  <div class="form-header">
+    <div class="form-badge">🩺 Acceso profesional</div>
+    <h1 class="form-title">Registro de psicólogo</h1>
+    <p class="form-sub">Completa tus datos para acceder al panel clínico de Guardian Digital.</p>
+  </div>
+
+  <form id="formProfesional">
+
+    <!-- DATOS PERSONALES -->
+    <div class="section-label">Datos personales</div>
+    <div class="fields-grid">
+      <div class="field">
+        <label class="field-label">Nombre(s)<span>*</span></label>
+        <input type="text" class="field-input" id="txtNombre" placeholder="Ej: María Elena" required/>
+      </div>
+      <div class="field">
+        <label class="field-label">Apellidos<span>*</span></label>
+        <input type="text" class="field-input" id="txtApellidos" placeholder="Ej: López Ramos" required/>
+      </div>
+      <div class="field">
+        <label class="field-label">Correo electrónico<span>*</span></label>
+        <input type="email" class="field-input" id="txtCorreo" placeholder="correo@ejemplo.com" required/>
+      </div>
+      <div class="field">
+        <label class="field-label">Edad<span>*</span></label>
+        <input type="number" class="field-input" id="txtEdad" placeholder="Ej: 35" min="22" max="80" required/>
+      </div>
+      <div class="field">
+        <label class="field-label">Contraseña<span>*</span></label>
+        <input type="password" class="field-input" id="txtContrasenia" placeholder="Mínimo 8 caracteres" required/>
+      </div>
+      <div class="field">
+        <label class="field-label">Confirmar contraseña<span>*</span></label>
+        <input type="password" class="field-input" id="txtConfirmar" placeholder="Repite tu contraseña" required/>
+      </div>
+    </div>
+
+    <!-- UBICACIÓN -->
+    <div class="section-label">Ubicación</div>
+    <div class="fields-grid">
+      <div class="field">
+        <label class="field-label">Departamento<span>*</span></label>
+        <select class="field-select" id="selectDepartamento" required>
+          <option value="">Selecciona departamento</option>
+          {% for dep in departamentos %}
+          <option value="{{ dep.id_departamento }}">{{ dep.nombre }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="field">
+        <label class="field-label">Provincia<span>*</span></label>
+        <select class="field-select" id="selectProvincia" required disabled>
+          <option value="">Primero selecciona departamento</option>
+        </select>
+      </div>
+      <div class="field full">
+        <label class="field-label">Distrito<span>*</span></label>
+        <select class="field-select" id="selectDistrito" required disabled>
+          <option value="">Primero selecciona provincia</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- DATOS PROFESIONALES -->
+    <div class="section-label">Datos profesionales</div>
+    <div class="fields-grid">
+      <div class="field">
+        <label class="field-label">N° CMP (Colegio Médico del Perú)<span>*</span></label>
+        <input type="text" class="field-input" id="txtCMP" placeholder="Ej: 12345" required/>
+        <span class="field-hint">Código de habilitación del Colegio de Psicólogos del Perú</span>
+      </div>
+      <div class="field">
+        <label class="field-label">Especialidad<span>*</span></label>
+        <select class="field-select" id="txtEspecialidad" required>
+          <option value="">Selecciona especialidad</option>
+          <option>Psicología clínica</option>
+          <option>Psicología de la salud</option>
+          <option>Psicología educativa</option>
+          <option>Psicología comunitaria</option>
+          <option>Neuropsicología</option>
+          <option>Psicología forense</option>
+          <option>Otra especialidad</option>
+        </select>
+      </div>
+      <div class="field full">
+        <label class="field-label">Institución donde labora</label>
+        <input type="text" class="field-input" id="txtInstitucion" placeholder="Ej: Hospital Regional del Cusco, MINSA, práctica privada"/>
+        <span class="field-hint">Opcional</span>
+      </div>
+      <div class="field full">
+        <label class="field-label">Teléfono de contacto profesional</label>
+        <input type="tel" class="field-input" id="txtTelefono" placeholder="Ej: 987654321"/>
+        <span class="field-hint">Opcional — para contacto entre colegas</span>
+      </div>
+    </div>
+
+    <!-- BOTÓN -->
+    <button type="button" class="submit-btn" id="btnRegistrar" onclick="registrarProfesional()">
+      <div class="spinner" id="spinner"></div>
+      <span id="btnTexto">Crear cuenta profesional</span>
+    </button>
+
+    <!-- FEEDBACK -->
+    <div class="feedback" id="feedback"></div>
+
+    <p class="login-link">
+      ¿Ya tienes cuenta? <a href="/">Inicia sesión aquí</a>
+    </p>
+
+  </form>
+</div>
+
+<script>
+// ── CARGA DINÁMICA DE PROVINCIAS Y DISTRITOS ──────────────
+document.getElementById('selectDepartamento').addEventListener('change', async function() {
+  const id = this.value;
+  const selProv = document.getElementById('selectProvincia');
+  const selDist = document.getElementById('selectDistrito');
+
+  selProv.innerHTML = '<option value="">Cargando...</option>';
+  selProv.disabled = true;
+  selDist.innerHTML = '<option value="">Primero selecciona provincia</option>';
+  selDist.disabled = true;
+
+  if (!id) return;
+
+  const res   = await fetch(`/provincias/${id}`);
+  const data  = await res.json();
+  selProv.innerHTML = '<option value="">Selecciona provincia</option>';
+  data.forEach(p => {
+    selProv.innerHTML += `<option value="${p.id_provincia}">${p.nombre}</option>`;
+  });
+  selProv.disabled = false;
+});
+
+document.getElementById('selectProvincia').addEventListener('change', async function() {
+  const id = this.value;
+  const selDist = document.getElementById('selectDistrito');
+
+  selDist.innerHTML = '<option value="">Cargando...</option>';
+  selDist.disabled = true;
+
+  if (!id) return;
+
+  const res  = await fetch(`/distritos/${id}`);
+  const data = await res.json();
+  selDist.innerHTML = '<option value="">Selecciona distrito</option>';
+  data.forEach(d => {
+    selDist.innerHTML += `<option value="${d.id_distrito}">${d.nombre}</option>`;
+  });
+  selDist.disabled = false;
+});
+
+// ── REGISTRO ──────────────────────────────────────────────
+async function registrarProfesional() {
+  const feedbackEl = document.getElementById('feedback');
+  feedbackEl.className = 'feedback';
+
+  // Validaciones frontend
+  const nombre      = document.getElementById('txtNombre').value.trim();
+  const apellidos   = document.getElementById('txtApellidos').value.trim();
+  const correo      = document.getElementById('txtCorreo').value.trim();
+  const edad        = document.getElementById('txtEdad').value.trim();
+  const contra      = document.getElementById('txtContrasenia').value;
+  const confirmar   = document.getElementById('txtConfirmar').value;
+  const distrito    = document.getElementById('selectDistrito').value;
+  const cmp         = document.getElementById('txtCMP').value.trim();
+  const especialidad= document.getElementById('txtEspecialidad').value;
+  const institucion = document.getElementById('txtInstitucion').value.trim();
+  const telefono    = document.getElementById('txtTelefono').value.trim();
+
+  if (!nombre || !apellidos || !correo || !edad || !contra || !distrito || !cmp || !especialidad) {
+    mostrarFeedback('Por favor completa todos los campos obligatorios (*).', 'err');
+    return;
+  }
+  if (contra !== confirmar) {
+    mostrarFeedback('Las contraseñas no coinciden.', 'err');
+    return;
+  }
+  if (contra.length < 8) {
+    mostrarFeedback('La contraseña debe tener al menos 8 caracteres.', 'err');
+    return;
+  }
+
+  // Mostrar spinner
+  document.getElementById('spinner').style.display = 'block';
+  document.getElementById('btnTexto').textContent = 'Registrando...';
+  document.getElementById('btnRegistrar').disabled = true;
+
+  const fd = new FormData();
+  fd.append('txtNombre',      nombre);
+  fd.append('txtApellidos',   apellidos);
+  fd.append('txtCorreo',      correo);
+  fd.append('txtEdad',        edad);
+  fd.append('txtContrasenia', contra);
+  fd.append('selectDistrito', distrito);
+  fd.append('txtCMP',         cmp);
+  fd.append('txtEspecialidad',especialidad);
+  fd.append('txtInstitucion', institucion);
+  fd.append('txtTelefono',    telefono);
+
+  try {
+    const res  = await fetch('/registrar-profesional', { method: 'POST', body: fd });
+    const data = await res.json();
+
+    if (data.success) {
+      mostrarFeedback('✅ Cuenta creada correctamente. Redirigiendo al login...', 'ok');
+      setTimeout(() => window.location.href = '/', 2000);
+    } else {
+      mostrarFeedback('❌ ' + data.message, 'err');
+    }
+  } catch(e) {
+    mostrarFeedback('❌ Error de conexión. Intenta de nuevo.', 'err');
+  } finally {
+    document.getElementById('spinner').style.display = 'none';
+    document.getElementById('btnTexto').textContent = 'Crear cuenta profesional';
+    document.getElementById('btnRegistrar').disabled = false;
+  }
+}
+
+function mostrarFeedback(msg, tipo) {
+  const el = document.getElementById('feedback');
+  el.textContent = msg;
+  el.className = `feedback ${tipo}`;
+  el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+</script>
+</body>
+</html>

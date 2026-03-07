@@ -2,143 +2,254 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tu Espacio de Calma - Guardián Digital</title>
+    
     <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.css') }}">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Fraunces:ital,wght@1,300;1,600&display=swap" rel="stylesheet">
     
     <style>
-        body {
-            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        /* === VARIABLES DE COLOR Y ESTILO === */
+        :root {
+            --bg-deep: #080E1A; /* Azul noche profundo para contención */
+            --accent-calm: #52C4E8; /* Cian para el aire y la respiración */
+            --accent-hope: #F2A97E; /* Melocotón cálido para la esperanza */
+            --text-main: #E8F0F7;
+            --text-muted: rgba(255, 255, 255, 0.6);
+            --glass: rgba(255, 255, 255, 0.05);
+            --border: rgba(255, 255, 255, 0.1);
         }
-        
-        /* === ANIMACIÓN DE RESPIRACIÓN (EL CÍRCULO) === */
+
+        body {
+            background-color: var(--bg-deep);
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(82, 196, 232, 0.07) 0%, transparent 50%),
+                radial-gradient(circle at 90% 80%, rgba(242, 169, 126, 0.05) 0%, transparent 50%);
+            font-family: 'DM Sans', sans-serif;
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center; /* Centra todo verticalmente */
+        }
+
+        /* === BOTONES Y NAVEGACIÓN === */
+        .btn-volver {
+            background: var(--glass);
+            border: 1px solid var(--border);
+            color: var(--text-main);
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            text-decoration: none;
+        }
+        .btn-volver:hover {
+            background: rgba(82, 196, 232, 0.1);
+            border-color: var(--accent-calm);
+            color: var(--accent-calm);
+            transform: translateX(-5px);
+        }
+
+        /* === TARJETAS PRINCIPALES === */
+        .glass-card {
+            background: var(--glass);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            backdrop-filter: blur(15px);
+            padding: 2.5rem;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .titulo-serif {
+            font-family: 'Fraunces', serif;
+            font-style: italic;
+            font-weight: 300;
+        }
+
         /* === ANIMACIÓN DE RESPIRACIÓN (MÉTODO 4-4-8) === */
-        .circulo-respiracion {
-            width: 150px;
-            height: 150px;
-            background: linear-gradient(135deg, #6dd5ed, #2193b0);
-            border-radius: 50%;
-            margin: 50px auto;
+        .escena-respiracion {
+            position: relative;
+            width: 100%;
+            height: 350px; /* Espacio amplio para que el círculo crezca */
             display: flex;
             align-items: center;
             justify-content: center;
-            color: white;
-            font-weight: bold;
-            font-size: 1.2rem;
-            text-align: center;
-            box-shadow: 0 0 20px rgba(33, 147, 176, 0.4);
-            
-            /* El ciclo total ahora dura 16 segundos */
-            /* Usamos 'linear' para que el crecimiento y contracción sean a una velocidad constante */
+            margin: 20px 0;
+        }
+
+        .circulo-respiracion {
+            width: 220px; /* Tamaño base grande */
+            height: 220px;
+            background: radial-gradient(circle at 30% 30%, #82dcff, var(--accent-calm), #1d6fd1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            box-shadow: 0 0 40px rgba(82, 196, 232, 0.3);
             animation: breathe 16s infinite linear; 
+            z-index: 2;
         }
 
-        /* 16 segundos es el 100%. 
-           - 4s (Inhala) es el 25% del tiempo.
-           - 4s (Retiene) es del 25% al 50%.
-           - 8s (Exhala) es del 50% al 100%.
-        */
+        /* Ondas expansivas suaves */
+        .circulo-respiracion::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            border: 2px solid var(--accent-calm);
+            animation: ripples 16s infinite linear;
+            z-index: 1;
+        }
+
         @keyframes breathe {
-            0% {
-                transform: scale(1);
-                box-shadow: 0 0 20px rgba(33, 147, 176, 0.4);
-            }
-            25% {
-                /* Terminó de Inhalar (4s) */
-                transform: scale(1.6);
-                box-shadow: 0 0 50px rgba(33, 147, 176, 0.8);
-            }
-            50% {
-                /* Terminó de Retener (8s) - El círculo se mantiene inflado */
-                transform: scale(1.6);
-                box-shadow: 0 0 50px rgba(33, 147, 176, 0.8);
-            }
-            100% {
-                /* Terminó de Exhalar (16s) - Vuelve a su tamaño original lentamente */
-                transform: scale(1);
-                box-shadow: 0 0 20px rgba(33, 147, 176, 0.4);
-            }
+            0%   { transform: scale(1); box-shadow: 0 0 30px rgba(82, 196, 232, 0.3); }
+            25%  { transform: scale(1.5); box-shadow: 0 0 80px rgba(82, 196, 232, 0.6); }
+            50%  { transform: scale(1.5); box-shadow: 0 0 80px rgba(82, 196, 232, 0.6); }
+            100% { transform: scale(1); box-shadow: 0 0 30px rgba(82, 196, 232, 0.3); }
         }
 
-        /* Animación del texto para que coincida con las fases */
+        @keyframes ripples {
+            0%   { transform: scale(1); opacity: 0.5; }
+            25%  { transform: scale(1.8); opacity: 0; }
+            50%  { transform: scale(1); opacity: 0; }
+            100% { transform: scale(1); opacity: 0; }
+        }
+
+        /* Texto dinámico del círculo */
+        .texto-respiracion {
+            font-family: 'Fraunces', serif;
+            font-weight: 600;
+            font-size: 1.8rem;
+            color: white;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
+
         .texto-respiracion::after {
-            content: 'Inhala...';
+            content: 'Inhala';
             animation: cambiaTexto 16s infinite;
         }
 
         @keyframes cambiaTexto {
-            0%, 24% { content: 'Inhala...'; }
-            25%, 49% { content: 'Retén...'; }
-            50%, 100% { content: 'Exhala...'; }
+            0%, 24%   { content: 'Inhala'; }
+            25%, 49%  { content: 'Retén'; }
+            50%, 100% { content: 'Exhala'; }
         }
 
         /* === CAJA DE ESPERANZA === */
         .caja-esperanza {
-            background-color: #F2E1E1;
-            border-radius: 15px;
-            padding: 30px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-            border-left: 5px solid #ff9a9e;
+            background: linear-gradient(145deg, rgba(242, 169, 126, 0.08), rgba(255, 255, 255, 0.02));
+            border-color: rgba(242, 169, 126, 0.15);
         }
 
         .icono-caja {
-            font-size: 3rem;
-            color: #ff9a9e;
-            margin-bottom: 15px;
+            font-size: 4rem;
+            color: var(--accent-hope);
+            filter: drop-shadow(0 0 15px rgba(242, 169, 126, 0.3));
+            margin-bottom: 1.5rem;
+        }
+
+        .item-esperanza {
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 1.2rem;
+            transition: transform 0.3s, border-color 0.3s;
+        }
+        .item-esperanza:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent-hope);
+        }
+
+        .alert-calma {
+            background: rgba(82, 196, 232, 0.08);
+            border: 1px solid rgba(82, 196, 232, 0.2);
+            color: var(--text-main);
+            border-radius: 16px;
+            padding: 1.2rem;
+        }
+        
+        /* Ajustes responsivos */
+        @media (max-width: 991px) {
+            body { padding: 2rem 0; justify-content: flex-start; }
+            .escena-respiracion { height: 300px; }
+            .circulo-respiracion { width: 180px; height: 180px; }
         }
     </style>
 </head>
 <body>
 
-<div class="container mt-5">
+<div class="container py-4">
     
-    <a href="/chat" class="btn btn-outline-secondary mb-4">
-        <i class="fas fa-arrow-left"></i> Volver al Chat
-    </a>
-
-    <div class="row">
-        <div class="col-md-6 text-center">
-            <div class="card shadow-sm border-0 p-4 h-100">
-                <h4 class="text-primary"><i class="fas fa-wind"></i> Ejercicio</h4>
-                <p class="text-muted">Sigue el ritmo del círculo. Concéntrate solo en tu respiración.</p>
-                <br>
-                <div class="circulo-respiracion">
-                    <span class="texto-respiracion"></span>
-                </div>
-                <br>
-                <p class="text-primary">Respira profundo desde el abdomen. Nota cómo el aire entra y sale de tu cuerpo.</p>
-            </div>
-        </div>
-
-        <div class="col-md-6">
-            <div class="caja-esperanza h-100 d-flex flex-column justify-content-center text-center">
-                <i class="fas fa-box-open icono-caja"></i>
-                <h3>Tu Caja de Esperanza, {{ usuario.nombre }}</h3>
-                <p class="text-muted mb-4">Cuando la ansiedad suba, recuerda las cosas, personas que te quieren mucho</p>
-
-                <div class="row text-left">
-                    <div class="col-sm-6 mb-3">
-                        <div class="p-3 bg-light rounded">
-                            <h6 class="text-primary"><i class="fas fa-heart"></i> Tus Intereses:</h6>
-                            <p class="mb-0 fw-bold">{{ usuario.gustos }}</p>
-                        </div>
-                    </div>
-                    <div class="col-sm-6 mb-3">
-                        <div class="p-3 bg-light rounded">
-                            <h6 class="text-primary"><i class="fas fa-paw"></i> Lo que te alegra:</h6>
-                            <p class="mb-0 fw-bold">{{ usuario.mascota_favorita }}</p>
-                        </div>
+    <div class="d-flex justify-content-between align-items-center mb-5">
+        <a href="/chat" class="btn btn-volver px-4 py-2">
+            <i class="fas fa-arrow-left me-2"></i> Volver al Chat
+        </a>
+    </div>
+    <br>
+    <div class="row g-4 align-items-stretch">
+        
+        <div class="col-lg-6">
+            <div class="glass-card text-center">
+                <h2 class="titulo-serif mb-2" style="color: var(--accent-calm); font-size: 2.2rem;">Tu espacio de calma</h2>
+                <p class="text-muted" style="font-size: 1.50rem;">Sigue el ritmo del círculo • Método 4-4-8</p>
+                
+                <div class="escena-respiracion">
+                    <div class="circulo-respiracion">
+                        <span class="texto-respiracion"></span>
                     </div>
                 </div>
                 
-                <div class="alert alert-info mt-3" role="alert">
-                    <i class="fas fa-lightbulb"></i> <strong>Idea:</strong> Dedica los próximos 5 minutos a buscar una imagen, un video o una canción relacionada con estas cosas que amas ya sea desde tu celular o fisicas. Te ayudará a distraer tu mente.
+                <p class="mt-2" style="font-size: 1.50rem; color: var(--text-muted); line-height: 1.6;">
+                    Respira profundo desde el abdomen.<br>
+                    Suelta los hombros y relaja la mandíbula.
+                </p>
+            </div>
+        </div>
+
+        <div class="col-lg-6">
+            <div class="glass-card caja-esperanza text-center">
+                <i class="fas fa-box-open icono-caja"></i>
+                <h2 class="titulo-serif mb-2" style="font-size: 2rem; color: white;">Caja de Esperanza</h2>
+                <p class="text-muted mb-4" style="font-size: 1.1rem;">Recuerda lo que te mantiene firme, {{ usuario.nombre }}.</p>
+
+                <div class="row g-3 text-start mb-4">
+                    <div class="col-sm-6">
+                        <div class="item-esperanza h-100">
+                            <h6 style="color: var(--accent-hope); font-weight: 700; font-size: 1rem; text-transform: uppercase; letter-spacing: 1px;">
+                                <i class="fas fa-heart me-2"></i>Tus Intereses
+                            </h6>
+                            <div style="font-size: 1.5rem; color: white;">{{ usuario.gustos }}</div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="item-esperanza h-100">
+                            <h6 style="color: var(--accent-hope); font-weight: 700; font-size: 1rem; text-transform: uppercase; letter-spacing: 1px;">
+                                <i class="fas fa-paw me-2"></i>Te alegra
+                            </h6>
+                            <div style="font-size: 1.5rem; color: white;">{{ usuario.mascota_favorita }}</div>
+                        </div>
+                    </div>
+                </div>
+                <br>
+                <div class="alert alert-calma text-start mb-0">
+                    <div class="d-flex align-items-start">
+                        <i class="fas fa-lightbulb mt-1 me-3" style="color: var(--accent-calm); font-size: 1.2rem;"></i>
+                        <span style="font-size: 1 rem; line-height: 1.5; color: var(--text-muted);">
+                            <strong style="color: white;">Sugerencia:</strong> 
+                            Dedica los próximos 5 minutos a buscar una foto, un video o una canción sobre estas cosas que amas. Ayudará a distraer tu mente.
+                        </span>
+                    </div>
                 </div>
             </div>
         </div>
+        
     </div>
-
 </div>
 
 </body>

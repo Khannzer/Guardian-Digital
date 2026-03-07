@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Nueva Contraseña — Guardian Digital</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=Fraunces:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg:       #080c12;
+      --surface:  #0e1420;
+      --surface2: #131926;
+      --border:   rgba(255,255,255,.07);
+      --accent:   #4da3ff;
+      --accent2:  #0066ff;
+      --glow:     rgba(77,163,255,.12);
+      --text:     #dde5f0;
+      --text2:    #7a8fa8;
+      --text3:    #3d4f66;
+      --green:    #4ade80;
+      --red:      #f87171;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      min-height: 100vh;
+      display: flex; align-items: center; justify-content: center;
+      padding: 24px 16px;
+      background-image:
+        radial-gradient(ellipse at 20% 30%, rgba(77,163,255,.06) 0%, transparent 55%),
+        radial-gradient(ellipse at 80% 70%, rgba(0,102,255,.04) 0%, transparent 55%);
+    }
+
+    body::before {
+      content: '';
+      position: fixed; inset: 0; pointer-events: none;
+      background-image: radial-gradient(rgba(255,255,255,.025) 1px, transparent 1px);
+      background-size: 28px 28px;
+    }
+
+    /* ── CARD ── */
+    .card {
+      position: relative; z-index: 1;
+      width: 100%; max-width: 420px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 22px; overflow: hidden;
+      box-shadow: 0 32px 80px rgba(0,0,0,.7);
+      animation: slideUp .5s cubic-bezier(.16,1,.3,1);
+    }
+    @keyframes slideUp {
+      from { opacity:0; transform:translateY(24px); }
+      to   { opacity:1; transform:translateY(0); }
+    }
+    .card::before {
+      content:''; display:block; height:3px;
+      background:linear-gradient(90deg,transparent,var(--accent),#a78bfa,var(--accent2),transparent);
+    }
+
+    /* ── CABECERA ── */
+    .card-head {
+      padding: 32px 36px 24px;
+      text-align: center;
+      border-bottom: 1px solid var(--border);
+    }
+    .card-head-icon {
+      width: 52px; height: 52px; border-radius: 15px; margin: 0 auto 16px;
+      background: linear-gradient(135deg, var(--accent2), var(--accent));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 22px; color: #fff;
+      box-shadow: 0 8px 28px rgba(77,163,255,.28);
+    }
+    .card-head-icon.error-icon {
+      background: linear-gradient(135deg, #dc2626, #f87171);
+      box-shadow: 0 8px 28px rgba(220,38,38,.28);
+    }
+    .card-head h2 {
+      font-family: 'Fraunces', serif;
+      font-size: 20px; font-weight: 700;
+      color: var(--text); margin-bottom: 6px;
+    }
+    .card-head p { font-size: 13px; color: var(--text2); line-height: 1.5; }
+
+    /* ── CUERPO ── */
+    .card-body { padding: 28px 36px 32px; }
+
+    label {
+      display: block; font-size: 12px; font-weight: 600;
+      color: var(--text2); margin-bottom: 7px; letter-spacing: .3px;
+    }
+
+    .input-wrap { position: relative; margin-bottom: 18px; }
+    .input-wrap .icon-left {
+      position: absolute; left: 13px; top: 50%; transform: translateY(-50%);
+      color: var(--text3); font-size: 14px; pointer-events: none;
+    }
+    .input-wrap .toggle-pass {
+      position: absolute; right: 13px; top: 50%; transform: translateY(-50%);
+      color: var(--text3); font-size: 14px; cursor: pointer;
+      transition: color .2s;
+    }
+    .input-wrap .toggle-pass:hover { color: var(--accent); }
+
+    input[type="password"], input[type="text"] {
+      width: 100%;
+      background: var(--surface2);
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 13.5px;
+      padding: 11px 40px 11px 38px;
+      outline: none;
+      transition: border-color .2s, box-shadow .2s;
+    }
+    input::placeholder { color: var(--text3); }
+    input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px var(--glow);
+    }
+    input.match  { border-color: var(--green); }
+    input.nomatch { border-color: var(--red); }
+
+    /* Indicador de fortaleza */
+    .strength-bar {
+      height: 3px; border-radius: 2px;
+      background: var(--border);
+      margin-top: 6px; overflow: hidden;
+    }
+    .strength-fill {
+      height: 100%; border-radius: 2px;
+      transition: width .3s, background .3s;
+      width: 0%;
+    }
+    .strength-label {
+      font-size: 11px; color: var(--text3);
+      margin-top: 4px; display: block;
+    }
+
+    /* ── BOTÓN ── */
+    .btn-primary {
+      width: 100%;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      border: none; border-radius: 11px;
+      padding: 12px; font-weight: 600;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px; color: #fff; cursor: pointer;
+      transition: all .25s; margin-top: 6px;
+      box-shadow: 0 4px 18px rgba(77,163,255,.22);
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+    }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 10px 28px rgba(77,163,255,.38); }
+    .btn-primary:disabled { opacity: .6; cursor: not-allowed; transform: none; }
+
+    .spinner {
+      width: 16px; height: 16px; border-radius: 50%;
+      border: 2px solid rgba(255,255,255,.3);
+      border-top-color: #fff;
+      animation: spin .7s linear infinite; display: none;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ── FEEDBACK ── */
+    .feedback {
+      display: none; border-radius: 10px;
+      padding: 12px 14px; font-size: 13px;
+      line-height: 1.5; margin-bottom: 18px;
+    }
+    .feedback.ok  { background:rgba(74,222,128,.08); border:1px solid rgba(74,222,128,.2); color:var(--green); }
+    .feedback.err { background:rgba(248,113,113,.08); border:1px solid rgba(248,113,113,.2); color:var(--red); }
+
+    /* ── ERROR DE TOKEN ── */
+    .error-box {
+      background: rgba(220,38,38,.08);
+      border: 1px solid rgba(220,38,38,.2);
+      border-radius: 10px; padding: 14px 16px;
+      font-size: 13px; color: var(--red);
+      line-height: 1.5; margin-bottom: 18px;
+    }
+
+    .link-back {
+      display: flex; align-items: center; justify-content: center;
+      gap: 6px; margin-top: 20px;
+      font-size: 13px; color: var(--text2);
+      text-decoration: none; transition: color .2s;
+    }
+    .link-back:hover { color: var(--accent); }
+  </style>
+</head>
+<body>
+
+<div class="card">
+
+  {% if error %}
+  <!-- TOKEN INVÁLIDO O EXPIRADO -->
+  <div class="card-head">
+    <div class="card-head-icon error-icon">
+      <i class="fa-solid fa-triangle-exclamation"></i>
+    </div>
+    <h2>Enlace no válido</h2>
+    <p>{{ error }}</p>
+  </div>
+  <div class="card-body">
+    <div class="error-box">
+      <i class="fa-solid fa-circle-info"></i>
+      Solicita un nuevo enlace de recuperación desde la página de inicio de sesión.
+    </div>
+    <a href="/recuperar-contrasenia" class="btn-primary" style="text-decoration:none;justify-content:center;">
+      <i class="fa-solid fa-rotate-left"></i> Solicitar nuevo enlace
+    </a>
+    <a href="/inicio" class="link-back">
+      <i class="fa-solid fa-arrow-left"></i> Volver al inicio de sesión
+    </a>
+  </div>
+
+  {% else %}
+  <!-- FORMULARIO DE NUEVA CONTRASEÑA -->
+  <div class="card-head">
+    <div class="card-head-icon">
+      <i class="fa-solid fa-lock"></i>
+    </div>
+    <h2>Nueva contraseña</h2>
+    <p>Elige una contraseña segura para<br>proteger tu cuenta.</p>
+  </div>
+
+  <div class="card-body">
+
+    <div class="feedback" id="feedback"></div>
+
+    <div id="formSection">
+      <!-- Nueva contraseña -->
+      <label>Nueva contraseña</label>
+      <div class="input-wrap">
+        <i class="fa-solid fa-lock icon-left"></i>
+        <input type="password" id="txtNuevaContrasenia"
+               placeholder="Mínimo 8 caracteres"
+               oninput="evaluarFortaleza(this.value)">
+        <i class="fa-solid fa-eye toggle-pass" onclick="togglePass('txtNuevaContrasenia', this)"></i>
+      </div>
+      <div class="strength-bar">
+        <div class="strength-fill" id="strengthFill"></div>
+      </div>
+      <span class="strength-label" id="strengthLabel"></span>
+
+      <!-- Confirmar contraseña -->
+      <label style="margin-top:16px">Confirmar contraseña</label>
+      <div class="input-wrap">
+        <i class="fa-solid fa-lock icon-left"></i>
+        <input type="password" id="txtConfirmarContrasenia"
+               placeholder="Repite la contraseña"
+               oninput="verificarMatch()">
+        <i class="fa-solid fa-eye toggle-pass" onclick="togglePass('txtConfirmarContrasenia', this)"></i>
+      </div>
+
+      <button class="btn-primary" id="btnGuardar" onclick="guardarContrasenia()">
+        <span id="btnTexto"><i class="fa-solid fa-shield-check"></i> Guardar contraseña</span>
+        <div class="spinner" id="spinner"></div>
+      </button>
+    </div>
+
+    <a href="/inicio" class="link-back">
+      <i class="fa-solid fa-arrow-left"></i> Volver al inicio de sesión
+    </a>
+  </div>
+  {% endif %}
+
+</div>
+
+<script>
+  const TOKEN = "{{ token }}";
+
+  function togglePass(id, icon) {
+    const input = document.getElementById(id);
+    const esPassword = input.type === 'password';
+    input.type = esPassword ? 'text' : 'password';
+    icon.className = `fa-solid ${esPassword ? 'fa-eye-slash' : 'fa-eye'} toggle-pass`;
+  }
+
+  function evaluarFortaleza(val) {
+    const fill  = document.getElementById('strengthFill');
+    const label = document.getElementById('strengthLabel');
+    let score = 0;
+    if (val.length >= 8)               score++;
+    if (/[A-Z]/.test(val))             score++;
+    if (/[0-9]/.test(val))             score++;
+    if (/[^A-Za-z0-9]/.test(val))      score++;
+
+    const config = [
+      { w:'0%',   bg:'transparent', txt:'' },
+      { w:'25%',  bg:'#f87171',     txt:'Débil' },
+      { w:'50%',  bg:'#fb923c',     txt:'Regular' },
+      { w:'75%',  bg:'#facc15',     txt:'Buena' },
+      { w:'100%', bg:'#4ade80',     txt:'Excelente' },
+    ];
+    fill.style.width      = config[score].w;
+    fill.style.background = config[score].bg;
+    label.textContent     = config[score].txt;
+    label.style.color     = config[score].bg;
+    verificarMatch();
+  }
+
+  function verificarMatch() {
+    const nueva     = document.getElementById('txtNuevaContrasenia');
+    const confirmar = document.getElementById('txtConfirmarContrasenia');
+    if (!confirmar.value) { confirmar.className = ''; return; }
+    if (nueva.value === confirmar.value) {
+      confirmar.classList.add('match'); confirmar.classList.remove('nomatch');
+    } else {
+      confirmar.classList.add('nomatch'); confirmar.classList.remove('match');
+    }
+  }
+
+  async function guardarContrasenia() {
+    const nueva     = document.getElementById('txtNuevaContrasenia').value;
+    const confirmar = document.getElementById('txtConfirmarContrasenia').value;
+    const btn       = document.getElementById('btnGuardar');
+    const spinner   = document.getElementById('spinner');
+    const btnTxt    = document.getElementById('btnTexto');
+
+    if (!nueva || !confirmar) {
+      mostrarFeedback('err', '⚠️ Completa ambos campos.');
+      return;
+    }
+    if (nueva.length < 8) {
+      mostrarFeedback('err', '⚠️ La contraseña debe tener al menos 8 caracteres.');
+      return;
+    }
+    if (nueva !== confirmar) {
+      mostrarFeedback('err', '⚠️ Las contraseñas no coinciden.');
+      return;
+    }
+
+    btn.disabled          = true;
+    spinner.style.display = 'block';
+    btnTxt.style.display  = 'none';
+
+    try {
+      const formData = new FormData();
+      formData.append('txtNuevaContrasenia',    nueva);
+      formData.append('txtConfirmarContrasenia', confirmar);
+
+      const res  = await fetch(`/reset/${TOKEN}`, { method:'POST', body:formData });
+      const data = await res.json();
+
+      if (data.success) {
+        document.getElementById('formSection').style.display = 'none';
+        mostrarFeedback('ok',
+          '✅ ' + data.message +
+          '<br><br><a href="/inicio" style="color:#4da3ff;font-weight:600;">Ir al inicio de sesión →</a>'
+        );
+      } else {
+        mostrarFeedback('err', '⚠️ ' + data.message);
+      }
+    } catch(e) {
+      mostrarFeedback('err', '⚠️ Error de conexión. Intenta de nuevo.');
+    } finally {
+      btn.disabled          = false;
+      spinner.style.display = 'none';
+      btnTxt.style.display  = 'flex';
+    }
+  }
+
+  function mostrarFeedback(tipo, msg) {
+    const el = document.getElementById('feedback');
+    el.className     = `feedback ${tipo}`;
+    el.innerHTML     = msg;
+    el.style.display = 'block';
+  }
+</script>
+
+</body>
+</html>

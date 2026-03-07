@@ -1,152 +1,481 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
-    <title>Login - Guardian Digital</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Iniciar Sesión — Guardian Digital</title>
 
-    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=Fraunces:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
 
-    <!-- Bootstrap Validator -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-validator/0.5.3/js/bootstrapValidator.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-validator/0.5.3/css/bootstrapValidator.min.css"/>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css">
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styleInicio.css')}}"/>
+  <style>
+    /* ═══════════════════════════════
+       VARIABLES Y RESET
+    ═══════════════════════════════ */
+    :root {
+      --bg:          #080c12;
+      --bg-to:       #0d1520;
+      --surface:     #0e1420;
+      --surface2:    #131926;
+      --surface3:    #1a2740;
+      --border:      rgba(255,255,255,.07);
+      --border-acc:  rgba(77,163,255,.22);
+      --accent:      #4da3ff;
+      --accent2:     #0066ff;
+      --glow:        rgba(77,163,255,.12);
+      --text:        #dde5f0;
+      --text2:       #7a8fa8;
+      --text3:       #3d4f66;
+      --red:         #f87171;
+      --teal:        #0d9488;
+      --r:           13px;
+      --r-sm:        10px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      min-height: 100vh;
+      background: var(--bg);
+      background-image:
+        radial-gradient(ellipse at 20% 20%, rgba(77,163,255,.09) 0%, transparent 55%),
+        radial-gradient(ellipse at 80% 80%, rgba(0,102,255,.07) 0%, transparent 55%),
+        linear-gradient(150deg, var(--bg) 0%, var(--bg-to) 100%);
+      background-attachment: fixed;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 32px 16px;
+      color: var(--text);
+      overflow-y: auto;
+    }
+
+    /* Dot-grid decorativo */
+    body::before {
+      content: '';
+      position: fixed; inset: 0; z-index: 0; pointer-events: none;
+      background-image: radial-gradient(rgba(255,255,255,.022) 1px, transparent 1px);
+      background-size: 28px 28px;
+    }
+
+    /* ═══════════════════════════════
+       PANEL PRINCIPAL
+    ═══════════════════════════════ */
+    .login-panel {
+      position: relative; z-index: 1;
+      width: 100%; max-width: 430px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      overflow: visible;
+      box-shadow:
+        0 0 0 1px rgba(255,255,255,.025),
+        0 40px 100px rgba(0,0,0,.7);
+      animation: panelUp .5s cubic-bezier(.16,1,.3,1) both;
+    }
+
+    @keyframes panelUp {
+      from { opacity:0; transform:translateY(26px); }
+      to   { opacity:1; transform:translateY(0); }
+    }
+
+    /* Barra superior de color */
+    .panel-topbar {
+      height: 3px;
+      background: linear-gradient(90deg, transparent 0%, var(--accent) 30%, #a78bfa 60%, var(--accent2) 85%, transparent 100%);
+      border-radius: 22px 22px 0 0;
+    }
+
+    /* ═══════════════════════════════
+       CABECERA
+    ═══════════════════════════════ */
+    .panel-head {
+      padding: 30px 36px 24px;
+      text-align: center;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .head-icon {
+      width: 58px; height: 58px;
+      border-radius: 17px;
+      background: linear-gradient(135deg, var(--accent2), var(--accent));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 26px; color: #fff;
+      margin: 0 auto 16px;
+      box-shadow: 0 8px 28px rgba(77,163,255,.3);
+    }
+
+    .head-title {
+      font-family: 'Fraunces', serif;
+      font-size: 22px; font-weight: 700; color: var(--text);
+      margin: 0 0 5px; line-height: 1.2;
+    }
+
+    .head-sub {
+      font-size: 13px; color: var(--text2); margin: 0;
+    }
+
+    /* ═══════════════════════════════
+       CUERPO
+    ═══════════════════════════════ */
+    .panel-body { padding: 28px 36px 30px; }
+
+    /* LABELS */
+    label {
+      display: block;
+      font-size: 12px; font-weight: 600; letter-spacing: .3px;
+      color: var(--text2); margin-bottom: 7px;
+    }
+
+    /* INPUTS */
+    .field-group { margin-bottom: 14px; }
+
+    .input-wrap { position: relative; }
+
+    .input-wrap .iico {
+      position: absolute; left: 13px; top: 50%; transform: translateY(-50%);
+      color: var(--text3); font-size: 13px; pointer-events: none; z-index: 2;
+    }
+
+    .input-wrap .itoggle {
+      position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
+      color: var(--text3); font-size: 13px; z-index: 2;
+      background: none; border: none; cursor: pointer; padding: 0;
+      transition: color .2s;
+    }
+    .input-wrap .itoggle:hover { color: var(--accent); }
+
+    .input-mod {
+      width: 100%;
+      background: var(--surface2);
+      border: 1.5px solid var(--border);
+      border-radius: var(--r-sm);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 13.5px;
+      padding: 11px 14px 11px 38px;
+      transition: border-color .2s, box-shadow .2s, background .2s;
+      outline: none;
+    }
+
+    .input-mod.has-toggle { padding-right: 40px; }
+    .input-mod::placeholder { color: var(--text3); }
+
+    .input-mod:focus {
+      background: var(--surface3);
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px var(--glow);
+    }
+
+    .input-mod.is-error {
+      border-color: var(--red);
+      box-shadow: 0 0 0 3px rgba(248,113,113,.1);
+    }
+
+    .field-err {
+      font-size: 11.5px; color: var(--red);
+      margin-top: 5px; display: none;
+    }
+    .field-err.show { display: block; }
+
+    /* OLVIDÉ CONTRASEÑA */
+    .forgot-row {
+      display: flex; justify-content: flex-end;
+      margin-top: 3px; margin-bottom: 20px;
+    }
+    .forgot-link {
+      font-size: 12px; color: var(--accent);
+      text-decoration: none; transition: color .2s;
+    }
+    .forgot-link:hover { color: #87c1ff; text-decoration: underline; }
+
+    /* ERROR BANNER GLOBAL */
+    .err-banner {
+      background: rgba(248,113,113,.07);
+      border: 1px solid rgba(248,113,113,.2);
+      border-left: 3px solid var(--red);
+      border-radius: 10px;
+      padding: 11px 14px;
+      font-size: 13px; color: var(--red);
+      margin-bottom: 18px;
+      display: none;
+      align-items: center; gap: 9px;
+    }
+    .err-banner.show { display: flex; }
+
+    /* ═══════════════════════════════
+       BOTONES
+    ═══════════════════════════════ */
+    .btn-primary-mod {
+      width: 100%; border: none; border-radius: 11px;
+      padding: 12px 20px; font-weight: 600;
+      font-family: 'DM Sans', sans-serif; font-size: 14px; color: #fff;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      cursor: pointer; transition: all .25s;
+      box-shadow: 0 4px 18px rgba(77,163,255,.22);
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+    }
+    .btn-primary-mod:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 28px rgba(77,163,255,.38);
+    }
+    .btn-primary-mod:active { transform: translateY(0); }
+    .btn-primary-mod:disabled { opacity: .6; cursor: not-allowed; transform: none; }
+
+    .btn-outline-mod {
+      width: 100%; border-radius: 11px;
+      padding: 11px 20px; font-weight: 600;
+      font-family: 'DM Sans', sans-serif; font-size: 13.5px;
+      cursor: pointer; transition: all .25s; margin-top: 10px;
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+    }
+
+    .btn-blue-outline {
+      background: transparent;
+      border: 1.5px solid rgba(77,163,255,.28);
+      color: var(--accent);
+    }
+    .btn-blue-outline:hover {
+      background: rgba(77,163,255,.07);
+      border-color: var(--accent);
+      transform: translateY(-1px);
+    }
+
+    .btn-teal-outline {
+      background: transparent;
+      border: 1.5px solid rgba(13,148,136,.3);
+      color: var(--teal);
+      text-decoration: none;
+    }
+    .btn-teal-outline:hover {
+      background: rgba(13,148,136,.08);
+      border-color: var(--teal);
+      color: var(--teal);
+      transform: translateY(-1px);
+      text-decoration: none;
+    }
+
+    /* SPINNER */
+    .spinner-sm {
+      width: 15px; height: 15px;
+      border: 2px solid rgba(255,255,255,.35);
+      border-top-color: #fff; border-radius: 50%;
+      animation: spin .7s linear infinite; display: none;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* DIVIDER */
+    .divider {
+      display: flex; align-items: center; gap: 12px;
+      margin: 20px 0;
+    }
+    .divider::before, .divider::after {
+      content: ''; flex: 1; height: 1px; background: var(--border);
+    }
+    .divider span { font-size: 11.5px; color: var(--text3); white-space: nowrap; }
+
+    /* ═══════════════════════════════
+       PIE DEL PANEL
+    ═══════════════════════════════ */
+    .panel-foot {
+      padding: 16px 36px 22px;
+      text-align: center;
+      border-top: 1px solid var(--border);
+    }
+    .panel-foot p { font-size: 12px; color: var(--text3); }
+
+    /* ═══════════════════════════════
+       RESPONSIVE
+    ═══════════════════════════════ */
+    @media (max-width: 480px) {
+      .panel-head, .panel-body, .panel-foot {
+        padding-left: 22px; padding-right: 22px;
+      }
+    }
+  </style>
 </head>
 
 <body>
 
-<div class="container h-100 d-flex justify-content-center align-items-center">
-    <div class="login-card">
+<div class="login-panel">
 
-        <h3 class="login-title">Guardian Digital</h3>
-        <p class="login-subtitle text-center">
-            Bienvenido de nuevo 👋
-        </p>
+  <!-- Barra de color superior -->
+  <div class="panel-topbar"></div>
 
-        <form id="loginForm" action="/login" method="POST">
-
-            <div class="form-group">
-                <label>Usuario</label>
-                <div class="input-group input-moderno">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text icon-moderno">
-                            <i class="fas fa-user"></i>
-                        </span>
-                    </div>
-                    <input type="text" 
-                        name="txtNombre" 
-                        class="form-control border-0" 
-                        placeholder="Ingrese su usuario" 
-                        required>
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label>Contraseña</label>
-                <div class="input-group input-moderno">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text icon-moderno">
-                            <i class="fas fa-lock"></i>
-                        </span>
-                    </div>
-                    <input type="password" 
-                        name="txtContrasenia" 
-                        class="form-control border-0" 
-                        placeholder="Ingrese su contraseña" required>
-                </div>
-            </div>
-
-            <button type="submit" class="btn btn-login btn-block">
-                Iniciar Sesión
-            </button>
-
-            <button type="button" 
-                    class="btn btn-outline-secondary btn-block btn-secundario-moderno"
-                    onclick="window.location.href='/registroUsuario'">
-                Crear una cuenta
-            </button>
-
-        </form>
-
+  <!-- CABECERA -->
+  <div class="panel-head">
+    <div class="head-icon">
+      <i class="fa-solid fa-shield-heart"></i>
     </div>
+    <h1 class="head-title">Bienvenido 👋</h1>
+    <p class="head-sub">Ingresa a tu espacio seguro y confidencial</p>
+  </div>
+
+  <!-- CUERPO -->
+  <div class="panel-body">
+
+    <!-- Banner de error global -->
+    <div class="err-banner" id="errorBanner">
+      <i class="fa-solid fa-circle-exclamation"></i>
+      <span id="errorMsg">Usuario o contraseña incorrectos</span>
+    </div>
+
+    <form id="loginForm" action="/login" method="POST">
+
+      <!-- CORREO -->
+      <div class="field-group">
+        <label for="txtCorreo">Correo electrónico</label>
+        <div class="input-wrap">
+          <i class="fa-solid fa-envelope iico"></i>
+          <input type="email" id="txtCorreo" name="txtCorreo"
+            class="input-mod"
+            placeholder="ejemplo@gmail.com"
+            autocomplete="email">
+        </div>
+        <div class="field-err" id="errCorreo">
+          <i class="fa-solid fa-triangle-exclamation"></i> Ingresa un correo válido
+        </div>
+      </div>
+
+      <!-- CONTRASEÑA -->
+      <div class="field-group">
+        <label for="txtContrasenia">Contraseña</label>
+        <div class="input-wrap">
+          <i class="fa-solid fa-lock iico"></i>
+          <input type="password" id="txtContrasenia" name="txtContrasenia"
+            class="input-mod has-toggle"
+            placeholder="Tu contraseña"
+            autocomplete="current-password">
+          <button type="button" class="itoggle" onclick="togglePass()">
+            <i class="fa-solid fa-eye" id="eyeIcon"></i>
+          </button>
+        </div>
+        <div class="field-err" id="errContrasenia">
+          <i class="fa-solid fa-triangle-exclamation"></i> La contraseña es requerida
+        </div>
+      </div>
+
+      <!-- OLVIDÉ CONTRASEÑA -->
+      <div class="forgot-row">
+        <a href="/recuperar-contrasenia" class="forgot-link">¿Olvidaste tu contraseña?</a>
+      </div>
+
+      <!-- BOTÓN INICIAR SESIÓN -->
+      <button type="submit" class="btn-primary-mod" id="btnLogin" onclick="return validarLogin(event)">
+        <div class="spinner-sm" id="spinner"></div>
+        <span id="btnTexto">
+          <i class="fa-solid fa-right-to-bracket"></i>&nbsp; Iniciar Sesión
+        </span>
+      </button>
+
+    </form>
+
+    <!-- SEPARADOR -->
+    <div class="divider"><span>¿no tienes cuenta?</span></div>
+
+    <!-- CREAR CUENTA PACIENTE -->
+    <button type="button"
+      class="btn-outline-mod btn-blue-outline"
+      onclick="window.location.href='/registroUsuario'">
+      <i class="fa-solid fa-user-plus"></i> Crear cuenta de paciente
+    </button>
+
+    <!-- REGISTRO PROFESIONAL -->
+    <a href="/registro-profesional" class="btn-outline-mod btn-teal-outline">
+      <i class="fa-solid fa-stethoscope"></i> ¿Eres psicólogo? Regístrate aquí
+    </a>
+
+  </div>
+
+  <!-- PIE -->
+  <div class="panel-foot">
+    <p>Guardian Digital &nbsp;·&nbsp; Apoyo emocional con IA &nbsp;·&nbsp; Perú</p>
+  </div>
+
 </div>
 
-</body>
+<!-- ═══════════════ SCRIPTS ═══════════════ -->
 <script>
-    $(function () {
 
-    const campos = $('input[name="txtNombre"], input[name="txtContrasenia"]');
+  /* ── Detectar error enviado por Flask vía ?error=... ── */
+  (function() {
+    const params = new URLSearchParams(window.location.search);
+    const err = params.get('error');
+    if (err) {
+      const banner = document.getElementById('errorBanner');
+      document.getElementById('errorMsg').textContent = decodeURIComponent(err);
+      banner.classList.add('show');
+    }
+  })();
 
-    // 1️⃣ Bloquear tecla espacio
-    campos.on('keydown', function(e) {
-        if (e.key === " " || e.keyCode === 32) {
-            e.preventDefault();
-        }
-    });
+  /* ── Toggle mostrar/ocultar contraseña ── */
+  function togglePass() {
+    const input = document.getElementById('txtContrasenia');
+    const icon  = document.getElementById('eyeIcon');
+    const show  = input.type === 'password';
+    input.type  = show ? 'text' : 'password';
+    icon.className = `fa-solid ${show ? 'fa-eye-slash' : 'fa-eye'}`;
+  }
 
-    // 2️⃣ Eliminar espacios mientras escribe o pega
-    campos.on('keyup paste input', function() {
-        let valorSinEspacios = this.value.replace(/\s+/g, '');
-        if (this.value !== valorSinEspacios) {
-            this.value = valorSinEspacios;
-        }
+  /* ── Validación vanilla JS ── */
+  function validarLogin(e) {
+    e.preventDefault();
+    let valido = true;
 
-        // Revalidar campo automáticamente
-        $('#loginForm').bootstrapValidator('revalidateField', $(this).attr('name'));
-    });
+    const correo     = document.getElementById('txtCorreo');
+    const contra     = document.getElementById('txtContrasenia');
+    const errCorreo  = document.getElementById('errCorreo');
+    const errContra  = document.getElementById('errContrasenia');
+    const banner     = document.getElementById('errorBanner');
 
-});
+    // Limpiar estados
+    [correo, contra].forEach(i => i.classList.remove('is-error'));
+    [errCorreo, errContra].forEach(e => e.classList.remove('show'));
+    banner.classList.remove('show');
 
-    $(document).ready(function() {
+    // Validar correo
+    const emailRx = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!correo.value.trim() || !emailRx.test(correo.value.trim())) {
+      correo.classList.add('is-error');
+      errCorreo.classList.add('show');
+      valido = false;
+    }
 
-    const campos = $('input[name="txtNombre"], input[name="txtContrasenia"]');
+    // Validar contraseña
+    if (!contra.value.trim()) {
+      contra.classList.add('is-error');
+      errContra.classList.add('show');
+      valido = false;
+    }
 
-    // Eliminar espacios automáticamente mientras escribe o pega
-    campos.on('input', function() {
-        this.value = this.value.replace(/\s+/g, '');
-    });
+    if (!valido) return;
 
-    // Bootstrap Validator
-    $('#loginForm').bootstrapValidator({
-        fields: {
+    // Mostrar spinner y deshabilitar botón
+    document.getElementById('spinner').style.display = 'inline-block';
+    document.getElementById('btnTexto').style.opacity = '0.65';
+    document.getElementById('btnLogin').disabled = true;
 
-            txtNombre: {
-                validators: {
-                    notEmpty: {
-                        message: 'El usuario es requerido'
-                    },
-                    stringLength: {
-                        min: 4,
-                        max: 20,
-                        message: 'Debe tener entre 4 y 20 caracteres'
-                    },
-                    regexp: {
-                        regexp: /^[a-zA-Z0-9_]+$/,
-                        message: 'Solo puede contener letras, números o guiones bajos'
-                    }
-                }
-            },
+    // Enviar formulario
+    document.getElementById('loginForm').submit();
+  }
 
-            txtContrasenia: {
-                validators: {
-                    notEmpty: {
-                        message: 'La contraseña es requerida'
-                    },
-                    stringLength: {
-                        min: 3,
-                        message: 'La contraseña debe tener mínimo 3 caracteres'
-                    },
-                    regexp: {
-                        regexp: /^[a-zA-Z0-9_]+$/,
-                        message: 'Solo puede contener letras, números o guiones bajos'
-                    }
-                }
-            }
+  /* ── Limpiar errores al escribir ── */
+  document.getElementById('txtCorreo').addEventListener('input', function() {
+    this.classList.remove('is-error');
+    document.getElementById('errCorreo').classList.remove('show');
+  });
 
-        }
-    });
+  document.getElementById('txtContrasenia').addEventListener('input', function() {
+    this.classList.remove('is-error');
+    document.getElementById('errContrasenia').classList.remove('show');
+    // Eliminar espacios
+    this.value = this.value.replace(/\s+/g, '');
+  });
 
-});
 </script>
+
+</body>
 </html>

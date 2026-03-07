@@ -1,498 +1,732 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
-    <meta charset="UTF-8">
-    <title>Registro de Usuario</title>
+  <meta charset="UTF-8">
+  <title>Registro de Paciente — Guardian Digital</title>
 
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrapValidator.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.css') }}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=Fraunces:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
 
-    <script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/bootstrapValidator.js') }}"></script>
-    <link rel="stylesheet" href="{{ url_for('static', filename='styleRegistro.css') }}">
+  <script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
 
-    <style>
-        /* ═══════════════════════════════════════════════
-           SELECTOR DE ENTORNO — adaptado al tema oscuro
-        ═══════════════════════════════════════════════ */
+  <style>
+    :root {
+      --bg:         #080c12;
+      --bg-to:      #0d1520;
+      --surface:    #0e1420;
+      --surface2:   #131926;
+      --surface3:   #1a2740;
+      --border:     rgba(255,255,255,.07);
+      --border-acc: rgba(77,163,255,.18);
+      --accent:     #4da3ff;
+      --accent2:    #0066ff;
+      --glow:       rgba(77,163,255,.12);
+      --text:       #dde5f0;
+      --text2:      #7a8fa8;
+      --text3:      #3d4f66;
+      --red:        #f87171;
+      --red-soft:   rgba(220,38,38,.07);
+      --red-border: rgba(220,38,38,.2);
+      --green:      #4ade80;
+      --r:          13px;
+      --r-sm:       10px;
+    }
 
-        .entorno-titulo {
-            font-weight: 600;
-            color: #d1d1d1;
-            margin-bottom: 4px;
-            font-size: 15px;
-        }
-        .entorno-sub {
-            color: #777;
-            font-size: 12px;
-            margin-bottom: 14px;
-        }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-        /* Grid de tarjetas de tema */
-        .tema-grid {
-            display: grid;
-            grid-template-columns: repeat(6, 1fr);
-            gap: 10px;
-            margin-bottom: 12px;
-        }
+    body {
+      font-family: 'DM Sans', sans-serif;
+      min-height: 100vh;
+      background: var(--bg);
+      background-image:
+        radial-gradient(ellipse at 15% 20%, rgba(77,163,255,.07) 0%, transparent 55%),
+        radial-gradient(ellipse at 85% 80%, rgba(0,102,255,.05) 0%, transparent 55%),
+        linear-gradient(150deg, var(--bg) 0%, var(--bg-to) 100%);
+      background-attachment: fixed;
+      display: flex; justify-content: center; align-items: flex-start;
+      padding: 40px 16px 72px;
+      overflow-y: auto;
+      color: var(--text);
+    }
 
-        /* Radio oculto */
-        .tema-radio { display: none; }
+    body::before {
+      content: '';
+      position: fixed; inset: 0; pointer-events: none; z-index: 0;
+      background-image: radial-gradient(rgba(255,255,255,.022) 1px, transparent 1px);
+      background-size: 28px 28px;
+    }
 
-        /* Tarjeta visible */
-        .tema-card {
-            border-radius: 12px;
-            overflow: hidden;
-            border: 2px solid rgba(255,255,255,0.08);
-            background: #1f1f1f;
-            cursor: pointer;
-            transition: all 0.25s ease;
-            display: block;
-            position: relative;
-        }
-        .tema-card:hover {
-            transform: translateY(-3px);
-            border-color: rgba(255,255,255,0.2);
-            box-shadow: 0 8px 20px rgba(0,0,0,0.5);
-        }
-        /* Seleccionado */
-        .tema-radio:checked + .tema-card {
-            border-color: #4da3ff;
-            box-shadow: 0 0 0 3px rgba(77,163,255,0.2), 0 8px 20px rgba(0,0,0,0.4);
-        }
-        /* Checkmark cuando está seleccionado */
-        .tema-radio:checked + .tema-card::after {
-            content: '✓';
-            position: absolute; top: 6px; right: 7px;
-            font-size: 0.58rem; font-weight: 900; color: #fff;
-            background: #4da3ff;
-            width: 15px; height: 15px; border-radius: 50%;
-            line-height: 15px; text-align: center; display: block;
-        }
+    /* ── PANEL ── */
+    .registro-panel {
+      position: relative; z-index: 1;
+      width: 100%; max-width: 860px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 22px; overflow: visible;
+      box-shadow: 0 0 0 1px rgba(255,255,255,.02), 0 40px 100px rgba(0,0,0,.8);
+      animation: panelUp .5s cubic-bezier(.16,1,.3,1) both;
+    }
+    @keyframes panelUp {
+      from { opacity:0; transform:translateY(28px); }
+      to   { opacity:1; transform:translateY(0); }
+    }
+    .registro-panel::before {
+      content:''; display:block; height:3px;
+      background: linear-gradient(90deg, transparent, var(--accent), #a78bfa, var(--accent2), transparent);
+      border-radius: 22px 22px 0 0;
+    }
 
-        /* Franja de color degradada */
-        .tema-swatch {
-            height: 48px; width: 100%;
-        }
-        .sw-brisa_mar        { background: linear-gradient(135deg, #1D6FD1, #5BA4F5); }
-        .sw-lavanda_suave    { background: linear-gradient(135deg, #7C3AED, #A78BFA); }
-        .sw-bosque_sereno    { background: linear-gradient(135deg, #1B7A3E, #4BAF6C); }
-        .sw-atardecer_calido { background: linear-gradient(135deg, #D05A00, #F9883E); }
-        .sw-rosa_amanecer    { background: linear-gradient(135deg, #C2185B, #F06292); }
-        .sw-noche_estrellada { background: linear-gradient(135deg, #1A2140, #7B9CFF); }
+    /* ── CABECERA ── */
+    .panel-head {
+      padding: 28px 38px 24px;
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; gap: 16px;
+    }
+    .panel-head-icon {
+      width: 50px; height: 50px; border-radius: 14px; flex-shrink: 0;
+      background: linear-gradient(135deg, var(--accent2), var(--accent));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 21px; color: #fff;
+      box-shadow: 0 8px 28px rgba(77,163,255,.28);
+    }
+    .panel-head-text h3 {
+      font-family: 'Fraunces', serif;
+      font-size: 20px; font-weight: 700;
+      color: var(--text); margin: 0 0 3px; line-height: 1.2;
+    }
+    .panel-head-text p { font-size: 13px; color: var(--text2); margin: 0; }
 
-        /* Texto dentro de la card */
-        .tema-info {
-            padding: 7px 8px;
-            background: #161616;
-        }
-        .tema-nombre {
-            font-size: 0.65rem;
-            font-weight: 600;
-            color: #d1d1d1;
-            display: block;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-        .tema-mood {
-            font-size: 0.58rem;
-            color: #555;
-            display: block;
-            margin-top: 1px;
-        }
 
-        /* Caja de psicología del color */
-        .psych-box {
-            background: rgba(77,163,255,0.06);
-            border: 1px solid rgba(77,163,255,0.15);
-            border-left: 3px solid #4da3ff;
-            border-radius: 10px;
-            padding: 10px 13px;
-            font-size: 0.78rem;
-            line-height: 1.55;
-            color: #888;
-            transition: opacity 0.18s ease;
-            min-height: 46px;
-        }
-        .psych-box strong { color: #4da3ff; }
 
-        /* Responsive: 3 columnas en mobile */
-        @media (max-width: 600px) {
-            .tema-grid { grid-template-columns: repeat(3, 1fr); }
-        }
-    </style>
+    /* ── CUERPO ── */
+    .panel-body { padding: 30px 38px 38px; }
+
+    /* ── SECCIONES ── */
+    .sec-sep {
+      display: flex; align-items: center; gap: 11px;
+      margin: 30px 0 18px;
+    }
+    .sec-sep:first-child { margin-top: 0; }
+    .sec-sep-icon {
+      width: 28px; height: 28px; border-radius: 8px; flex-shrink: 0;
+      background: var(--surface3);
+      border: 1px solid var(--border-acc);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 12px; color: var(--accent);
+    }
+    .sec-sep-label {
+      font-size: 10.5px; font-weight: 700; letter-spacing: 1.5px;
+      text-transform: uppercase; color: var(--text2); white-space: nowrap;
+    }
+    .sec-sep-line { flex: 1; height: 1px; background: var(--border); }
+
+    /* ── LABELS ── */
+    label {
+      font-size: 12px; font-weight: 600; letter-spacing: .3px;
+      color: var(--text2); margin-bottom: 7px; display: block;
+    }
+    label small { font-weight: 400; color: var(--text3); }
+
+    /* ── INPUTS CON ICONO ── */
+    .input-wrap { position: relative; }
+    .input-wrap .iico {
+      position: absolute; left: 13px; top: 50%; transform: translateY(-50%);
+      color: var(--text3); font-size: 13px; pointer-events: none; z-index: 2;
+    }
+    .input-wrap .itoggle {
+      position: absolute; right: 13px; top: 50%; transform: translateY(-50%);
+      color: var(--text3); font-size: 13px; cursor: pointer; z-index: 2;
+      transition: color .2s;
+    }
+    .input-wrap .itoggle:hover { color: var(--accent); }
+
+    .input-moderno {
+      width: 100%;
+      background: var(--surface2) !important;
+      border: 1.5px solid var(--border) !important;
+      border-radius: var(--r-sm) !important;
+      color: var(--text) !important;
+      font-family: 'DM Sans', sans-serif !important;
+      font-size: 13.5px !important;
+      padding: 11px 13px !important;
+      transition: border-color .2s, box-shadow .2s !important;
+      outline: none !important;
+    }
+    .input-wrap .input-moderno { padding-left: 37px !important; }
+    .input-wrap.has-toggle .input-moderno { padding-right: 38px !important; }
+    .input-moderno::placeholder { color: var(--text3) !important; }
+    .input-moderno:focus {
+      background: var(--surface3) !important;
+      border-color: var(--accent) !important;
+      box-shadow: 0 0 0 3px var(--glow) !important;
+      color: var(--text) !important;
+    }
+    select.input-moderno { padding-left: 37px !important; }
+    select.input-moderno option { background: var(--surface2); color: var(--text); }
+
+    .campo-hint {
+      font-size: 11.5px; color: var(--text3); margin-top: 5px;
+      line-height: 1.45; display: flex; align-items: flex-start; gap: 5px;
+    }
+    .campo-hint i { color: var(--accent); font-size: 9.5px; margin-top: 2px; flex-shrink: 0; }
+
+    /* ── TEMAS ── */
+    .tema-intro-title { font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 3px; }
+    .tema-intro-sub   { font-size: 12px; color: var(--text2); margin-bottom: 14px; }
+    .tema-grid { display: grid; grid-template-columns: repeat(6,1fr); gap: 9px; margin-bottom: 12px; }
+    .tema-radio { display: none; }
+    .tema-card {
+      border-radius: 11px; overflow: hidden; display: block; position: relative;
+      border: 2px solid var(--border); background: var(--surface2); cursor: pointer;
+      transition: all .22s;
+    }
+    .tema-card:hover { transform: translateY(-3px); border-color: rgba(255,255,255,.15); box-shadow: 0 10px 24px rgba(0,0,0,.5); }
+    .tema-radio:checked + .tema-card {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px var(--glow), 0 10px 24px rgba(0,0,0,.4);
+    }
+    .tema-radio:checked + .tema-card::after {
+      content:'✓'; position:absolute; top:5px; right:6px;
+      font-size:.55rem; font-weight:900; color:#fff;
+      background:var(--accent); width:14px; height:14px;
+      border-radius:50%; line-height:14px; text-align:center; display:block;
+    }
+    .tema-swatch { height: 46px; width: 100%; }
+    .sw-brisa_mar        { background: linear-gradient(135deg,#1D6FD1,#5BA4F5); }
+    .sw-lavanda_suave    { background: linear-gradient(135deg,#7C3AED,#A78BFA); }
+    .sw-bosque_sereno    { background: linear-gradient(135deg,#1B7A3E,#4BAF6C); }
+    .sw-atardecer_calido { background: linear-gradient(135deg,#D05A00,#F9883E); }
+    .sw-rosa_amanecer    { background: linear-gradient(135deg,#C2185B,#F06292); }
+    .sw-noche_estrellada { background: linear-gradient(135deg,#1A2140,#7B9CFF); }
+    .tema-info { padding: 7px 8px; background: rgba(0,0,0,.35); }
+    .tema-nombre { font-size:.62rem; font-weight:600; color:var(--text); display:block; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .tema-mood   { font-size:.56rem; color:var(--text3); display:block; margin-top:1px; }
+
+
+
+
+    /* ── BOTONES ── */
+    .btn-moderno {
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      border: none; border-radius: 11px;
+      padding: 12px 20px; font-weight: 600;
+      font-family: 'DM Sans', sans-serif; font-size: 14px; color: #fff;
+      transition: all .25s;
+      box-shadow: 0 4px 18px rgba(77,163,255,.22);
+      display: inline-flex; align-items: center; gap: 7px;
+    }
+    .btn-moderno:hover { transform:translateY(-2px); color:#fff; box-shadow: 0 10px 28px rgba(77,163,255,.38); }
+    .btn-secundario-moderno {
+      background: transparent;
+      border: 1.5px solid rgba(77,163,255,.25);
+      color: var(--accent); border-radius: 11px;
+      padding: 12px 20px; font-weight: 600;
+      font-family: 'DM Sans', sans-serif; font-size: 14px;
+      transition: all .25s;
+      display: inline-flex; align-items: center; gap: 7px;
+    }
+    .btn-secundario-moderno:hover { background: rgba(77,163,255,.07); border-color: var(--accent); color:var(--accent); transform:translateY(-1px); }
+
+    /* ── MODAL ── */
+    .modal-content  { background:var(--surface2)!important; color:var(--text)!important; border:1px solid var(--border)!important; border-radius:16px!important; }
+    .modal-header   { border-color:var(--border)!important; }
+    .modal-footer   { border-color:var(--border)!important; }
+    .modal-body p, .modal-body label { color:var(--text)!important; }
+
+    /* ── BOOTSTRAP VALIDATOR DARK ── */
+    .has-error   .input-moderno { border-color:var(--red)!important; box-shadow:0 0 0 3px rgba(248,113,113,.1)!important; }
+    .has-success .input-moderno { border-color:var(--green)!important; }
+    .help-block  { font-size:11.5px!important; color:var(--red)!important; margin-top:5px; }
+    .has-error   label { color:var(--red)!important; }
+    .has-success .fa-check { color:var(--green)!important; }
+    .has-error   .fa-times  { color:var(--red)!important; }
+    .form-control-feedback { top:35px!important; }
+
+    /* ── RESPONSIVE ── */
+    @media(max-width:767px) {
+      .panel-head, .panel-body { padding-left:20px; padding-right:20px; }
+        .step-label { display:none; }
+      .emergencia-cuerpo { padding:16px 14px 8px; }
+    }
+    @media(max-width:600px) {
+      .tema-grid { grid-template-columns:repeat(3,1fr); }
+    }
+
+    /* ── SPINNER ── */
+    .spinner-btn {
+      width: 16px; height: 16px;
+      border: 2px solid rgba(255,255,255,.4);
+      border-top-color: #fff; border-radius: 50%;
+      animation: spin .7s linear infinite; display: none;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+  </style>
 </head>
 
 <body>
 
-    <!-- Modal -->
-    <div class="modal fade" id="modalMensaje" tabindex="-1">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header" id="modalHeader">
-                    <h5 class="modal-title" id="modalTitulo">Mensaje</h5>
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                </div>
-                <div class="modal-body" id="modalBody">Mensaje aquí</div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                </div>
+<!-- Modal feedback -->
+<div class="modal fade" id="modalMensaje" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header" id="modalHeader">
+        <h5 class="modal-title" id="modalTitulo">Mensaje</h5>
+        <button type="button" class="close" data-dismiss="modal" style="color:var(--text2)">&times;</button>
+      </div>
+      <div class="modal-body" id="modalBody"></div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="registro-panel">
+
+  <!-- ── CABECERA ── -->
+  <div class="panel-head">
+    <div class="panel-head-icon">
+      <i class="fa-solid fa-shield-heart"></i>
+    </div>
+    <div class="panel-head-text">
+      <h3>Crear Cuenta</h3>
+      <p>Únete a Guardian Digital — tu espacio seguro y confidencial</p>
+    </div>
+  </div>
+
+  <!-- ── CUERPO ── -->
+  <div class="panel-body">
+    <form id="formRegistro">
+
+      <!-- ══ 1. DATOS PERSONALES ══ -->
+      <div class="sec-sep" style="margin-top:0">
+        <div class="sec-sep-icon"><i class="fa-solid fa-user"></i></div>
+        <span class="sec-sep-label">Datos personales</span>
+        <div class="sec-sep-line"></div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-group">
+            <label>Nombre</label>
+            <div class="input-wrap">
+              <i class="fa-solid fa-user iico"></i>
+              <input type="text" name="txtNombre" class="form-control input-moderno"
+                placeholder="¿Cómo te llamamos?" required>
             </div>
+          </div>
         </div>
-    </div>
-
-
-    <div class="registro-panel">
-
-        <h3 class="text-center titulo-registro">Crear Cuenta</h3>
-        <p class="text-center subtitulo-registro">Completa tus datos para continuar</p>
-
-        <form id="formRegistro" action="/registrar" method="POST">
-
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label>Nombre o Usuario</label>
-                        <input type="text" name="txtNombre" class="form-control input-moderno" required>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label>Apellidos</label>
-                        <input type="text" name="txtApellidos" class="form-control input-moderno" required>
-                    </div>
-                </div>
+        <div class="col-md-6">
+          <div class="form-group">
+            <label>Apellidos</label>
+            <div class="input-wrap">
+              <i class="fa-solid fa-id-card iico"></i>
+              <input type="text" name="txtApellidos" class="form-control input-moderno"
+                placeholder="Tus apellidos" required>
             </div>
+          </div>
+        </div>
+      </div>
 
-            <div class="row">
-                <div class="col-md-5">
-                    <div class="form-group">
-                        <label>Correo</label>
-                        <input type="email" name="txtCorreo" class="form-control input-moderno" placeholder="example@gmail.com" required>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="form-group">
-                        <label>Contraseña</label>
-                        <input type="password" name="txtContrasenia" class="form-control input-moderno" required>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="form-group">
-                        <label>Edad</label>
-                        <input type="text" name="txtEdad" class="form-control input-moderno" min="1" max="100" required>
-                    </div>
-                </div>
+      <div class="row">
+        <div class="col-md-5">
+          <div class="form-group">
+            <label>Correo electrónico</label>
+            <div class="input-wrap">
+              <i class="fa-solid fa-envelope iico"></i>
+              <input type="email" name="txtCorreo" class="form-control input-moderno"
+                placeholder="example@gmail.com" required>
             </div>
-
-            <hr class="mt-2 mb-4">
-
-            <div class="row">
-                <div class="col-md-4">
-                    <div class="form-group">
-                        <label>¿Cuáles son tus gustos?</label>
-                        <input type="text" name="txtgustos" class="form-control input-moderno" placeholder="Ej: videojuegos, leer, música" required>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="form-group">
-                        <label>¿Tu mascota favorita es?</label>
-                        <input type="text" name="txtmascota" class="form-control input-moderno" placeholder="Ej: Perro, Gato" required>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="form-group">
-                        <label>Tono de lenguaje IA</label>
-                        <select name="txtlenguaje" class="form-control input-moderno" required>
-                            <option value="">Selecciona...</option>
-                            <option value="Empático, cálido y comprensivo">Empático y cálido</option>
-                            <option value="Directo, práctico y resolutivo">Directo y práctico</option>
-                            <option value="Motivador, enérgico y positivo">Motivador y positivo</option>
-                            <option value="Sereno, calmado y reflexivo">Sereno y calmado</option>
-                            <option value="Amigable, informal y cercano">Amigable con emogis</option>
-                        </select>
-                    </div>
-                </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="form-group">
+            <label>Contraseña</label>
+            <div class="input-wrap has-toggle">
+              <i class="fa-solid fa-lock iico"></i>
+              <input type="password" name="txtContrasenia" id="txtContrasenia"
+                class="form-control input-moderno"
+                placeholder="Mínimo 8 caracteres" required>
+              <i class="fa-solid fa-eye itoggle" onclick="togglePass('txtContrasenia', this)"></i>
             </div>
-
-            <hr class="mt-2 mb-4">
-
-            <!-- ═══════════════════════════════════════════════
-                 SELECTOR DE ENTORNO DE CALMA ← NUEVO
-            ═══════════════════════════════════════════════ -->
-            <div class="row">
-                <div class="col-md-12">
-                    <p class="entorno-titulo">🎨 Elige el color de tu Espacio Seguro</p>
-                    <p class="entorno-sub">Define la atmósfera visual de tus sesiones. Podrás cambiarlo cuando quieras desde el chat.</p>
-
-                    <div class="tema-grid">
-
-                        <div>
-                            <input type="radio" name="txtTemaColor" value="brisa_mar" class="tema-radio" id="tema1" onchange="verPsych(this)" required>
-                            <label class="tema-card" for="tema1">
-                                <div class="tema-swatch sw-brisa_mar"></div>
-                                <div class="tema-info">
-                                    <span class="tema-nombre">🌊 Brisa de Mar</span>
-                                    <span class="tema-mood">Confianza · Calma</span>
-                                </div>
-                            </label>
-                        </div>
-
-                        <div>
-                            <input type="radio" name="txtTemaColor" value="lavanda_suave" class="tema-radio" id="tema2" onchange="verPsych(this)">
-                            <label class="tema-card" for="tema2">
-                                <div class="tema-swatch sw-lavanda_suave"></div>
-                                <div class="tema-info">
-                                    <span class="tema-nombre">🌸 Lavanda</span>
-                                    <span class="tema-mood">Creatividad · Calma</span>
-                                </div>
-                            </label>
-                        </div>
-
-                        <div>
-                            <input type="radio" name="txtTemaColor" value="bosque_sereno" class="tema-radio" id="tema3" onchange="verPsych(this)">
-                            <label class="tema-card" for="tema3">
-                                <div class="tema-swatch sw-bosque_sereno"></div>
-                                <div class="tema-info">
-                                    <span class="tema-nombre">🌿 Bosque</span>
-                                    <span class="tema-mood">Equilibrio · Natura</span>
-                                </div>
-                            </label>
-                        </div>
-
-                        <div>
-                            <input type="radio" name="txtTemaColor" value="atardecer_calido" class="tema-radio" id="tema4" onchange="verPsych(this)">
-                            <label class="tema-card" for="tema4">
-                                <div class="tema-swatch sw-atardecer_calido"></div>
-                                <div class="tema-info">
-                                    <span class="tema-nombre">🌅 Atardecer</span>
-                                    <span class="tema-mood">Energía · Calidez</span>
-                                </div>
-                            </label>
-                        </div>
-
-                        <div>
-                            <input type="radio" name="txtTemaColor" value="rosa_amanecer" class="tema-radio" id="tema5" onchange="verPsych(this)">
-                            <label class="tema-card" for="tema5">
-                                <div class="tema-swatch sw-rosa_amanecer"></div>
-                                <div class="tema-info">
-                                    <span class="tema-nombre">🌹 Rosa</span>
-                                    <span class="tema-mood">Compasión · Ternura</span>
-                                </div>
-                            </label>
-                        </div>
-
-                        <div>
-                            <input type="radio" name="txtTemaColor" value="noche_estrellada" class="tema-radio" id="tema6" onchange="verPsych(this)">
-                            <label class="tema-card" for="tema6">
-                                <div class="tema-swatch sw-noche_estrellada"></div>
-                                <div class="tema-info">
-                                    <span class="tema-nombre">🌌 Noche</span>
-                                    <span class="tema-mood">Descanso · Serenidad</span>
-                                </div>
-                            </label>
-                        </div>
-
-                    </div>
-
-                    <!-- Descripción psicológica del color elegido -->
-                    <div class="psych-box" id="psychBox">
-                        👆 Selecciona un color para ver su <strong>efecto psicológico</strong> en tu bienestar.
-                    </div>
-
-                </div>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="form-group">
+            <label>Edad</label>
+            <div class="input-wrap">
+              <i class="fa-solid fa-cake-candles iico"></i>
+              <input type="number" name="txtEdad" class="form-control input-moderno"
+                placeholder="Ej: 22" min="1" max="100" required>
             </div>
-            <!-- ═══ FIN SELECTOR ═══ -->
+          </div>
+        </div>
+      </div>
 
-            <hr class="mt-4 mb-4">
+      <!-- ══ 2. PERSONALIZACIÓN IA ══ -->
+      <div class="sec-sep">
+        <div class="sec-sep-icon"><i class="fa-solid fa-brain"></i></div>
+        <span class="sec-sep-label">Personalización IA</span>
+        <div class="sec-sep-line"></div>
+      </div>
 
-            <div class="row">
-                <div class="col-md-4">
-                    <div class="form-group">
-                        <label>Departamento</label>
-                        <select name="selectDepartamento" id="departamento" class="form-control input-moderno">
-                            <option value="">Seleccione Departamento</option>
-                            {% for d in departamentos %}
-                            <option value="{{ d.id_departamento }}">{{ d.nombre }}</option>
-                            {% endfor %}
-                        </select>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="form-group">
-                        <label>Provincia</label>
-                        <select name="selectProvincia" id="provincia" class="form-control input-moderno">
-                            <option value="">Seleccione Provincia</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="form-group">
-                        <label>Distrito</label>
-                        <select name="selectDistrito" id="distrito" class="form-control input-moderno">
-                            <option value="">Seleccione Distrito</option>
-                        </select>
-                    </div>
-                </div>
+      <div class="row">
+        <div class="col-md-4">
+          <div class="form-group">
+            <label>¿Cuáles son tus gustos?</label>
+            <div class="input-wrap">
+              <i class="fa-solid fa-heart iico"></i>
+              <input type="text" name="txtgustos" class="form-control input-moderno"
+                placeholder="Ej: videojuegos, música" required>
             </div>
-
-            <div class="row mt-4">
-                <div class="col-md-6">
-                    <button type="button" class="btn btn-secondary btn-block btn-secundario-moderno"
-                        onclick="window.location.href='/inicio'">
-                        Ya tengo cuenta
-                    </button>
-                </div>
-                <div class="col-md-6">
-                    <button type="submit" class="btn btn-primary btn-block btn-moderno">
-                        Crear Cuenta
-                    </button>
-                </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="form-group">
+            <label>¿Tu mascota favorita?</label>
+            <div class="input-wrap">
+              <i class="fa-solid fa-paw iico"></i>
+              <input type="text" name="txtmascota" class="form-control input-moderno"
+                placeholder="Ej: Perro, Gato" required>
             </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="form-group">
+            <label>Tono de lenguaje IA</label>
+            <div class="input-wrap">
+              <i class="fa-solid fa-comment-dots iico"></i>
+              <select name="txtlenguaje" class="form-control input-moderno" required>
+                <option value="">Selecciona...</option>
+                <option value="Empático, cálido y comprensivo">Empático y cálido</option>
+                <option value="Directo, práctico y resolutivo">Directo y práctico</option>
+                <option value="Motivador, enérgico y positivo">Motivador y positivo</option>
+                <option value="Sereno, calmado y reflexivo">Sereno y calmado</option>
+                <option value="Amigable, informal y cercano">Amigable con emojis</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
 
-        </form>
-    </div>
+      <!-- ══ 3. TEMA DE COLOR ══ -->
+      <div class="sec-sep">
+        <div class="sec-sep-icon"><i class="fa-solid fa-palette"></i></div>
+        <span class="sec-sep-label">Tu espacio seguro</span>
+        <div class="sec-sep-line"></div>
+      </div>
 
-    <script>
-        /* ═══════════════════════════════════════════════
-           PSICOLOGÍA DEL COLOR
-        ═══════════════════════════════════════════════ */
-        const PSYCH = {
-            brisa_mar:         '<strong>🌊 Brisa de Mar</strong> — El azul transmite <strong>confianza, calma y seguridad</strong>. Ideal para reducir la ansiedad y fomentar la comunicación abierta.',
-            lavanda_suave:     '<strong>🌸 Lavanda Suave</strong> — El violeta evoca <strong>creatividad e introspección</strong>. Favorece la reflexión profunda y la conexión emocional.',
-            bosque_sereno:     '<strong>🌿 Bosque Sereno</strong> — El verde simboliza <strong>equilibrio y crecimiento</strong>. Reduce el cortisol y transmite renovación y esperanza.',
-            atardecer_calido:  '<strong>🌅 Atardecer Cálido</strong> — El naranja aporta <strong>energía y calidez</strong>. Estimula la conversación y el optimismo.',
-            rosa_amanecer:     '<strong>🌹 Rosa Amanecer</strong> — El rosa transmite <strong>compasión y ternura</strong>. Crea un ambiente de vulnerabilidad segura.',
-            noche_estrellada:  '<strong>🌌 Noche Estrellada</strong> — El azul oscuro invita a la <strong>introspección y el descanso profundo</strong>. Para procesar emociones en calma.'
-        };
+      <p class="tema-intro-title">🎨 Elige el color de tu Espacio Seguro</p>
+      <p class="tema-intro-sub">Define la atmósfera visual de tus sesiones. Podrás cambiarlo cuando quieras desde el chat.</p>
 
-        function verPsych(radio) {
-            const box = document.getElementById('psychBox');
-            box.style.opacity = '0';
-            setTimeout(function () {
-                box.innerHTML = PSYCH[radio.value] || '';
-                box.style.transition = 'opacity 0.2s ease';
-                box.style.opacity = '1';
-            }, 140);
-        }
+      <div class="tema-grid">
+        <div>
+          <input type="radio" name="txtTemaColor" value="brisa_mar" class="tema-radio" id="tema1" onchange="verPsych(this)" required>
+          <label class="tema-card" for="tema1">
+            <div class="tema-swatch sw-brisa_mar"></div>
+            <div class="tema-info"><span class="tema-nombre">🌊 Brisa de Mar</span><span class="tema-mood">Confianza · Calma</span></div>
+          </label>
+        </div>
+        <div>
+          <input type="radio" name="txtTemaColor" value="lavanda_suave" class="tema-radio" id="tema2" onchange="verPsych(this)">
+          <label class="tema-card" for="tema2">
+            <div class="tema-swatch sw-lavanda_suave"></div>
+            <div class="tema-info"><span class="tema-nombre">🌸 Lavanda</span><span class="tema-mood">Creatividad · Calma</span></div>
+          </label>
+        </div>
+        <div>
+          <input type="radio" name="txtTemaColor" value="bosque_sereno" class="tema-radio" id="tema3" onchange="verPsych(this)">
+          <label class="tema-card" for="tema3">
+            <div class="tema-swatch sw-bosque_sereno"></div>
+            <div class="tema-info"><span class="tema-nombre">🌿 Bosque</span><span class="tema-mood">Equilibrio · Natura</span></div>
+          </label>
+        </div>
+        <div>
+          <input type="radio" name="txtTemaColor" value="atardecer_calido" class="tema-radio" id="tema4" onchange="verPsych(this)">
+          <label class="tema-card" for="tema4">
+            <div class="tema-swatch sw-atardecer_calido"></div>
+            <div class="tema-info"><span class="tema-nombre">🌅 Atardecer</span><span class="tema-mood">Energía · Calidez</span></div>
+          </label>
+        </div>
+        <div>
+          <input type="radio" name="txtTemaColor" value="rosa_amanecer" class="tema-radio" id="tema5" onchange="verPsych(this)">
+          <label class="tema-card" for="tema5">
+            <div class="tema-swatch sw-rosa_amanecer"></div>
+            <div class="tema-info"><span class="tema-nombre">🌹 Rosa</span><span class="tema-mood">Compasión · Ternura</span></div>
+          </label>
+        </div>
+        <div>
+          <input type="radio" name="txtTemaColor" value="noche_estrellada" class="tema-radio" id="tema6" onchange="verPsych(this)">
+          <label class="tema-card" for="tema6">
+            <div class="tema-swatch sw-noche_estrellada"></div>
+            <div class="tema-info"><span class="tema-nombre">🌌 Noche</span><span class="tema-mood">Descanso · Serenidad</span></div>
+          </label>
+        </div>
+      </div>
 
-        /* ═══════════════════════════════════════════════
-           BOOTSTRAP VALIDATOR + DEPARTAMENTOS
-        ═══════════════════════════════════════════════ */
-        $(document).ready(function () {
-            $('#formRegistro').bootstrapValidator({
-                fields: {
-                    txtNombre: {
-                        validators: {
-                            notEmpty: { message: 'El nombre es requerido' },
-                            stringLength: { min: 3, max: 30, message: 'Debe tener entre 3 y 30 caracteres' }
-                        }
-                    },
-                    txtApellidos: {
-                        validators: { notEmpty: { message: 'Los apellidos son requeridos' } }
-                    },
-                    txtContrasenia: {
-                        validators: { notEmpty: { message: 'La contraseña es requerida' } }
-                    },
-                    txtCorreo: {
-                        validators: {
-                            notEmpty: { message: 'El correo es requerido' },
-                            emailAddress: { message: 'Ingrese un correo válido' }
-                        }
-                    },
-                    txtEdad: {
-                        validators: {
-                            notEmpty: { message: 'La edad es requerida' },
-                            between: { min: 1, max: 100, message: 'Edad inválida' }
-                        }
-                    },
-                    txtgustos: {
-                        validators: { notEmpty: { message: 'Por favor ingrese sus gustos / intereses' } }
-                    },
-                    txtmascota: {
-                        validators: { notEmpty: { message: 'Ingrese su mascota / animal favorito' } }
-                    },
-                    txtlenguaje: {
-                        validators: { notEmpty: { message: 'Por favor, selecciona un tono de lenguaje' } }
-                    },
-                    txtTemaColor: {
-                        validators: { notEmpty: { message: 'Por favor, elige un color para tu espacio seguro' } }
-                    },
-                    selectDepartamento: {
-                        validators: { notEmpty: { message: 'Seleccione un departamento' } }
-                    },
-                    selectProvincia: {
-                        validators: { notEmpty: { message: 'Seleccione una provincia' } }
-                    },
-                    selectDistrito: {
-                        validators: { notEmpty: { message: 'Seleccione un distrito' } }
-                    }
-                }
-            });
+      <!-- ══ 4. UBICACIÓN ══ -->
+      <div class="sec-sep">
+        <div class="sec-sep-icon"><i class="fa-solid fa-location-dot"></i></div>
+        <span class="sec-sep-label">Ubicación</span>
+        <div class="sec-sep-line"></div>
+      </div>
 
-            // Departamento → Provincia
-            $("#departamento").change(function () {
-                let id_departamento = $(this).val();
-                $("#provincia").html('<option value="">Cargando...</option>');
-                $("#distrito").html('<option value="">Seleccione Distrito</option>');
-                if (id_departamento) {
-                    $.get("/provincias/" + id_departamento, function (data) {
-                        let opciones = '<option value="">Seleccione Provincia</option>';
-                        data.forEach(function (prov) {
-                            opciones += `<option value="${prov.id_provincia}">${prov.nombre}</option>`;
-                        });
-                        $("#provincia").html(opciones);
-                    });
-                }
-            });
+      <div class="row">
+        <div class="col-md-4">
+          <div class="form-group">
+            <label>Departamento</label>
+            <div class="input-wrap">
+              <i class="fa-solid fa-map iico"></i>
+              <select name="selectDepartamento" id="departamento" class="form-control input-moderno">
+                <option value="">Seleccione Departamento</option>
+                {% for d in departamentos %}
+                <option value="{{ d.id_departamento }}">{{ d.nombre }}</option>
+                {% endfor %}
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="form-group">
+            <label>Provincia</label>
+            <div class="input-wrap">
+              <i class="fa-solid fa-map-pin iico"></i>
+              <select name="selectProvincia" id="provincia" class="form-control input-moderno">
+                <option value="">Seleccione Provincia</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="form-group">
+            <label>Distrito</label>
+            <div class="input-wrap">
+              <i class="fa-solid fa-location-crosshairs iico"></i>
+              <select name="selectDistrito" id="distrito" class="form-control input-moderno">
+                <option value="">Seleccione Distrito</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
 
-            // Provincia → Distrito
-            $("#provincia").change(function () {
-                let id_provincia = $(this).val();
-                $("#distrito").html('<option value="">Cargando...</option>');
-                if (id_provincia) {
-                    $.get("/distritos/" + id_provincia, function (data) {
-                        let opciones = '<option value="">Seleccione Distrito</option>';
-                        data.forEach(function (dist) {
-                            opciones += `<option value="${dist.id_distrito}">${dist.nombre}</option>`;
-                        });
-                        $("#distrito").html(opciones);
-                    });
-                }
-            });
+      <!-- ══ 5. CONTACTO DE EMERGENCIA ══ -->
+      <div class="sec-sep">
+        <div class="sec-sep-icon"><i class="fa-solid fa-phone"></i></div>
+        <span class="sec-sep-label">Contacto</span>
+        <div class="sec-sep-line"></div>
+      </div>
+
+      <div class="emergencia-cuerpo" style="padding:0">
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Tu número de teléfono</label>
+                <div class="input-wrap">
+                  <i class="fa-solid fa-phone iico"></i>
+                  <input type="tel" name="txtTelefonoPersonal" class="form-control input-moderno"
+                    placeholder="Ej: 987 654 321" maxlength="9"/>
+                </div>
+                <span class="campo-hint">
+                  <i class="fa-solid fa-circle-info"></i>
+                  El psicólogo lo usará para contactarte directamente.
+                </span>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Nombre del familiar / tutor <span style="color:var(--red)">*</span></label>
+                <div class="input-wrap">
+                  <i class="fa-solid fa-person iico"></i>
+                  <input type="text" name="txtNombreFamiliar" class="form-control input-moderno"
+                    placeholder="Ej: María López (mamá)" required/>
+                </div>
+                <span class="campo-hint">
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Teléfono del familiar / tutor <span style="color:var(--red)">*</span></label>
+                <div class="input-wrap">
+                  <i class="fa-solid fa-mobile-screen iico"></i>
+                  <input type="tel" name="txtTelefonoFamiliar" class="form-control input-moderno"
+                    placeholder="Ej: 912 345 678" maxlength="9" required/>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── BOTONES ── -->
+      <div class="row mt-4">
+        <div class="col-md-6 mb-2">
+          <button type="button" class="btn btn-block btn-secundario-moderno"
+            onclick="window.location.href='/inicio'">
+            <i class="fa-solid fa-arrow-left"></i> Ya tengo cuenta
+          </button>
+        </div>
+        <div class="col-md-6">
+          <button type="button" id="btnRegistrar" class="btn btn-block btn-moderno"
+            onclick="registrarPaciente()">
+            <div class="spinner-btn" id="spinnerBtn"></div>
+            <span id="btnTexto"><i class="fa-solid fa-shield-heart"></i> Crear mi cuenta</span>
+          </button>
+        </div>
+      </div>
+
+    </form>
+  </div>
+</div>
+
+<script>
+  /* ── TOGGLE CONTRASEÑA ── */
+  function togglePass(id, icon) {
+    const input = document.getElementById(id);
+    const esPass = input.type === 'password';
+    input.type = esPass ? 'text' : 'password';
+    icon.className = `fa-solid ${esPass ? 'fa-eye-slash' : 'fa-eye'} itoggle`;
+  }
+
+  /* ── CASCADA UBICACIÓN (vanilla JS igual que registro profesional) ── */
+  document.getElementById('departamento').addEventListener('change', async function () {
+    const id = this.value;
+    const selProv = document.getElementById('provincia');
+    const selDist = document.getElementById('distrito');
+
+    selProv.innerHTML = '<option value="">Cargando...</option>';
+    selDist.innerHTML = '<option value="">Seleccione Distrito</option>';
+
+    if (!id) {
+      selProv.innerHTML = '<option value="">Seleccione Provincia</option>';
+      return;
+    }
+
+    const res  = await fetch(`/provincias/${id}`);
+    const data = await res.json();
+    selProv.innerHTML = '<option value="">Seleccione Provincia</option>';
+    data.forEach(p => {
+      selProv.innerHTML += `<option value="${p.id_provincia}">${p.nombre}</option>`;
+    });
+  });
+
+  document.getElementById('provincia').addEventListener('change', async function () {
+    const id = this.value;
+    const selDist = document.getElementById('distrito');
+
+    selDist.innerHTML = '<option value="">Cargando...</option>';
+
+    if (!id) {
+      selDist.innerHTML = '<option value="">Seleccione Distrito</option>';
+      return;
+    }
+
+    const res  = await fetch(`/distritos/${id}`);
+    const data = await res.json();
+    selDist.innerHTML = '<option value="">Seleccione Distrito</option>';
+    data.forEach(d => {
+      selDist.innerHTML += `<option value="${d.id_distrito}">${d.nombre}</option>`;
+    });
+  });
+
+  /* ── SUBMIT CON VALIDACIÓN MANUAL ── */
+  async function registrarPaciente() {
+    const btn     = document.getElementById('btnRegistrar');
+    const spinner = document.getElementById('spinnerBtn');
+    const btnTxt  = document.getElementById('btnTexto');
+
+    // Recoger valores
+    const nombre    = document.querySelector('[name="txtNombre"]').value.trim();
+    const apellidos = document.querySelector('[name="txtApellidos"]').value.trim();
+    const correo    = document.querySelector('[name="txtCorreo"]').value.trim();
+    const contra    = document.getElementById('txtContrasenia').value;
+    const edad      = document.querySelector('[name="txtEdad"]').value.trim();
+    const gustos    = document.querySelector('[name="txtgustos"]').value.trim();
+    const mascota   = document.querySelector('[name="txtmascota"]').value.trim();
+    const lenguaje  = document.querySelector('[name="txtlenguaje"]').value;
+    const tema      = document.querySelector('[name="txtTemaColor"]:checked')?.value || '';
+    const depto     = document.getElementById('departamento').value;
+    const provincia = document.getElementById('provincia').value;
+    const distrito  = document.getElementById('distrito').value;
+    const nomFam    = document.querySelector('[name="txtNombreFamiliar"]').value.trim();
+    const telFam    = document.querySelector('[name="txtTelefonoFamiliar"]').value.trim();
+    const telPers   = document.querySelector('[name="txtTelefonoPersonal"]').value.trim();
+
+    // Validaciones
+    if (!nombre || nombre.length < 3) return mostrarError('El nombre debe tener al menos 3 caracteres.');
+    if (!apellidos)                    return mostrarError('Los apellidos son requeridos.');
+    if (!correo || !correo.includes('@')) return mostrarError('Ingresa un correo válido.');
+    if (!contra || contra.length < 8) return mostrarError('La contraseña debe tener mínimo 8 caracteres.');
+    if (!edad || edad < 1 || edad > 100) return mostrarError('Ingresa una edad válida.');
+    if (!gustos)   return mostrarError('Ingresa tus gustos o intereses.');
+    if (!mascota)  return mostrarError('Ingresa tu mascota o animal favorito.');
+    if (!lenguaje) return mostrarError('Selecciona un tono de lenguaje.');
+    if (!tema)     return mostrarError('Elige un color para tu espacio seguro.');
+    if (!depto)    return mostrarError('Selecciona un departamento.');
+    if (!provincia) return mostrarError('Selecciona una provincia.');
+    if (!distrito)  return mostrarError('Selecciona un distrito.');
+    if (!nomFam)   return mostrarError('El nombre del familiar es requerido.');
+    if (!telFam || telFam.length !== 9) return mostrarError('El teléfono del familiar debe tener 9 dígitos.');
+
+    // Mostrar spinner
+    spinner.style.display = 'inline-block';
+    btnTxt.textContent = 'Registrando...';
+    btn.disabled = true;
+
+    const fd = new FormData();
+    fd.append('txtNombre',          nombre);
+    fd.append('txtApellidos',       apellidos);
+    fd.append('txtCorreo',          correo);
+    fd.append('txtContrasenia',     contra);
+    fd.append('txtEdad',            edad);
+    fd.append('txtgustos',          gustos);
+    fd.append('txtmascota',         mascota);
+    fd.append('txtlenguaje',        lenguaje);
+    fd.append('txtTemaColor',       tema);
+    fd.append('selectDistrito',     distrito);
+    fd.append('txtNombreFamiliar',  nomFam);
+    fd.append('txtTelefonoFamiliar',telFam);
+    fd.append('txtTelefonoPersonal',telPers);
+
+    try {
+      const res  = await fetch('/registrar', { method: 'POST', body: fd });
+      const data = await res.json();
+
+      if (data.success) {
+        $("#modalHeader").removeClass().addClass("modal-header bg-success text-white");
+        $("#modalTitulo").text("✅ Registro Exitoso");
+        $("#modalBody").text(data.message);
+        $('#modalMensaje').off('hidden.bs.modal').on('hidden.bs.modal', function () {
+          window.location.href = "/inicio";
         });
+      } else {
+        $("#modalHeader").removeClass().addClass("modal-header bg-danger text-white");
+        $("#modalTitulo").text("⚠️ Error");
+        $("#modalBody").text(data.message);
+      }
+      $("#modalMensaje").modal("show");
 
-        // Submit con AJAX
-        $('#formRegistro').on('success.form.bv', function (e) {
-            e.preventDefault();
-            var $form = $(e.target);
-            $.ajax({
-                url: $form.attr('action'),
-                type: "POST",
-                data: $form.serialize(),
-                success: function (response) {
-                    if (response.success) {
-                        $("#modalHeader").removeClass().addClass("modal-header bg-success text-white");
-                        $("#modalTitulo").text("Registro Exitoso");
-                        $("#modalBody").text(response.message);
-                        $form[0].reset();
-                        $('#modalMensaje').off('hidden.bs.modal').on('hidden.bs.modal', function () {
-                            window.location.href = "/inicio";
-                        });
-                    } else {
-                        $("#modalHeader").removeClass().addClass("modal-header bg-danger text-white");
-                        $("#modalTitulo").text("Error");
-                        $("#modalBody").text(response.message);
-                        $form.data('bootstrapValidator').disableSubmitButtons(false);
-                    }
-                    $("#modalMensaje").modal("show");
-                }
-            });
-        });
-    </script>
+    } catch (e) {
+      mostrarError('Error de conexión. Intenta de nuevo.');
+    } finally {
+      spinner.style.display = 'none';
+      btnTxt.textContent = 'Crear mi cuenta';
+      btn.disabled = false;
+    }
+  }
+
+  function mostrarError(msg) {
+    $("#modalHeader").removeClass().addClass("modal-header bg-danger text-white");
+    $("#modalTitulo").text("⚠️ Campo requerido");
+    $("#modalBody").text(msg);
+    $("#modalMensaje").modal("show");
+  }
+</script>
 
 </body>
 </html>
