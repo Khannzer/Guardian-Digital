@@ -1,0 +1,1258 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard Clínico — Guardian Digital</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,600;0,700;1,400&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+  <style>
+    :root {
+      --bg: #f0ede8;
+      --surface: #faf9f7;
+      --surface2: #f3f0eb;
+      --border: #e2ddd6;
+      --text: #1c1917;
+      --text2: #57534e;
+      --muted: #a8a29e;
+      --teal: #0d9488;
+      --teal-light: #ccfbf1;
+      --teal-mid: #5eead4;
+      --green: #16a34a;
+      --green-light: #dcfce7;
+      --amber: #d97706;
+      --amber-light: #fef3c7;
+      --red: #dc2626;
+      --red-light: #fee2e2;
+      --navy: #0f3460;
+      --radius: 16px;
+      --shadow: 0 2px 16px rgba(0,0,0,.07);
+      --shadow-lg: 0 8px 40px rgba(0,0,0,.12);
+    }
+
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body { background: var(--bg); color: var(--text); font-family: 'Outfit', sans-serif; font-size: 14px; min-height: 100vh; }
+
+    /* ── SIDEBAR ── */
+    .sidebar {
+      position: fixed; top: 0; left: 0;
+      width: 240px; height: 100vh;
+      background: var(--navy);
+      display: flex; flex-direction: column;
+      padding: 28px 20px; z-index: 100;
+    }
+
+    .sidebar-logo { display: flex; align-items: center; gap: 10px; margin-bottom: 36px; }
+    .logo-icon { width: 36px; height: 36px; border-radius: 10px; background: var(--teal); display: flex; align-items: center; justify-content: center; font-size: 18px; }
+    .logo-text { font-family: 'Fraunces', serif; font-size: 16px; font-weight: 700; color: #fff; line-height: 1.2; }
+    .logo-sub  { font-size: 10px; color: rgba(255,255,255,.4); font-weight: 300; }
+    .sidebar-section { font-size: 10px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; color: rgba(255,255,255,.3); margin: 20px 0 8px; }
+
+    .nav-item {
+      display: flex; align-items: center; gap: 10px;
+      padding: 10px 12px; border-radius: 10px;
+      color: rgba(255,255,255,.6); font-size: 13.5px;
+      cursor: pointer; transition: all .2s;
+      text-decoration: none; margin-bottom: 2px;
+    }
+    .nav-item:hover  { background: rgba(255,255,255,.08); color: #fff; }
+    .nav-item.active { background: var(--teal); color: #fff; }
+    .nav-icon { font-size: 16px; width: 20px; text-align: center; }
+
+    .sidebar-footer { margin-top: auto; padding-top: 20px; border-top: 1px solid rgba(255,255,255,.08); }
+    .prof-card { display: flex; align-items: center; gap: 10px; }
+    .prof-avatar { width: 36px; height: 36px; border-radius: 50%; background: linear-gradient(135deg, var(--teal), #6ee7b7); display: flex; align-items: center; justify-content: center; font-family: 'Fraunces', serif; font-size: 14px; font-weight: 700; color: #fff; flex-shrink: 0; }
+    .prof-name { font-size: 13px; color: #fff; font-weight: 500; }
+    .prof-role { font-size: 11px; color: rgba(255,255,255,.4); }
+    .logout-btn { display: block; margin-top: 12px; padding: 8px 12px; border-radius: 8px; background: rgba(255,255,255,.06); border: none; color: rgba(255,255,255,.5); font-family: 'Outfit', sans-serif; font-size: 12px; cursor: pointer; text-align: center; text-decoration: none; transition: all .2s; width: 100%; }
+    .logout-btn:hover { background: rgba(220,38,38,.2); color: #fca5a5; }
+
+    /* ── MAIN ── */
+    .main { margin-left: 240px; padding: 32px 32px 60px; min-height: 100vh; }
+
+    .topbar { display: flex; align-items: flex-start; justify-content: space-between; flex-wrap: wrap; gap: 16px; margin-bottom: 32px; }
+    .page-title { font-family: 'Fraunces', serif; font-size: 28px; font-weight: 700; color: var(--text); line-height: 1.2; }
+    .page-title span { color: var(--teal); font-style: italic; }
+    .page-sub { font-size: 13px; color: var(--text2); margin-top: 4px; }
+
+    .btn { display: inline-flex; align-items: center; gap: 8px; padding: 10px 20px; border-radius: 10px; border: none; font-family: 'Outfit', sans-serif; font-size: 13.5px; font-weight: 500; cursor: pointer; transition: all .2s; text-decoration: none; }
+    .btn-primary { background: var(--teal); color: #fff; }
+    .btn-primary:hover { background: #0f766e; transform: translateY(-1px); box-shadow: 0 4px 14px rgba(13,148,136,.3); }
+    .btn-ghost { background: transparent; color: var(--text2); border: 1px solid var(--border); }
+    .btn-ghost:hover { background: var(--surface2); }
+
+    /* ── STAT CARDS ── */
+    .stats-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; margin-bottom: 28px; }
+    .stat-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 22px; box-shadow: var(--shadow); transition: transform .2s; position: relative; overflow: hidden; }
+    .stat-card:hover { transform: translateY(-2px); }
+    .stat-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; }
+    .stat-card.teal::before  { background: var(--teal); }
+    .stat-card.green::before { background: var(--green); }
+    .stat-card.amber::before { background: var(--amber); }
+    .stat-card.red::before   { background: var(--red); }
+    .stat-icon { width: 38px; height: 38px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 18px; margin-bottom: 12px; }
+    .stat-card.teal  .stat-icon { background: var(--teal-light); }
+    .stat-card.green .stat-icon { background: var(--green-light); }
+    .stat-card.amber .stat-icon { background: var(--amber-light); }
+    .stat-card.red   .stat-icon { background: var(--red-light); }
+    .stat-num { font-family: 'Fraunces', serif; font-size: 32px; font-weight: 700; line-height: 1; margin-bottom: 4px; }
+    .stat-card.teal  .stat-num { color: var(--teal); }
+    .stat-card.green .stat-num { color: var(--green); }
+    .stat-card.amber .stat-num { color: var(--amber); }
+    .stat-card.red   .stat-num { color: var(--red); }
+    .stat-label { font-size: 12.5px; color: var(--text2); }
+
+    /* ── GRID ── */
+    .grid-main { display: grid; grid-template-columns: 1fr 340px; gap: 20px; align-items: start; }
+    @media(max-width:1100px) { .grid-main { grid-template-columns: 1fr; } }
+
+    /* ── CARD ── */
+    .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow); overflow: hidden; }
+    .card-header { display: flex; align-items: center; justify-content: space-between; padding: 18px 22px; border-bottom: 1px solid var(--border); flex-wrap: wrap; gap: 10px; }
+    .card-title { font-family: 'Fraunces', serif; font-size: 16px; font-weight: 600; }
+
+    .badge { display: inline-flex; align-items: center; gap: 5px; padding: 3px 10px; border-radius: 100px; font-size: 11px; font-weight: 600; }
+    .badge-red   { background: var(--red-light);   color: var(--red); }
+    .badge-amber { background: var(--amber-light);  color: var(--amber); }
+    .badge-green { background: var(--green-light);  color: var(--green); }
+    .badge-teal  { background: var(--teal-light);   color: var(--teal); }
+    .badge-gray  { background: var(--surface2);     color: var(--muted); }
+    .badge-navy  { background: rgba(15,52,96,.1);   color: var(--navy); }
+
+    /* ── TABLA ── */
+    .table-wrap { overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; }
+    th { padding: 10px 16px; text-align: left; font-size: 11px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; color: var(--muted); background: var(--surface2); border-bottom: 1px solid var(--border); white-space: nowrap; }
+    td { padding: 14px 16px; border-bottom: 1px solid var(--border); font-size: 13.5px; vertical-align: middle; }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: var(--surface2); }
+    .patient-name  { font-weight: 600; color: var(--text); }
+    .patient-email { font-size: 12px; color: var(--muted); }
+
+    /* SEMÁFORO */
+    .semaforo { display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 100px; font-size: 12px; font-weight: 600; }
+    .semaforo::before { content: ''; width: 7px; height: 7px; border-radius: 50%; display: block; }
+    .semaforo.verde    { background: var(--green-light); color: var(--green); }
+    .semaforo.verde::before    { background: var(--green); box-shadow: 0 0 6px var(--green); }
+    .semaforo.amarillo { background: var(--amber-light);  color: var(--amber); }
+    .semaforo.amarillo::before { background: var(--amber);  box-shadow: 0 0 6px var(--amber); }
+    .semaforo.rojo     { background: var(--red-light);   color: var(--red); }
+    .semaforo.rojo::before     { background: var(--red);    box-shadow: 0 0 6px var(--red); }
+    .semaforo.gris     { background: var(--surface2);    color: var(--muted); }
+    .semaforo.gris::before     { background: var(--muted); }
+    .semaforo.naranja  { background: rgba(249,115,22,.12); color: #f97316; }
+    .semaforo.naranja::before  { background: #f97316; box-shadow: 0 0 6px #f97316; }
+
+    .emocion-chip { display: inline-flex; align-items: center; gap: 5px; padding: 3px 10px; border-radius: 100px; font-size: 12px; background: var(--surface2); color: var(--text2); }
+
+    /* ── BOTONES DE ACCIÓN EN TABLA ── */
+    .btn-ver {
+      padding: 6px 12px; border-radius: 8px;
+      background: var(--teal-light); color: var(--teal);
+      border: none; font-family: 'Outfit', sans-serif;
+      font-size: 12px; font-weight: 600; cursor: pointer; transition: all .2s;
+      white-space: nowrap;
+    }
+    .btn-ver:hover { background: var(--teal); color: #fff; }
+
+    .btn-intervencion {
+      padding: 6px 12px; border-radius: 8px;
+      background: rgba(15,52,96,.08); color: var(--navy);
+      border: 1px solid rgba(15,52,96,.15);
+      font-family: 'Outfit', sans-serif;
+      font-size: 12px; font-weight: 600; cursor: pointer; transition: all .2s;
+      white-space: nowrap;
+    }
+    .btn-intervencion:hover { background: var(--navy); color: #fff; }
+
+    /* CELDA FAMILIAR */
+    .familiar-nombre { font-weight: 600; font-size: 13px; color: var(--text); }
+    .familiar-tel    { font-size: 12px; color: var(--muted); margin-top: 2px; }
+
+    /* EMPTY */
+    .empty-state { text-align: center; padding: 48px 20px; color: var(--muted); }
+    .empty-icon  { font-size: 36px; margin-bottom: 12px; }
+    .empty-title { font-family: 'Fraunces', serif; font-size: 16px; color: var(--text2); margin-bottom: 6px; }
+    .empty-sub   { font-size: 13px; }
+
+    /* ── PANEL DERECHO ── */
+    .right-col { display: flex; flex-direction: column; gap: 20px; }
+    .alerta-item { padding: 14px 16px; border-bottom: 1px solid var(--border); display: flex; gap: 12px; align-items: flex-start; transition: background .15s; }
+    .alerta-item:last-child { border-bottom: none; }
+    .alerta-item:hover { background: var(--surface2); }
+    .alerta-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; margin-top: 4px; }
+    .alerta-dot.critico  { background: var(--red);   box-shadow: 0 0 8px rgba(220,38,38,.5); }
+    .alerta-dot.alto     { background: var(--amber);  box-shadow: 0 0 8px rgba(217,119,6,.5); }
+    .alerta-dot.moderado { background: var(--teal); }
+    .alerta-nombre { font-weight: 600; font-size: 13px; }
+    .alerta-msg { font-size: 12px; color: var(--text2); display: -webkit-box; -webkit-line-clamp: 2; line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; margin: 2px 0 6px; }
+    .alerta-meta  { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+    .alerta-fecha { font-size: 11px; color: var(--muted); }
+    .btn-atender { font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 6px; border: none; background: var(--red-light); color: var(--red); cursor: pointer; transition: all .2s; font-family: 'Outfit', sans-serif; }
+    .btn-atender:hover { background: var(--red); color: #fff; }
+
+    .input-field { width: 100%; padding: 10px 14px; border: 1.5px solid var(--border); border-radius: 10px; background: var(--surface); color: var(--text); font-family: 'Outfit', sans-serif; font-size: 13.5px; transition: border-color .2s; outline: none; }
+    .input-field:focus { border-color: var(--teal); }
+
+    /* ── MODALES ── */
+    .modal-overlay { position: fixed; inset: 0; background: rgba(15,52,96,.45); backdrop-filter: blur(4px); z-index: 200; display: none; align-items: center; justify-content: center; padding: 20px; }
+    .modal-overlay.open { display: flex; animation: fadeIn .2s ease; }
+    @keyframes fadeIn { from { opacity: 0 } to { opacity: 1 } }
+
+    .modal { background: var(--surface); border-radius: 20px; box-shadow: var(--shadow-lg); width: 100%; max-width: 680px; max-height: 90vh; overflow-y: auto; animation: slideUp .25s ease; }
+    @keyframes slideUp { from { transform: translateY(20px); opacity: 0 } to { transform: translateY(0); opacity: 1 } }
+
+    .modal-header { display: flex; align-items: center; justify-content: space-between; padding: 22px 26px; border-bottom: 1px solid var(--border); position: sticky; top: 0; background: var(--surface); z-index: 1; }
+    .modal-title { font-family: 'Fraunces', serif; font-size: 18px; font-weight: 700; }
+    .modal-close { width: 32px; height: 32px; border-radius: 50%; border: none; background: var(--surface2); cursor: pointer; font-size: 16px; display: flex; align-items: center; justify-content: center; transition: background .2s; }
+    .modal-close:hover { background: var(--border); }
+    .modal-body { padding: 24px 26px; }
+    .modal-footer { display: flex; gap: 10px; justify-content: flex-end; padding: 16px 26px; border-top: 1px solid var(--border); background: var(--surface); position: sticky; bottom: 0; }
+
+    /* ── FORMULARIO INTERVENCIÓN ── */
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+    .form-grid.full { grid-template-columns: 1fr; }
+
+    .field-group { display: flex; flex-direction: column; gap: 6px; }
+    .field-label { font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--muted); }
+
+    .select-field { width: 100%; padding: 10px 14px; border: 1.5px solid var(--border); border-radius: 10px; background: var(--surface); color: var(--text); font-family: 'Outfit', sans-serif; font-size: 13.5px; outline: none; transition: border-color .2s; cursor: pointer; }
+    .select-field:focus { border-color: var(--teal); }
+
+    .textarea-field { width: 100%; padding: 11px 14px; border: 1.5px solid var(--border); border-radius: 10px; background: var(--surface); color: var(--text); font-family: 'Outfit', sans-serif; font-size: 13.5px; resize: vertical; min-height: 80px; outline: none; transition: border-color .2s; }
+    .textarea-field:focus { border-color: var(--teal); }
+
+    /* Chips de tipo de intervención */
+    .tipo-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+    .tipo-chip { display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 10px 6px; border: 1.5px solid var(--border); border-radius: 10px; background: var(--surface); cursor: pointer; transition: all .2s; font-family: 'Outfit', sans-serif; font-size: 11px; font-weight: 600; color: var(--text2); text-align: center; }
+    .tipo-chip:hover, .tipo-chip.active { border-color: var(--teal); color: var(--teal); background: var(--teal-light); }
+    .tipo-chip .icon { font-size: 18px; }
+
+    /* Chips estado */
+    .estado-grid { display: flex; gap: 8px; flex-wrap: wrap; }
+    .estado-chip { padding: 6px 14px; border-radius: 100px; border: 1.5px solid var(--border); font-size: 12px; font-weight: 600; cursor: pointer; transition: all .2s; font-family: 'Outfit', sans-serif; background: var(--surface); color: var(--text2); }
+    .estado-chip:hover { border-color: var(--teal); }
+    .estado-chip.sel-verde  { background: var(--green-light); border-color: var(--green); color: var(--green); }
+    .estado-chip.sel-amber  { background: var(--amber-light); border-color: var(--amber); color: var(--amber); }
+    .estado-chip.sel-rojo   { background: var(--red-light);   border-color: var(--red);   color: var(--red); }
+    .estado-chip.sel-teal   { background: var(--teal-light);  border-color: var(--teal);  color: var(--teal); }
+    .estado-chip.sel-navy   { background: rgba(15,52,96,.1);  border-color: var(--navy);  color: var(--navy); }
+
+    /* Sección colapsable derivación */
+    .derivacion-section { display: none; }
+    .derivacion-section.visible { display: block; }
+
+    /* ── HISTORIAL DE INTERVENCIONES EN MODAL ── */
+    .inv-list { display: flex; flex-direction: column; gap: 10px; }
+    .inv-item { background: var(--surface2); border-radius: 12px; padding: 14px 16px; border-left: 3px solid var(--teal); }
+    .inv-item-header { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 8px; flex-wrap: wrap; }
+    .inv-fecha { font-size: 12px; font-weight: 700; color: var(--text); }
+    .inv-tipo  { font-size: 11px; }
+    .inv-nota  { font-size: 12.5px; color: var(--text2); line-height: 1.5; margin-top: 6px; font-style: italic; }
+    .inv-proxima { font-size: 11px; color: var(--teal); margin-top: 4px; font-weight: 600; }
+
+    /* Tabs del modal historial */
+    .modal-tabs { display: flex; gap: 4px; padding: 0 26px; border-bottom: 1px solid var(--border); background: var(--surface); }
+    .modal-tab { padding: 12px 18px; font-size: 13px; font-weight: 600; color: var(--muted); border: none; background: none; cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -1px; transition: all .2s; font-family: 'Outfit', sans-serif; }
+    .modal-tab:hover  { color: var(--text); }
+    .modal-tab.active { color: var(--teal); border-bottom-color: var(--teal); }
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; }
+
+    /* ── MODAL CRISIS ── */
+    .intervencion-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 16px; }
+    .intervencion-btn { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; padding: 14px 10px; border: 2px solid var(--border); border-radius: 12px; background: var(--surface); cursor: pointer; transition: all .2s; font-family: 'Outfit', sans-serif; font-size: 12px; font-weight: 600; color: var(--text2); text-align: center; }
+    .intervencion-btn:hover, .intervencion-btn.selected { border-color: var(--teal); color: var(--teal); background: var(--teal-light); }
+    .intervencion-btn .icon { font-size: 22px; }
+    .alerta-resumen { background: var(--surface2); border-radius: 12px; padding: 14px 16px; margin-bottom: 20px; border-left: 4px solid var(--red); }
+    .alerta-resumen.alto     { border-left-color: var(--amber); }
+    .alerta-resumen.moderado { border-left-color: var(--teal); }
+    .alerta-resumen-nombre { font-weight: 700; font-size: 14px; margin-bottom: 4px; }
+    .alerta-resumen-msg    { font-size: 12.5px; color: var(--text2); font-style: italic; margin-bottom: 8px; }
+    .alerta-resumen-meta   { display: flex; gap: 8px; flex-wrap: wrap; }
+    .field-label-modal { font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; display: block; }
+    .textarea-nota { width: 100%; padding: 11px 14px; border: 1.5px solid var(--border); border-radius: 10px; background: var(--surface); color: var(--text); font-family: 'Outfit', sans-serif; font-size: 13.5px; resize: vertical; min-height: 80px; outline: none; transition: border-color .2s; }
+    .textarea-nota:focus { border-color: var(--teal); }
+    .btn-cancelar { padding: 10px 20px; border-radius: 10px; border: 1.5px solid var(--border); background: transparent; font-family: 'Outfit', sans-serif; font-size: 13.5px; font-weight: 500; cursor: pointer; color: var(--text2); transition: all .2s; }
+    .btn-cancelar:hover { background: var(--surface2); }
+    .btn-confirmar { padding: 10px 24px; border-radius: 10px; border: none; background: var(--teal); color: #fff; font-family: 'Outfit', sans-serif; font-size: 13.5px; font-weight: 600; cursor: pointer; transition: all .2s; }
+    .btn-confirmar:hover    { background: #0f766e; }
+    .btn-confirmar:disabled { background: var(--muted); cursor: not-allowed; }
+
+    /* LOADING */
+    .loading { text-align: center; padding: 40px; color: var(--muted); font-size: 13px; }
+    .spinner { width: 28px; height: 28px; border: 3px solid var(--border); border-top-color: var(--teal); border-radius: 50%; animation: spin .7s linear infinite; margin: 0 auto 12px; }
+    @keyframes spin { to { transform: rotate(360deg) } }
+
+    /* TOAST */
+    .toast { position: fixed; bottom: 24px; right: 24px; padding: 12px 20px; border-radius: 12px; font-size: 13.5px; font-weight: 500; box-shadow: var(--shadow-lg); z-index: 999; transform: translateY(20px); opacity: 0; transition: all .3s; pointer-events: none; }
+    .toast.show { transform: translateY(0); opacity: 1; pointer-events: auto; }
+    .toast.ok  { background: var(--green); color: #fff; }
+    .toast.err { background: var(--red);   color: #fff; }
+
+    /* CHART */
+    .chart-wrap  { background: var(--surface2); border-radius: 12px; padding: 16px; margin-bottom: 20px; }
+    .chart-label { font-size: 11px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; color: var(--muted); margin-bottom: 12px; }
+    .historial-list { display: flex; flex-direction: column; gap: 8px; }
+    .historial-item { display: flex; align-items: center; gap: 12px; padding: 10px 14px; border-radius: 10px; background: var(--surface2); font-size: 13px; }
+  </style>
+</head>
+
+<body>
+
+  <!-- ════════════════════════════════════════
+       SIDEBAR
+  ════════════════════════════════════════ -->
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <div class="logo-icon"><i class="fa-solid fa-shield-heart" style="color:#fff;font-size:16px"></i></div>
+      <div>
+        <div class="logo-text">Guardian</div>
+        <div class="logo-sub">Panel Clínico</div>
+      </div>
+    </div>
+
+    <div class="sidebar-section">Navegación</div>
+    <a href="/dashboard_profesional" class="nav-item active">
+      <span class="nav-icon"><i class="fa-solid fa-chart-line"></i></span> Dashboard
+    </a>
+    <a href="/historial_intervenciones" class="nav-item">
+      <span class="nav-icon"><i class="fa-solid fa-clipboard-list"></i></span> Intervenciones
+    </a>
+
+    <div class="sidebar-footer">
+      <div class="prof-card">
+        <div class="prof-avatar">{{ profesional.nombre[0] }}{{ profesional.apellidos[0] }}</div>
+        <div>
+          <div class="prof-name">{{ profesional.nombre }} {{ profesional.apellidos }}</div>
+          <div class="prof-role">Psicólogo/a clínico/a</div>
+        </div>
+      </div>
+      <a href="/logout" class="logout-btn"><i class="fa-solid fa-right-from-bracket"></i> Cerrar sesión</a>
+    </div>
+  </aside>
+
+  <!-- ════════════════════════════════════════
+       MAIN
+  ════════════════════════════════════════ -->
+  <main class="main">
+
+    <!-- TOPBAR -->
+    <div class="topbar">
+      <div>
+        <h1 class="page-title">Bienvenido/a, <span>{{ profesional.nombre }}</span></h1>
+        <p class="page-sub">Panel de monitoreo emocional · Guardian Digital</p>
+      </div>
+
+      <!-- CAMPANA -->
+      <div style="position:relative;display:inline-block;margin-right:16px">
+        <button onclick="toggleNotificaciones()" id="btnCampana"
+          style="background:var(--surface2);border:1px solid var(--border);
+                 color:var(--text2);border-radius:10px;padding:8px 12px;
+                 cursor:pointer;position:relative;font-family:'Outfit',sans-serif">
+          <i class="fa-solid fa-bell"></i>
+          <span id="badgeNotif"
+            style="display:none;position:absolute;top:-6px;right:-6px;
+                   background:#f87171;color:#fff;border-radius:50%;
+                   width:18px;height:18px;font-size:10px;font-weight:700;
+                   line-height:18px;text-align:center">0</span>
+        </button>
+        <div id="panelNotif"
+          style="display:none;position:absolute;right:0;top:48px;width:320px;
+                 background:var(--surface);border:1px solid var(--border);
+                 border-radius:14px;box-shadow:var(--shadow-lg);z-index:9999;overflow:hidden">
+          <div style="padding:14px 16px;border-bottom:1px solid var(--border);color:var(--text);font-size:13px;font-weight:600;">
+            <i class="fa-solid fa-bell" style="color:#4da3ff;margin-right:6px"></i>Solicitudes de apoyo
+          </div>
+          <div id="listaNotif" style="max-height:340px;overflow-y:auto;padding:8px">
+            <p style="color:#7a8fa8;font-size:12px;text-align:center;padding:20px">Sin notificaciones</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- STATS -->
+    {% set total_pacientes = pacientes | length %}
+    {% set en_riesgo       = pacientes | selectattr('ultimo_nivel_riesgo', 'in', ['critico', 'moderado']) | list | length %}
+    {% set activos_hoy     = pacientes | selectattr('ultima_actividad') | list | length %}
+
+    <div class="stats-row">
+      <div class="stat-card teal">
+        <div class="stat-icon"><i class="fa-solid fa-user-group"></i></div>
+        <div class="stat-num">{{ total_pacientes }}</div>
+        <div class="stat-label">Pacientes asignados</div>
+      </div>
+      <div class="stat-card red">
+        <div class="stat-icon"><i class="fa-solid fa-triangle-exclamation"></i></div>
+        <div class="stat-num">{{ en_riesgo }}</div>
+        <div class="stat-label">Con riesgo detectado</div>
+      </div>
+      <div class="stat-card green">
+        <div class="stat-icon"><i class="fa-solid fa-heart-pulse"></i></div>
+        <div class="stat-num">{{ activos_hoy }}</div>
+        <div class="stat-label">Con actividad registrada</div>
+      </div>
+    </div>
+
+    <!-- GRID -->
+    <div class="grid-main">
+
+      <!-- TABLA DE PACIENTES -->
+      <div>
+        <div class="card" id="pacientes">
+          <div class="card-header">
+            <div class="card-title">👥 Mis pacientes</div>
+            <button class="btn btn-primary" onclick="abrirPacientesDisponibles()">
+              🔍 Pacientes disponibles
+            </button>
+            <span class="badge badge-teal">{{ total_pacientes }} registrados</span>
+          </div>
+          <div class="table-wrap">
+            {% if pacientes %}
+            <table>
+              <thead>
+                <tr>
+                  <th>Paciente</th>
+                  <th>Edad</th>
+                  <th>Dpto.</th>
+                  <th>Familiar</th>
+                  <th>Última emoción</th>
+                  <th>Riesgo</th>
+                  <th>Última actividad</th>
+                  <th>Contacto</th>
+                  <th>Historial</th>
+                  <th>Intervención</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for p in pacientes %}
+                <tr>
+                  <td>
+                    <div class="patient-name">{{ p.nombre }} {{ p.apellidos }}</div>
+                    <div class="patient-email">{{ p.correo }}</div>
+                  </td>
+                  <td>{{ p.edad or '—' }} años</td>
+                  <td><span style="font-size:12px;color:var(--text2)">📍 {{ p.departamento or '—' }}</span></td>
+
+                  <!-- COLUMNA FAMILIAR -->
+                  <td>
+                    {% if p.nombre_familiar %}
+                      <div class="familiar-nombre">{{ p.nombre_familiar }}</div>
+                      {% if p.telefono_familiar %}
+                        <div class="familiar-tel">
+                          <a href="https://wa.me/51{{ p.telefono_familiar }}"
+                             target="_blank" rel="noopener noreferrer"
+                             style="color:var(--green);text-decoration:none;font-size:12px">
+                            <i class="fa-brands fa-whatsapp"></i> {{ p.telefono_familiar }}
+                          </a>
+                        </div>
+                      {% else %}
+                        <div class="familiar-tel">Sin teléfono</div>
+                      {% endif %}
+                    {% else %}
+                      <span style="color:var(--muted);font-size:12px">—</span>
+                    {% endif %}
+                  </td>
+
+                  <td>
+                    {% if p.ultima_emocion %}
+                      {% set emojis = {'neutral':'😐','feliz':'😊','triste':'😢','enojado':'😠','ansioso':'😰'} %}
+                      <span class="emocion-chip">{{ emojis.get(p.ultima_emocion,'❓') }} {{ p.ultima_emocion|capitalize }}</span>
+                    {% else %}
+                      <span style="color:var(--muted);font-size:12px">Sin datos</span>
+                    {% endif %}
+                  </td>
+
+                  <td>
+                    {% if p.ultimo_nivel_riesgo == 'critico' %}
+                      <span class="semaforo rojo">🔴 Crítico</span>
+                    {% elif p.ultimo_nivel_riesgo == 'moderado' %}
+                      <span class="semaforo naranja">🟠 Moderado</span>
+                    {% elif p.ultimo_nivel_riesgo == 'leve' %}
+                      <span class="semaforo amarillo">🟡 Leve</span>
+                    {% elif p.ultimo_nivel_riesgo == 'ninguno' and p.ultima_emocion %}
+                      <span class="semaforo verde">🟢 Ninguno</span>
+                    {% else %}
+                      <span class="semaforo gris">Sin actividad</span>
+                    {% endif %}
+                  </td>
+
+                  <td>
+                    {% if p.ultima_actividad %}
+                      <span style="font-size:12px;color:var(--text2)">
+                        {{ p.ultima_actividad.strftime('%d/%m/%Y %H:%M') }}
+                      </span>
+                    {% else %}
+                      <span style="color:var(--muted);font-size:12px">—</span>
+                    {% endif %}
+                  </td>
+
+                  <td>
+                    {% if p.telefono_personal %}
+                      <a href="https://wa.me/51{{ p.telefono_personal }}"
+                         target="_blank" rel="noopener noreferrer"
+                         title="WhatsApp con {{ p.nombre }}"
+                         style="display:inline-flex;align-items:center;justify-content:center;
+                                width:34px;height:34px;border-radius:8px;
+                                background:#dcfce7;color:#16a34a;
+                                font-size:18px;text-decoration:none;transition:all .2s"
+                         onmouseover="this.style.background='#25D366';this.style.color='#fff'"
+                         onmouseout="this.style.background='#dcfce7';this.style.color='#16a34a'">
+                        <i class="fa-brands fa-whatsapp"></i>
+                      </a>
+                    {% else %}
+                      <span style="color:var(--muted);font-size:12px">—</span>
+                    {% endif %}
+                  </td>
+
+                  <!-- HISTORIAL EMOCIONAL -->
+                  <td>
+                    <button class="btn-ver"
+                      data-id="{{ p.id_usuario }}"
+                      data-nombre="{{ p.nombre }} {{ p.apellidos }}">
+                      📊 Ver
+                    </button>
+                  </td>
+
+                  <!-- REGISTRAR INTERVENCIÓN -->
+                  <td>
+                    <button class="btn-intervencion"
+                      data-id="{{ p.id_usuario }}"
+                      data-nombre="{{ p.nombre }} {{ p.apellidos }}"
+                      data-action="intervencion">
+                      📋 Registrar
+                    </button>
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+            {% else %}
+            <div class="empty-state">
+              <div class="empty-icon">👥</div>
+              <div class="empty-title">No tienes pacientes asignados aún</div>
+              <div class="empty-sub">Usa "Pacientes disponibles" para agregar tu primer paciente</div>
+            </div>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+
+      <!-- COLUMNA DERECHA -->
+      <div class="right-col">
+        <div class="card" id="panel-disponibles" style="display:none">
+          <div class="card-header">
+            <div class="card-title">🔍 Pacientes sin asignar</div>
+            <button class="modal-close" onclick="cerrarPacientesDisponibles()">✕</button>
+          </div>
+          <div style="padding:14px 16px;border-bottom:1px solid var(--border)">
+            <input type="text" id="buscador-disponibles" class="input-field"
+              placeholder="🔎 Buscar por nombre o correo..."
+              oninput="filtrarDisponibles(this.value)" />
+          </div>
+          <div id="lista-disponibles" style="max-height:380px;overflow-y:auto">
+            <div class="loading"><div class="spinner"></div>Cargando pacientes...</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- ════════════════════════════════════════
+       MODAL: HISTORIAL EMOCIONAL + INTERVENCIONES (CON TABS)
+  ════════════════════════════════════════ -->
+  <div class="modal-overlay" id="modal-historial">
+    <div class="modal">
+      <div class="modal-header">
+        <div>
+          <div class="modal-title" id="modal-paciente-nombre">Historial</div>
+          <div style="font-size:12px;color:var(--muted);margin-top:3px">Evolución emocional e intervenciones</div>
+        </div>
+        <button class="modal-close" onclick="cerrarModal()">✕</button>
+      </div>
+      <!-- TABS -->
+      <div class="modal-tabs">
+        <button class="modal-tab active" onclick="switchTab('tab-emocional', this)">📊 Emocional</button>
+        <button class="modal-tab"        onclick="switchTab('tab-intervenciones', this)">📋 Intervenciones</button>
+      </div>
+      <div class="modal-body">
+        <!-- Tab emocional -->
+        <div id="tab-emocional" class="tab-panel active">
+          <div class="loading"><div class="spinner"></div>Cargando historial...</div>
+        </div>
+        <!-- Tab intervenciones -->
+        <div id="tab-intervenciones" class="tab-panel">
+          <div class="loading"><div class="spinner"></div>Cargando intervenciones...</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════
+       MODAL: REGISTRAR INTERVENCIÓN
+  ════════════════════════════════════════ -->
+  <div class="modal-overlay" id="modal-intervencion">
+    <div class="modal" style="max-width:620px">
+      <div class="modal-header">
+        <div>
+          <div class="modal-title">📋 Registrar intervención</div>
+          <div style="font-size:12px;color:var(--muted);margin-top:3px" id="intervencion-subtitulo">—</div>
+        </div>
+        <button class="modal-close" onclick="cerrarModalIntervencion()">✕</button>
+      </div>
+
+      <div class="modal-body">
+
+        <!-- Tipo de intervención -->
+        <div style="margin-bottom:18px">
+          <div class="field-label" style="margin-bottom:8px">Tipo de intervención</div>
+          <div class="tipo-grid" id="tipo-grid">
+            <button class="tipo-chip" data-tipo="sesion_presencial"><span class="icon">🧠</span>Sesión presencial</button>
+            <button class="tipo-chip" data-tipo="sesion_virtual">   <span class="icon">💻</span>Sesión virtual</button>
+            <button class="tipo-chip" data-tipo="llamada">          <span class="icon">📞</span>Llamada</button>
+            <button class="tipo-chip" data-tipo="contacto_familiar"><span class="icon">👨‍👩‍👧</span>Contacto familiar</button>
+            <button class="tipo-chip" data-tipo="derivacion">       <span class="icon">🏥</span>Derivación</button>
+            <button class="tipo-chip" data-tipo="seguimiento">      <span class="icon">🔍</span>Seguimiento</button>
+          </div>
+        </div>
+
+        <!-- Sección derivación (solo visible si tipo = derivacion) -->
+        <div class="derivacion-section" id="derivacion-section" style="margin-bottom:16px">
+          <div class="field-group">
+            <label class="field-label">Derivado a (especialista / institución)</label>
+            <input type="text" class="input-field" id="derivado-a"
+              placeholder="Ej: Hospital Hermilio Valdizán — Psiquiatría">
+          </div>
+        </div>
+
+        <!-- Fecha/hora y duración -->
+        <div class="form-grid" style="margin-bottom:16px">
+          <div class="field-group">
+            <label class="field-label">Fecha y hora de la intervención</label>
+            <input type="datetime-local" class="input-field" id="fecha-intervencion">
+          </div>
+          <div class="field-group">
+            <label class="field-label">Duración (minutos)</label>
+            <select class="select-field" id="duracion-minutos">
+              <option value="">No especificada</option>
+              <option value="15">15 min</option>
+              <option value="30">30 min</option>
+              <option value="45">45 min</option>
+              <option value="60">1 hora</option>
+              <option value="90">1 hora 30 min</option>
+              <option value="120">2 horas</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Estado del paciente -->
+        <div style="margin-bottom:18px">
+          <div class="field-label" style="margin-bottom:8px">Estado del paciente tras la intervención</div>
+          <div class="estado-grid" id="estado-grid-inv">
+            <button class="estado-chip" data-estado="estable"        data-color="verde">🟢 Estable</button>
+            <button class="estado-chip" data-estado="mejorado"       data-color="teal">🔵 Mejorado</button>
+            <button class="estado-chip" data-estado="en_seguimiento" data-color="amber">🟡 En seguimiento</button>
+            <button class="estado-chip" data-estado="derivado"       data-color="navy">⬛ Derivado</button>
+            <button class="estado-chip" data-estado="en_crisis"      data-color="rojo">🔴 En crisis</button>
+            <button class="estado-chip" data-estado="sin_contacto"   data-color="rojo">📵 Sin contacto</button>
+          </div>
+        </div>
+
+        <!-- Próxima cita -->
+        <div class="form-grid" style="margin-bottom:16px">
+          <div class="field-group">
+            <label class="field-label">Próxima cita (opcional)</label>
+            <input type="date" class="input-field" id="proxima-cita">
+          </div>
+        </div>
+
+        <!-- Nota clínica -->
+        <div class="field-group">
+          <label class="field-label">Nota clínica</label>
+          <textarea class="textarea-field" id="nota-clinica"
+            placeholder="Describe la intervención, respuesta del paciente, observaciones relevantes..."></textarea>
+        </div>
+
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn-cancelar" onclick="cerrarModalIntervencion()">Cancelar</button>
+        <button class="btn-confirmar" id="btn-guardar-intervencion" onclick="guardarIntervencion()">
+          ✓ Guardar intervención
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════
+       MODAL: ATENCIÓN DE CRISIS
+  ════════════════════════════════════════ -->
+  <div class="modal-overlay" id="modal-crisis">
+    <div class="modal" style="max-width:560px">
+      <div class="modal-header">
+        <div>
+          <div class="modal-title">🚨 Registrar atención de crisis</div>
+          <div style="font-size:12px;color:var(--muted);margin-top:3px">Completa los datos de la intervención</div>
+        </div>
+        <button class="modal-close" onclick="cerrarModalCrisis()">✕</button>
+      </div>
+      <div class="modal-body" style="padding:20px 26px">
+        <div id="crisis-resumen" class="alerta-resumen">
+          <div class="alerta-resumen-nombre" id="crisis-nombre">—</div>
+          <div class="alerta-resumen-msg"    id="crisis-msg">—</div>
+          <div class="alerta-resumen-meta">
+            <span class="badge" id="crisis-nivel-badge">—</span>
+            <span class="alerta-fecha" id="crisis-fecha">—</span>
+          </div>
+        </div>
+        <label class="field-label-modal">Tipo de intervención realizada</label>
+        <div class="intervencion-grid" id="intervencion-grid">
+          <button class="intervencion-btn" data-tipo="llamada"><span class="icon">📞</span>Llamada</button>
+          <button class="intervencion-btn" data-tipo="sesion"><span class="icon">🧠</span>Sesión emergencia</button>
+          <button class="intervencion-btn" data-tipo="derivacion"><span class="icon">🏥</span>Derivación</button>
+          <button class="intervencion-btn" data-tipo="familiar"><span class="icon">👨‍👩‍👧</span>Contacto familiar</button>
+        </div>
+        <label class="field-label-modal">Estado del paciente</label>
+        <div class="estado-grid" id="estado-grid-crisis" style="margin-bottom:16px">
+          <button class="estado-chip" data-estado="estable"        data-color="verde">🟢 Estable</button>
+          <button class="estado-chip" data-estado="en_seguimiento" data-color="amber">🟡 En seguimiento</button>
+          <button class="estado-chip" data-estado="derivado"       data-color="amber">🔵 Derivado</button>
+          <button class="estado-chip" data-estado="sin_contacto"   data-color="rojo">🔴 Sin contacto</button>
+        </div>
+        <label class="field-label-modal">Nota clínica (opcional)</label>
+        <textarea class="textarea-nota" id="nota-crisis" placeholder="Describe brevemente la intervención..."></textarea>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-cancelar" onclick="cerrarModalCrisis()">Cancelar</button>
+        <button class="btn-confirmar" id="btn-confirmar-crisis" onclick="confirmarAtencionCrisis()">
+          ✓ Marcar como atendida
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST -->
+  <div class="toast" id="toast"></div>
+
+  <!-- ════════════════════════════════════════
+       JAVASCRIPT
+  ════════════════════════════════════════ -->
+  <script>
+    /* ══ CONSTANTES ══ */
+    const EMOCION_EMOJI = { neutral:'😐', feliz:'😊', triste:'😢', enojado:'😠', ansioso:'😰' };
+    const EMOCION_COLOR = { neutral:'#94a3b8', feliz:'#22c55e', triste:'#60a5fa', enojado:'#f97316', ansioso:'#a78bfa' };
+
+    const TIPO_LABEL = {
+      sesion_presencial: '🧠 Sesión presencial',
+      sesion_virtual:    '💻 Sesión virtual',
+      llamada:           '📞 Llamada',
+      contacto_familiar: '👨‍👩‍👧 Contacto familiar',
+      derivacion:        '🏥 Derivación',
+      seguimiento:       '🔍 Seguimiento'
+    };
+
+    const ESTADO_LABEL = {
+      estable:        '🟢 Estable',
+      mejorado:       '🔵 Mejorado',
+      en_seguimiento: '🟡 En seguimiento',
+      derivado:       '⬛ Derivado',
+      en_crisis:      '🔴 En crisis',
+      sin_contacto:   '📵 Sin contacto'
+    };
+
+    /* ══ CHARTS ══ */
+    let chartLinea = null;
+    let chartTorta = null;
+
+    /* ══ TABS DEL MODAL HISTORIAL ══ */
+    function switchTab(tabId, btnEl) {
+      document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+      document.querySelectorAll('.modal-tab').forEach(b => b.classList.remove('active'));
+      document.getElementById(tabId).classList.add('active');
+      btnEl.classList.add('active');
+    }
+
+    /* ══ HISTORIAL EMOCIONAL ══ */
+    let _pacienteActual = null;
+
+    async function verHistorial(idPaciente, nombre) {
+      _pacienteActual = idPaciente;
+      document.getElementById('modal-paciente-nombre').textContent = nombre;
+
+      // Resetear tabs
+      document.querySelectorAll('.modal-tab').forEach((b,i) => b.classList.toggle('active', i===0));
+      document.getElementById('tab-emocional').classList.add('active');
+      document.getElementById('tab-intervenciones').classList.remove('active');
+      document.getElementById('tab-emocional').innerHTML =
+        `<div class="loading"><div class="spinner"></div>Cargando historial...</div>`;
+      document.getElementById('tab-intervenciones').innerHTML =
+        `<div class="loading"><div class="spinner"></div>Cargando intervenciones...</div>`;
+
+      document.getElementById('modal-historial').classList.add('open');
+
+      // Cargar ambos en paralelo
+      await Promise.all([
+        cargarHistorialEmocional(idPaciente),
+        cargarIntervencionesEnModal(idPaciente)
+      ]);
+    }
+
+    async function cargarHistorialEmocional(idPaciente) {
+      try {
+        const res = await fetch(`/api/historial/${idPaciente}`);
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const data = await res.json();
+        if (data.error) throw new Error(data.error);
+        renderTabEmocional(data);
+      } catch (e) {
+        document.getElementById('tab-emocional').innerHTML =
+          `<div class="empty-state"><div class="empty-icon">⚠️</div><div class="empty-title">Error cargando datos</div></div>`;
+      }
+    }
+
+    function renderTabEmocional(data) {
+      const { historial, conteo_emociones, alertas_paciente } = data;
+      const labels  = historial.map(h => h.fecha_formateada);
+      const valores = historial.map(h => ({ neutral:0, feliz:4, triste:1, enojado:2, ansioso:3 })[h.emocion] ?? 0);
+      const colores = historial.map(h => EMOCION_COLOR[h.emocion] || '#94a3b8');
+
+      document.getElementById('tab-emocional').innerHTML = `
+        <div class="chart-wrap">
+          <div class="chart-label">Evolución emocional</div>
+          <canvas id="chartLinea" height="120"></canvas>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 160px;gap:16px;margin-bottom:20px;align-items:center">
+          <div>
+            <div class="chart-label">Distribución</div>
+            <canvas id="chartTorta" height="160"></canvas>
+          </div>
+          <div>
+            ${(conteo_emociones||[]).map(e=>`
+              <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
+                <span style="font-size:18px">${EMOCION_EMOJI[e.emocion]||'❓'}</span>
+                <div>
+                  <div style="font-size:12px;font-weight:600;text-transform:capitalize">${e.emocion}</div>
+                  <div style="font-size:11px;color:var(--muted)">${e.total} veces</div>
+                </div>
+              </div>`).join('')}
+          </div>
+        </div>
+        <div class="chart-label">Alertas de crisis</div>
+        <div class="historial-list">
+          ${(!alertas_paciente||!alertas_paciente.length)
+            ? `<div style="text-align:center;padding:20px;color:var(--muted)"><div style="font-size:28px;margin-bottom:8px">✅</div>Sin alertas registradas</div>`
+            : alertas_paciente.map(a=>`
+              <div class="historial-item" style="flex-direction:column;align-items:flex-start;gap:8px">
+                <div style="display:flex;align-items:center;gap:10px;width:100%">
+                  <span>${a.nivel==='critico'?'🔴':a.nivel==='alto'?'🟠':'🟡'}</span>
+                  <div style="flex:1">
+                    <div style="font-size:12px;font-weight:700;text-transform:uppercase;color:${a.nivel==='critico'?'var(--red)':'var(--amber)'}">${a.nivel}</div>
+                    <div style="font-size:11px;color:var(--muted)">${a.fecha_formateada}</div>
+                  </div>
+                  <span style="padding:3px 10px;border-radius:100px;font-size:11px;font-weight:600;background:var(--green-light);color:var(--green)">📱 SMS enviado</span>
+                </div>
+                <div style="font-size:12px;color:var(--text2);font-style:italic;padding:8px 12px;background:var(--surface);border-radius:8px;border-left:3px solid ${a.nivel==='critico'?'var(--red)':'var(--amber)'};width:100%">"${a.mensaje_disparador}"</div>
+              </div>`).join('')}
+        </div>`;
+
+      if (chartLinea) chartLinea.destroy();
+      chartLinea = new Chart(document.getElementById('chartLinea'), {
+        type: 'line',
+        data: { labels, datasets: [{ data: valores, borderColor:'#0d9488', backgroundColor:'rgba(13,148,136,.08)', pointBackgroundColor: colores, pointRadius:5, tension:0.4, fill:true, borderWidth:2 }] },
+        options: { responsive:true, plugins:{legend:{display:false}}, scales: { y:{ min:0, max:4, ticks:{stepSize:1, callback:v=>['Neutral','Triste','Enojado','Ansioso','Feliz'][v]||''}, grid:{color:'rgba(0,0,0,.06)'} }, x:{ ticks:{font:{size:10}}, grid:{display:false} } } }
+      });
+
+      if (chartTorta) chartTorta.destroy();
+      const tl = (conteo_emociones||[]).map(e=>e.emocion);
+      const tv = (conteo_emociones||[]).map(e=>e.total);
+      chartTorta = new Chart(document.getElementById('chartTorta'), {
+        type:'doughnut',
+        data:{ labels:tl, datasets:[{ data:tv, backgroundColor:tl.map(e=>EMOCION_COLOR[e]||'#94a3b8'), borderWidth:2, borderColor:'#faf9f7' }] },
+        options:{ responsive:true, plugins:{legend:{display:false}}, cutout:'65%' }
+      });
+    }
+
+    async function cargarIntervencionesEnModal(idPaciente) {
+      try {
+        const res = await fetch(`/api/intervenciones/${idPaciente}`);
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const data = await res.json();
+        renderTabIntervenciones(data.intervenciones || []);
+      } catch (e) {
+        document.getElementById('tab-intervenciones').innerHTML =
+          `<div class="empty-state"><div class="empty-icon">⚠️</div><div class="empty-title">Error cargando intervenciones</div></div>`;
+      }
+    }
+
+    function renderTabIntervenciones(intervenciones) {
+      const cont = document.getElementById('tab-intervenciones');
+      if (!intervenciones.length) {
+        cont.innerHTML = `
+          <div class="empty-state">
+            <div class="empty-icon">📋</div>
+            <div class="empty-title">Sin intervenciones registradas</div>
+            <div class="empty-sub">Usa el botón "Registrar" en la tabla para agregar la primera</div>
+          </div>`;
+        return;
+      }
+      cont.innerHTML = `
+        <div style="font-size:12px;color:var(--muted);margin-bottom:12px">
+          ${intervenciones.length} intervención(es) registrada(s)
+        </div>
+        <div class="inv-list">
+          ${intervenciones.map(inv => `
+            <div class="inv-item">
+              <div class="inv-item-header">
+                <span class="inv-fecha">📅 ${inv.fecha_intervencion}</span>
+                <span class="badge badge-navy">${TIPO_LABEL[inv.tipo] || inv.tipo}</span>
+                <span class="badge ${getBadgeEstado(inv.estado_paciente)}">${ESTADO_LABEL[inv.estado_paciente] || inv.estado_paciente}</span>
+              </div>
+              ${inv.duracion_minutos ? `<div style="font-size:11px;color:var(--muted);margin-bottom:4px">⏱️ ${inv.duracion_minutos} minutos</div>` : ''}
+              ${inv.nota_clinica    ? `<div class="inv-nota">"${inv.nota_clinica}"</div>` : ''}
+              ${inv.derivado_a      ? `<div style="font-size:11px;color:var(--navy);margin-top:4px">🏥 Derivado a: ${inv.derivado_a}</div>` : ''}
+              ${inv.proxima_cita    ? `<div class="inv-proxima">📌 Próxima cita: ${inv.proxima_cita}</div>` : ''}
+            </div>`).join('')}
+        </div>`;
+    }
+
+    function getBadgeEstado(estado) {
+      const map = { estable:'badge-green', mejorado:'badge-teal', en_seguimiento:'badge-amber', derivado:'badge-gray', en_crisis:'badge-red', sin_contacto:'badge-red' };
+      return map[estado] || 'badge-gray';
+    }
+
+    function cerrarModal() {
+      document.getElementById('modal-historial').classList.remove('open');
+    }
+
+    /* ══ MODAL: REGISTRAR INTERVENCIÓN ══ */
+    let _invPacienteId   = null;
+    let _invPacienteNombre = null;
+
+    function abrirModalIntervencion(idPaciente, nombre) {
+      _invPacienteId     = idPaciente;
+      _invPacienteNombre = nombre;
+
+      document.getElementById('intervencion-subtitulo').textContent = `Paciente: ${nombre}`;
+
+      // Resetear formulario
+      document.querySelectorAll('.tipo-chip').forEach(c => c.classList.remove('active'));
+      document.querySelectorAll('#estado-grid-inv .estado-chip').forEach(c => { c.className = 'estado-chip'; });
+      document.getElementById('fecha-intervencion').value = horaLocalNow();
+      document.getElementById('duracion-minutos').value   = '';
+      document.getElementById('nota-clinica').value       = '';
+      document.getElementById('proxima-cita').value       = '';
+      document.getElementById('derivado-a').value         = '';
+      document.getElementById('derivacion-section').classList.remove('visible');
+
+      document.getElementById('modal-intervencion').classList.add('open');
+    }
+
+    function cerrarModalIntervencion() {
+      document.getElementById('modal-intervencion').classList.remove('open');
+      _invPacienteId = null;
+    }
+
+    function horaLocalNow() {
+      const now = new Date();
+      const pad = n => String(n).padStart(2,'0');
+      return `${now.getFullYear()}-${pad(now.getMonth()+1)}-${pad(now.getDate())}T${pad(now.getHours())}:${pad(now.getMinutes())}`;
+    }
+
+    async function guardarIntervencion() {
+      if (!_invPacienteId) return;
+
+      const tipoChip    = document.querySelector('.tipo-chip.active');
+      const estadoChip  = document.querySelector('#estado-grid-inv .estado-chip[class*="sel-"]');
+      const fecha       = document.getElementById('fecha-intervencion').value;
+      const duracion    = document.getElementById('duracion-minutos').value;
+      const nota        = document.getElementById('nota-clinica').value.trim();
+      const proxima     = document.getElementById('proxima-cita').value;
+      const derivadoA   = document.getElementById('derivado-a').value.trim();
+
+      if (!tipoChip)   { mostrarToast('⚠️ Selecciona el tipo de intervención', 'err'); return; }
+      if (!estadoChip) { mostrarToast('⚠️ Indica el estado del paciente',       'err'); return; }
+      if (!fecha)      { mostrarToast('⚠️ Indica la fecha de la intervención',  'err'); return; }
+
+      const btn = document.getElementById('btn-guardar-intervencion');
+      btn.disabled    = true;
+      btn.textContent = 'Guardando...';
+
+      try {
+        const fd = new FormData();
+        fd.append('id_paciente',        _invPacienteId);
+        fd.append('fecha_intervencion', fecha);
+        fd.append('tipo',               tipoChip.dataset.tipo);
+        fd.append('estado_paciente',    estadoChip.dataset.estado);
+        if (duracion)  fd.append('duracion_minutos', duracion);
+        if (nota)      fd.append('nota_clinica',     nota);
+        if (proxima)   fd.append('proxima_cita',     proxima);
+        if (derivadoA) fd.append('derivado_a',       derivadoA);
+
+        const res = await fetch('/api/intervenciones', { method:'POST', body:fd });
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const data = await res.json();
+
+        if (data.success) {
+          cerrarModalIntervencion();
+          mostrarToast(`✅ Intervención registrada para ${_invPacienteNombre}`, 'ok');
+        } else {
+          mostrarToast('❌ ' + (data.message || 'Error al guardar'), 'err');
+        }
+      } catch (e) {
+        console.error('Error guardando intervención:', e);
+        mostrarToast('❌ Error de conexión. Intenta de nuevo.', 'err');
+      } finally {
+        btn.disabled    = false;
+        btn.textContent = '✓ Guardar intervención';
+      }
+    }
+
+    /* ══ MODAL: ATENCIÓN DE CRISIS ══ */
+    let _crisisActual = null;
+
+    function atenderAlerta(idAlerta, nombre, msg, nivel, fecha) {
+      _crisisActual = { idAlerta, nombre, nivel };
+      document.getElementById('panelNotif').style.display = 'none';
+      document.getElementById('crisis-nombre').textContent = nombre || '—';
+      document.getElementById('crisis-msg').textContent    = msg    || '—';
+      document.getElementById('crisis-fecha').textContent  = fecha  || '—';
+      const badgeEl = document.getElementById('crisis-nivel-badge');
+      badgeEl.textContent = (nivel||'alto').toUpperCase();
+      badgeEl.className   = 'badge '+(nivel==='critico'?'badge-red':nivel==='alto'?'badge-amber':'badge-teal');
+      const resumen = document.getElementById('crisis-resumen');
+      resumen.className   = `alerta-resumen ${nivel==='critico'?'':nivel||'alto'}`;
+      document.querySelectorAll('.intervencion-btn').forEach(b=>b.classList.remove('selected'));
+      document.querySelectorAll('#estado-grid-crisis .estado-chip').forEach(c=>{c.className='estado-chip';});
+      document.getElementById('nota-crisis').value = '';
+      document.getElementById('modal-crisis').classList.add('open');
+    }
+
+    function cerrarModalCrisis() {
+      document.getElementById('modal-crisis').classList.remove('open');
+      _crisisActual = null;
+    }
+
+    async function confirmarAtencionCrisis() {
+      if (!_crisisActual) return;
+      const tipoBtn    = document.querySelector('.intervencion-btn.selected');
+      const estadoChip = document.querySelector('#estado-grid-crisis .estado-chip[class*="sel-"]');
+      const nota       = document.getElementById('nota-crisis').value.trim();
+      if (!tipoBtn)    { mostrarToast('⚠️ Selecciona el tipo de intervención','err'); return; }
+      if (!estadoChip) { mostrarToast('⚠️ Indica el estado del paciente','err'); return; }
+      const notaFinal = [`Intervención: ${tipoBtn.textContent.trim()}`,`Estado: ${estadoChip.textContent.trim()}`, nota?`Nota: ${nota}`:'']. filter(Boolean).join(' | ');
+      const btn = document.getElementById('btn-confirmar-crisis');
+      btn.disabled=true; btn.textContent='Guardando...';
+      try {
+        const fd = new FormData();
+        fd.append('nota',              notaFinal);
+        fd.append('tipo_intervencion', tipoBtn.dataset.tipo);
+        fd.append('estado_paciente',   estadoChip.dataset.estado);
+        const res  = await fetch(`/api/alerta/${_crisisActual.idAlerta}/atender`, {method:'POST',body:fd});
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const data = await res.json();
+        if (data.success) { cerrarModalCrisis(); mostrarToast(`✅ Atención registrada para ${_crisisActual.nombre}`,'ok'); }
+        else { mostrarToast('❌ '+(data.message||'Error al guardar'),'err'); }
+      } catch(e) { mostrarToast('❌ Error de conexión','err'); }
+      finally { btn.disabled=false; btn.textContent='✓ Marcar como atendida'; }
+    }
+
+    /* ══ PACIENTES DISPONIBLES ══ */
+    let _pacientesCache = [];
+
+    async function abrirPacientesDisponibles() {
+      const panel = document.getElementById('panel-disponibles');
+      panel.style.display = 'block';
+      panel.scrollIntoView({ behavior:'smooth' });
+      await cargarPacientesDisponibles();
+    }
+
+    function cerrarPacientesDisponibles() {
+      document.getElementById('panel-disponibles').style.display = 'none';
+      _pacientesCache = [];
+    }
+
+    async function cargarPacientesDisponibles() {
+      const lista = document.getElementById('lista-disponibles');
+      lista.innerHTML = `<div class="loading"><div class="spinner"></div>Cargando pacientes...</div>`;
+      try {
+        const res  = await fetch('/api/pacientes_disponibles');
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const data = await res.json();
+        if (data.error) throw new Error(data.error);
+        _pacientesCache = data.pacientes || [];
+        renderizarDisponibles(_pacientesCache);
+      } catch(e) {
+        lista.innerHTML = `<div class="empty-state"><div class="empty-icon">⚠️</div><div class="empty-title">Error cargando pacientes</div></div>`;
+      }
+    }
+
+    function renderizarDisponibles(pacientes) {
+      const lista = document.getElementById('lista-disponibles');
+      if (!pacientes.length) {
+        lista.innerHTML = `<div class="empty-state" style="padding:32px"><div class="empty-icon">✅</div><div class="empty-title">Todos asignados</div></div>`;
+        return;
+      }
+      lista.innerHTML = pacientes.map(p=>`
+        <div class="alerta-item" style="align-items:center;gap:14px">
+          <div style="width:38px;height:38px;border-radius:50%;background:var(--teal-light);color:var(--teal);display:flex;align-items:center;justify-content:center;font-family:'Fraunces',serif;font-weight:700;font-size:15px;flex-shrink:0">
+            ${p.nombre.charAt(0)}${p.apellidos?p.apellidos.charAt(0):''}
+          </div>
+          <div style="flex:1;min-width:0">
+            <div class="alerta-nombre">${p.nombre} ${p.apellidos||''}</div>
+            <div class="alerta-msg" style="-webkit-line-clamp:1;line-clamp:1">📧 ${p.correo}</div>
+            <div class="alerta-meta">
+              ${p.edad         ? `<span class="badge badge-teal">${p.edad} años</span>` : ''}
+              ${p.departamento ? `<span class="badge badge-gray">📍 ${p.departamento}</span>` : ''}
+            </div>
+          </div>
+          <button class="btn-ver" style="flex-shrink:0" data-id="${p.id_usuario}" data-nombre="${p.nombre} ${p.apellidos||''}">
+            ➕ Asignar
+          </button>
+        </div>`).join('');
+    }
+
+    function filtrarDisponibles(texto) {
+      const q = texto.toLowerCase();
+      renderizarDisponibles(_pacientesCache.filter(p =>
+        (p.nombre+' '+(p.apellidos||'')).toLowerCase().includes(q) || p.correo.toLowerCase().includes(q)
+      ));
+    }
+
+    async function asignarDesdeLista(idPaciente, nombre, btnEl) {
+      btnEl.disabled=true; btnEl.textContent='...';
+      try {
+        const fd = new FormData(); fd.append('id_paciente', idPaciente);
+        const res  = await fetch('/api/asignar_paciente', {method:'POST',body:fd});
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const data = await res.json();
+        if (data.success) {
+          const fila = btnEl.closest('.alerta-item');
+          fila.style.transition='opacity .3s'; fila.style.opacity='0';
+          setTimeout(()=>{ fila.remove(); _pacientesCache=_pacientesCache.filter(p=>p.id_usuario!==idPaciente); mostrarToast(`✅ ${nombre} asignado correctamente`,'ok'); setTimeout(()=>location.reload(),1500); },300);
+        } else { mostrarToast('❌ '+(data.message||'Error al asignar'),'err'); btnEl.disabled=false; btnEl.textContent='➕ Asignar'; }
+      } catch(e) { mostrarToast('❌ Error de conexión','err'); btnEl.disabled=false; btnEl.textContent='➕ Asignar'; }
+    }
+
+    /* ══ NOTIFICACIONES ══ */
+    async function cargarNotificaciones() {
+      try {
+        const res  = await fetch('/api/notificaciones');
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const data = await res.json();
+        const lista = document.getElementById('listaNotif');
+        const badge = document.getElementById('badgeNotif');
+        const total = data.notificaciones ? data.notificaciones.length : 0;
+        badge.style.display = total>0?'block':'none';
+        badge.textContent   = total;
+        if (!total) { lista.innerHTML=`<p style="color:#7a8fa8;font-size:12px;text-align:center;padding:20px">Sin notificaciones</p>`; return; }
+        lista.innerHTML = data.notificaciones.map(n=>`
+          <div id="notif-${n.id_solicitud}" style="padding:12px;margin-bottom:6px;background:var(--surface2);border-radius:10px;border:1px solid var(--border)">
+            <div style="color:var(--text);font-size:13px;font-weight:600;margin-bottom:4px">
+              <i class="fa-solid fa-circle-exclamation" style="color:var(--red);margin-right:4px"></i>${n.nombre} ${n.apellidos}
+            </div>
+            <div style="color:var(--text2);font-size:11px;margin-bottom:10px">Necesita tu ayuda · ${n.fecha}</div>
+            <button onclick="atenderSolicitud(${n.id_solicitud},${n.id_paciente})"
+              style="background:var(--teal);border:none;color:#fff;border-radius:8px;padding:7px 14px;font-size:12px;font-weight:600;cursor:pointer;width:100%;font-family:'Outfit',sans-serif">
+              <i class="fa-solid fa-hand-holding-heart" style="margin-right:4px"></i>Atender
+            </button>
+          </div>`).join('');
+      } catch(e) { console.warn('Error notificaciones:', e); }
+    }
+
+    function toggleNotificaciones() {
+      const panel = document.getElementById('panelNotif');
+      const v     = panel.style.display==='block';
+      panel.style.display = v?'none':'block';
+      if (!v) cargarNotificaciones();
+    }
+
+    async function atenderSolicitud(idSolicitud, idPaciente) {
+      try {
+        const fd = new FormData(); fd.append('id_solicitud', idSolicitud);
+        const res  = await fetch('/api/atender_solicitud',{method:'POST',body:fd});
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const data = await res.json();
+        if (data.success) { const el=document.getElementById(`notif-${idSolicitud}`); if(el) el.remove(); cargarNotificaciones(); window.location.reload(); }
+        else { mostrarToast('❌ '+(data.message||'Error'),'err'); }
+      } catch(e) { mostrarToast('❌ Error de conexión','err'); }
+    }
+
+    /* ══ UTILIDADES ══ */
+    function mostrarToast(msg, tipo) {
+      const t = document.getElementById('toast');
+      t.textContent = msg; t.className = `toast ${tipo} show`;
+      setTimeout(()=>t.classList.remove('show'), 3500);
+    }
+
+    /* ══ DELEGACIÓN DE EVENTOS ══ */
+    document.addEventListener('click', function(e) {
+      // Tipo de intervención en modal registrar
+      const tipoChip = e.target.closest('.tipo-chip');
+      if (tipoChip) {
+        document.querySelectorAll('.tipo-chip').forEach(c=>c.classList.remove('active'));
+        tipoChip.classList.add('active');
+        const sec = document.getElementById('derivacion-section');
+        sec.classList.toggle('visible', tipoChip.dataset.tipo==='derivacion');
+      }
+
+      // Estado paciente (modal intervención y crisis)
+      const estadoChip = e.target.closest('.estado-chip');
+      if (estadoChip) {
+        const parent = estadoChip.closest('#estado-grid-inv, #estado-grid-crisis');
+        if (parent) {
+          parent.querySelectorAll('.estado-chip').forEach(c=>{c.className='estado-chip';});
+          estadoChip.classList.add(`sel-${estadoChip.dataset.color}`);
+        }
+      }
+
+      // Tipo intervención en modal crisis
+      const btnCrisis = e.target.closest('.intervencion-btn');
+      if (btnCrisis) {
+        document.querySelectorAll('.intervencion-btn').forEach(b=>b.classList.remove('selected'));
+        btnCrisis.classList.add('selected');
+      }
+
+      // Botón Ver / Asignar de lista dinámica
+      const btnVer = e.target.closest('.btn-ver[data-id]');
+      if (btnVer) {
+        if (btnVer.textContent.trim().includes('Asignar')) asignarDesdeLista(btnVer.dataset.id, btnVer.dataset.nombre, btnVer);
+        else verHistorial(btnVer.dataset.id, btnVer.dataset.nombre);
+      }
+
+      // Botón "Registrar" intervención en tabla
+      const btnInv = e.target.closest('.btn-intervencion[data-id]');
+      if (btnInv) abrirModalIntervencion(btnInv.dataset.id, btnInv.dataset.nombre);
+
+      // Botón atender alerta
+      const btnAtender = e.target.closest('.btn-atender[data-id]');
+      if (btnAtender) atenderAlerta(btnAtender.dataset.id, btnAtender.dataset.nombre||'—', btnAtender.dataset.msg||'—', btnAtender.dataset.nivel||'alto', btnAtender.dataset.fecha||'—');
+
+      // Cerrar panel notif al click fuera
+      const btnCampana = document.getElementById('btnCampana');
+      const panelNotif = document.getElementById('panelNotif');
+      if (!btnCampana.contains(e.target) && !panelNotif.contains(e.target)) panelNotif.style.display='none';
+    });
+
+    /* ══ TECLADO ══ */
+    document.addEventListener('keydown', e => {
+      if (e.key==='Escape') { cerrarModal(); cerrarModalCrisis(); cerrarModalIntervencion(); }
+    });
+
+    document.getElementById('modal-historial').addEventListener('click',   e=>{ if(e.target===e.currentTarget) cerrarModal(); });
+    document.getElementById('modal-crisis').addEventListener('click',      e=>{ if(e.target===e.currentTarget) cerrarModalCrisis(); });
+    document.getElementById('modal-intervencion').addEventListener('click',e=>{ if(e.target===e.currentTarget) cerrarModalIntervencion(); });
+
+    /* ══ INIT ══ */
+    document.addEventListener('DOMContentLoaded', function() {
+      cargarNotificaciones();
+      const notifInterval = setInterval(cargarNotificaciones, 60000);
+      window.addEventListener('beforeunload', ()=>clearInterval(notifInterval));
+    });
+  </script>
+</body>
+</html>

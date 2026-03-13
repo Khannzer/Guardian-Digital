@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Historial de Intervenciones — Guardian Digital</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,600;0,700;1,400&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+  <style>
+    :root {
+      --bg: #f0ede8; --surface: #faf9f7; --surface2: #f3f0eb; --border: #e2ddd6;
+      --text: #1c1917; --text2: #57534e; --muted: #a8a29e;
+      --teal: #0d9488; --teal-light: #ccfbf1;
+      --green: #16a34a; --green-light: #dcfce7;
+      --amber: #d97706; --amber-light: #fef3c7;
+      --red: #dc2626; --red-light: #fee2e2;
+      --navy: #0f3460;
+      --radius: 16px; --shadow: 0 2px 16px rgba(0,0,0,.07); --shadow-lg: 0 8px 40px rgba(0,0,0,.12);
+    }
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+    body { background:var(--bg); color:var(--text); font-family:'Outfit',sans-serif; font-size:14px; min-height:100vh; }
+
+    /* ── SIDEBAR ── */
+    .sidebar { position:fixed; top:0; left:0; width:240px; height:100vh; background:var(--navy); display:flex; flex-direction:column; padding:28px 20px; z-index:100; }
+    .sidebar-logo { display:flex; align-items:center; gap:10px; margin-bottom:36px; }
+    .logo-icon { width:36px; height:36px; border-radius:10px; background:var(--teal); display:flex; align-items:center; justify-content:center; }
+    .logo-text { font-family:'Fraunces',serif; font-size:16px; font-weight:700; color:#fff; line-height:1.2; }
+    .logo-sub  { font-size:10px; color:rgba(255,255,255,.4); }
+    .sidebar-section { font-size:10px; font-weight:600; letter-spacing:1.5px; text-transform:uppercase; color:rgba(255,255,255,.3); margin:20px 0 8px; }
+    .nav-item { display:flex; align-items:center; gap:10px; padding:10px 12px; border-radius:10px; color:rgba(255,255,255,.6); font-size:13.5px; cursor:pointer; transition:all .2s; text-decoration:none; margin-bottom:2px; }
+    .nav-item:hover  { background:rgba(255,255,255,.08); color:#fff; }
+    .nav-item.active { background:var(--teal); color:#fff; }
+    .nav-icon { font-size:16px; width:20px; text-align:center; }
+    .sidebar-footer { margin-top:auto; padding-top:20px; border-top:1px solid rgba(255,255,255,.08); }
+    .prof-card  { display:flex; align-items:center; gap:10px; }
+    .prof-avatar { width:36px; height:36px; border-radius:50%; background:linear-gradient(135deg,var(--teal),#6ee7b7); display:flex; align-items:center; justify-content:center; font-family:'Fraunces',serif; font-size:14px; font-weight:700; color:#fff; flex-shrink:0; }
+    .prof-name  { font-size:13px; color:#fff; font-weight:500; }
+    .prof-role  { font-size:11px; color:rgba(255,255,255,.4); }
+    .logout-btn { display:block; margin-top:12px; padding:8px 12px; border-radius:8px; background:rgba(255,255,255,.06); border:none; color:rgba(255,255,255,.5); font-family:'Outfit',sans-serif; font-size:12px; cursor:pointer; text-align:center; text-decoration:none; transition:all .2s; width:100%; }
+    .logout-btn:hover { background:rgba(220,38,38,.2); color:#fca5a5; }
+
+    /* ── MAIN ── */
+    .main { margin-left:240px; padding:32px 32px 60px; min-height:100vh; }
+    .page-title { font-family:'Fraunces',serif; font-size:28px; font-weight:700; color:var(--text); line-height:1.2; }
+    .page-title span { color:var(--teal); font-style:italic; }
+    .page-sub { font-size:13px; color:var(--text2); margin-top:4px; margin-bottom:28px; }
+
+    /* ── FILTROS ── */
+    .filtros-bar {
+      background:var(--surface); border:1px solid var(--border);
+      border-radius:var(--radius); box-shadow:var(--shadow);
+      padding:20px 24px; margin-bottom:24px;
+      display:flex; gap:14px; flex-wrap:wrap; align-items:flex-end;
+    }
+
+    .filtro-group { display:flex; flex-direction:column; gap:6px; flex:1; min-width:160px; }
+    .filtro-label { font-size:11px; font-weight:700; letter-spacing:1px; text-transform:uppercase; color:var(--muted); }
+
+    .select-field, .input-field {
+      padding:9px 13px; border:1.5px solid var(--border); border-radius:10px;
+      background:var(--surface); color:var(--text);
+      font-family:'Outfit',sans-serif; font-size:13.5px;
+      outline:none; transition:border-color .2s; width:100%;
+    }
+    .select-field:focus, .input-field:focus { border-color:var(--teal); }
+    .select-field { cursor:pointer; }
+
+    .btn-filtrar {
+      padding:10px 22px; border-radius:10px; border:none;
+      background:var(--teal); color:#fff;
+      font-family:'Outfit',sans-serif; font-size:13.5px; font-weight:600;
+      cursor:pointer; transition:all .2s; white-space:nowrap;
+    }
+    .btn-filtrar:hover { background:#0f766e; }
+
+    .btn-limpiar {
+      padding:10px 16px; border-radius:10px;
+      border:1.5px solid var(--border); background:transparent;
+      color:var(--text2); font-family:'Outfit',sans-serif;
+      font-size:13.5px; font-weight:500; cursor:pointer;
+      transition:all .2s; white-space:nowrap;
+    }
+    .btn-limpiar:hover { background:var(--surface2); }
+
+    /* ── RESUMEN CHIPS ── */
+    .resumen-bar {
+      display:flex; gap:12px; flex-wrap:wrap; margin-bottom:20px; align-items:center;
+    }
+
+    .resumen-chip {
+      display:inline-flex; align-items:center; gap:6px;
+      padding:6px 16px; border-radius:100px;
+      font-size:12px; font-weight:600;
+    }
+    .chip-total  { background:var(--teal-light);  color:var(--teal); }
+    .chip-sesion { background:rgba(15,52,96,.1);   color:var(--navy); }
+    .chip-crisis { background:var(--red-light);    color:var(--red); }
+    .chip-export { margin-left:auto; background:var(--green-light); color:var(--green); cursor:pointer; border:none; font-family:'Outfit',sans-serif; }
+    .chip-export:hover { background:var(--green); color:#fff; }
+
+    /* ── TABLA ── */
+    .card { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); box-shadow:var(--shadow); overflow:hidden; }
+    .table-wrap { overflow-x:auto; }
+    table { width:100%; border-collapse:collapse; }
+    th { padding:10px 16px; text-align:left; font-size:11px; font-weight:600; letter-spacing:1px; text-transform:uppercase; color:var(--muted); background:var(--surface2); border-bottom:1px solid var(--border); white-space:nowrap; cursor:pointer; user-select:none; }
+    th:hover { color:var(--teal); }
+    th .sort-icon { margin-left:4px; opacity:.4; font-size:9px; }
+    th.sorted .sort-icon { opacity:1; color:var(--teal); }
+    td { padding:14px 16px; border-bottom:1px solid var(--border); font-size:13.5px; vertical-align:middle; }
+    tr:last-child td { border-bottom:none; }
+    tr:hover td { background:var(--surface2); }
+
+    .patient-name  { font-weight:600; }
+    .patient-email { font-size:12px; color:var(--muted); }
+
+    /* BADGES */
+    .badge { display:inline-flex; align-items:center; gap:5px; padding:3px 10px; border-radius:100px; font-size:11px; font-weight:600; }
+    .badge-teal  { background:var(--teal-light);            color:var(--teal); }
+    .badge-navy  { background:rgba(15,52,96,.1);            color:var(--navy); }
+    .badge-green { background:var(--green-light);           color:var(--green); }
+    .badge-amber { background:var(--amber-light);           color:var(--amber); }
+    .badge-red   { background:var(--red-light);             color:var(--red); }
+    .badge-gray  { background:var(--surface2);              color:var(--muted); }
+    .badge-purple{ background:rgba(139,92,246,.1);          color:#7c3aed; }
+
+    /* TIPO */
+    .tipo-badge { display:inline-flex; align-items:center; gap:5px; padding:4px 10px; border-radius:8px; font-size:12px; font-weight:600; }
+    .tipo-sesion_presencial { background:rgba(15,52,96,.1);  color:var(--navy); }
+    .tipo-sesion_virtual    { background:rgba(139,92,246,.1);color:#7c3aed; }
+    .tipo-llamada           { background:var(--teal-light);  color:var(--teal); }
+    .tipo-contacto_familiar { background:var(--green-light); color:var(--green); }
+    .tipo-derivacion        { background:var(--red-light);   color:var(--red); }
+    .tipo-seguimiento       { background:var(--amber-light); color:var(--amber); }
+
+    /* ESTADO */
+    .estado-badge { display:inline-flex; align-items:center; gap:5px; padding:4px 10px; border-radius:100px; font-size:12px; font-weight:600; }
+    .estado-estable        { background:var(--green-light); color:var(--green); }
+    .estado-mejorado       { background:var(--teal-light);  color:var(--teal); }
+    .estado-en_seguimiento { background:var(--amber-light); color:var(--amber); }
+    .estado-derivado       { background:rgba(15,52,96,.1);  color:var(--navy); }
+    .estado-en_crisis      { background:var(--red-light);   color:var(--red); }
+    .estado-sin_contacto   { background:var(--surface2);    color:var(--muted); }
+
+    .nota-texto { font-size:12px; color:var(--text2); max-width:220px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .proxima-fecha { font-size:12px; color:var(--teal); font-weight:600; }
+
+    /* BTN VER NOTA */
+    .btn-nota { padding:4px 10px; border-radius:7px; background:var(--surface2); border:none; font-family:'Outfit',sans-serif; font-size:12px; color:var(--text2); cursor:pointer; transition:all .2s; }
+    .btn-nota:hover { background:var(--border); }
+
+    /* EMPTY / LOADING */
+    .empty-state { text-align:center; padding:60px 20px; color:var(--muted); }
+    .empty-icon  { font-size:40px; margin-bottom:14px; }
+    .empty-title { font-family:'Fraunces',serif; font-size:18px; color:var(--text2); margin-bottom:8px; }
+    .empty-sub   { font-size:13px; }
+    .loading { text-align:center; padding:60px; color:var(--muted); }
+    .spinner { width:30px; height:30px; border:3px solid var(--border); border-top-color:var(--teal); border-radius:50%; animation:spin .7s linear infinite; margin:0 auto 14px; }
+    @keyframes spin { to { transform:rotate(360deg) } }
+
+    /* PAGINACIÓN */
+    .paginacion { display:flex; align-items:center; gap:8px; justify-content:flex-end; padding:16px 20px; border-top:1px solid var(--border); flex-wrap:wrap; }
+    .pag-info { font-size:12px; color:var(--muted); margin-right:auto; }
+    .pag-btn { padding:6px 12px; border-radius:8px; border:1.5px solid var(--border); background:var(--surface); color:var(--text2); font-family:'Outfit',sans-serif; font-size:12px; font-weight:600; cursor:pointer; transition:all .2s; }
+    .pag-btn:hover:not(:disabled) { border-color:var(--teal); color:var(--teal); }
+    .pag-btn.active { background:var(--teal); color:#fff; border-color:var(--teal); }
+    .pag-btn:disabled { opacity:.4; cursor:not-allowed; }
+
+    /* MODAL NOTA */
+    .modal-overlay { position:fixed; inset:0; background:rgba(15,52,96,.45); backdrop-filter:blur(4px); z-index:200; display:none; align-items:center; justify-content:center; padding:20px; }
+    .modal-overlay.open { display:flex; animation:fadeIn .2s ease; }
+    @keyframes fadeIn { from { opacity:0 } to { opacity:1 } }
+    .modal { background:var(--surface); border-radius:20px; box-shadow:var(--shadow-lg); width:100%; max-width:500px; animation:slideUp .25s ease; }
+    @keyframes slideUp { from { transform:translateY(20px); opacity:0 } to { transform:translateY(0); opacity:1 } }
+    .modal-header { display:flex; align-items:center; justify-content:space-between; padding:20px 24px; border-bottom:1px solid var(--border); }
+    .modal-title { font-family:'Fraunces',serif; font-size:17px; font-weight:700; }
+    .modal-close { width:32px; height:32px; border-radius:50%; border:none; background:var(--surface2); cursor:pointer; font-size:16px; display:flex; align-items:center; justify-content:center; }
+    .modal-close:hover { background:var(--border); }
+    .modal-body { padding:22px 24px; }
+
+    /* TOAST */
+    .toast { position:fixed; bottom:24px; right:24px; padding:12px 20px; border-radius:12px; font-size:13.5px; font-weight:500; box-shadow:var(--shadow-lg); z-index:999; transform:translateY(20px); opacity:0; transition:all .3s; pointer-events:none; }
+    .toast.show { transform:translateY(0); opacity:1; }
+    .toast.ok  { background:var(--green); color:#fff; }
+    .toast.err { background:var(--red);   color:#fff; }
+  </style>
+</head>
+
+<body>
+
+  <!-- ════════════════════════════
+       SIDEBAR
+  ════════════════════════════ -->
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <div class="logo-icon"><i class="fa-solid fa-shield-heart" style="color:#fff;font-size:16px"></i></div>
+      <div>
+        <div class="logo-text">Guardian</div>
+        <div class="logo-sub">Panel Clínico</div>
+      </div>
+    </div>
+
+    <div class="sidebar-section">Navegación</div>
+    <a href="/dashboard_profesional" class="nav-item">
+      <span class="nav-icon"><i class="fa-solid fa-chart-line"></i></span> Dashboard
+    </a>
+    <a href="/historial_intervenciones" class="nav-item active">
+      <span class="nav-icon"><i class="fa-solid fa-clipboard-list"></i></span> Intervenciones
+    </a>
+
+    <div class="sidebar-footer">
+      <div class="prof-card">
+        <div class="prof-avatar">{{ profesional.nombre[0] }}{{ profesional.apellidos[0] }}</div>
+        <div>
+          <div class="prof-name">{{ profesional.nombre }} {{ profesional.apellidos }}</div>
+          <div class="prof-role">Psicólogo/a clínico/a</div>
+        </div>
+      </div>
+      <a href="/logout" class="logout-btn"><i class="fa-solid fa-right-from-bracket"></i> Cerrar sesión</a>
+    </div>
+  </aside>
+
+  <!-- ════════════════════════════
+       MAIN
+  ════════════════════════════ -->
+  <main class="main">
+    <h1 class="page-title">Historial de <span>intervenciones</span></h1>
+    <p class="page-sub">Registro clínico completo de todas tus intervenciones por paciente</p>
+
+    <!-- FILTROS -->
+    <div class="filtros-bar">
+      <div class="filtro-group">
+        <label class="filtro-label">Paciente</label>
+        <select class="select-field" id="filtro-paciente">
+          <option value="">— Todos los pacientes —</option>
+          {% for p in pacientes %}
+          <option value="{{ p.id_usuario }}">{{ p.nombre }} {{ p.apellidos }}</option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <div class="filtro-group">
+        <label class="filtro-label">Tipo</label>
+        <select class="select-field" id="filtro-tipo">
+          <option value="">— Todos los tipos —</option>
+          <option value="sesion_presencial">🧠 Sesión presencial</option>
+          <option value="sesion_virtual">💻 Sesión virtual</option>
+          <option value="llamada">📞 Llamada</option>
+          <option value="contacto_familiar">👨‍👩‍👧 Contacto familiar</option>
+          <option value="derivacion">🏥 Derivación</option>
+          <option value="seguimiento">🔍 Seguimiento</option>
+        </select>
+      </div>
+
+      <div class="filtro-group">
+        <label class="filtro-label">Estado paciente</label>
+        <select class="select-field" id="filtro-estado">
+          <option value="">— Todos los estados —</option>
+          <option value="estable">🟢 Estable</option>
+          <option value="mejorado">🔵 Mejorado</option>
+          <option value="en_seguimiento">🟡 En seguimiento</option>
+          <option value="derivado">⬛ Derivado</option>
+          <option value="en_crisis">🔴 En crisis</option>
+          <option value="sin_contacto">📵 Sin contacto</option>
+        </select>
+      </div>
+
+      <div class="filtro-group" style="max-width:150px">
+        <label class="filtro-label">Desde</label>
+        <input type="date" class="input-field" id="filtro-desde">
+      </div>
+
+      <div class="filtro-group" style="max-width:150px">
+        <label class="filtro-label">Hasta</label>
+        <input type="date" class="input-field" id="filtro-hasta">
+      </div>
+
+      <button class="btn-filtrar" onclick="aplicarFiltros()">
+        <i class="fa-solid fa-magnifying-glass"></i> Filtrar
+      </button>
+      <button class="btn-limpiar" onclick="limpiarFiltros()">✕ Limpiar</button>
+    </div>
+
+    <!-- RESUMEN -->
+    <div class="resumen-bar" id="resumen-bar" style="display:none">
+      <span class="resumen-chip chip-total" id="chip-total">— intervenciones</span>
+      <span class="resumen-chip chip-sesion" id="chip-sesiones">— sesiones</span>
+      <span class="resumen-chip chip-crisis" id="chip-crisis">— derivaciones</span>
+      <button class="resumen-chip chip-export" onclick="exportarCSV()">
+        <i class="fa-solid fa-file-csv"></i> Exportar CSV
+      </button>
+    </div>
+
+    <!-- TABLA -->
+    <div class="card">
+      <div id="contenedor-tabla">
+        <div class="loading"><div class="spinner"></div>Cargando intervenciones...</div>
+      </div>
+      <div class="paginacion" id="paginacion" style="display:none"></div>
+    </div>
+
+  </main>
+
+  <!-- MODAL: VER NOTA COMPLETA -->
+  <div class="modal-overlay" id="modal-nota">
+    <div class="modal">
+      <div class="modal-header">
+        <div class="modal-title">📝 Nota clínica completa</div>
+        <button class="modal-close" onclick="cerrarModalNota()">✕</button>
+      </div>
+      <div class="modal-body">
+        <div id="modal-nota-header" style="margin-bottom:16px;padding:12px 14px;background:var(--surface2);border-radius:10px;font-size:12px;color:var(--text2)"></div>
+        <p id="modal-nota-texto" style="font-size:14px;line-height:1.7;color:var(--text);white-space:pre-wrap"></p>
+        <div id="modal-nota-derivado" style="display:none;margin-top:14px;padding:10px 14px;background:var(--red-light);border-radius:10px;font-size:12px;color:var(--red);font-weight:600"></div>
+        <div id="modal-nota-proxima" style="display:none;margin-top:10px;padding:10px 14px;background:var(--teal-light);border-radius:10px;font-size:12px;color:var(--teal);font-weight:600"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST -->
+  <div class="toast" id="toast"></div>
+
+  <script>
+    /* ══ DATOS ══ */
+    let _todas      = [];   // todas las intervenciones cargadas
+    let _filtradas  = [];   // después de aplicar filtros
+    let _paginaActual = 1;
+    const POR_PAGINA  = 15;
+
+    const TIPO_LABEL = {
+      sesion_presencial: '🧠 Sesión presencial',
+      sesion_virtual:    '💻 Sesión virtual',
+      llamada:           '📞 Llamada',
+      contacto_familiar: '👨‍👩‍👧 Contacto familiar',
+      derivacion:        '🏥 Derivación',
+      seguimiento:       '🔍 Seguimiento'
+    };
+
+    const ESTADO_LABEL = {
+      estable:        '🟢 Estable',
+      mejorado:       '🔵 Mejorado',
+      en_seguimiento: '🟡 En seguimiento',
+      derivado:       '⬛ Derivado',
+      en_crisis:      '🔴 En crisis',
+      sin_contacto:   '📵 Sin contacto'
+    };
+
+    /* ══ CARGA INICIAL ══ */
+    async function cargarTodas() {
+      const idPaciente = new URLSearchParams(location.search).get('paciente') || '';
+      if (idPaciente) {
+        document.getElementById('filtro-paciente').value = idPaciente;
+      }
+
+      try {
+        const url = idPaciente
+          ? `/api/todas_intervenciones?id_paciente=${idPaciente}`
+          : '/api/todas_intervenciones';
+
+        const res = await fetch(url);
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const data = await res.json();
+
+        _todas     = data.intervenciones || [];
+        _filtradas = [..._todas];
+        _paginaActual = 1;
+        renderTabla();
+        renderResumen();
+      } catch (e) {
+        document.getElementById('contenedor-tabla').innerHTML = `
+          <div class="empty-state">
+            <div class="empty-icon">⚠️</div>
+            <div class="empty-title">Error cargando intervenciones</div>
+            <div class="empty-sub">${e.message}</div>
+          </div>`;
+      }
+    }
+
+    /* ══ FILTROS ══ */
+    function aplicarFiltros() {
+      const idPaciente = document.getElementById('filtro-paciente').value;
+      const tipo       = document.getElementById('filtro-tipo').value;
+      const estado     = document.getElementById('filtro-estado').value;
+      const desde      = document.getElementById('filtro-desde').value;
+      const hasta      = document.getElementById('filtro-hasta').value;
+
+      _filtradas = _todas.filter(inv => {
+        if (idPaciente && String(inv.id_paciente || '') !== idPaciente) {
+          // Filtrar por nombre si no tenemos id_paciente en el objeto
+          const nombreCompleto = `${inv.paciente_nombre} ${inv.paciente_apellidos}`;
+          const opcionSeleccionada = document.getElementById('filtro-paciente').options[document.getElementById('filtro-paciente').selectedIndex].text;
+          if (opcionSeleccionada !== nombreCompleto) return false;
+        }
+        if (tipo   && inv.tipo            !== tipo)   return false;
+        if (estado && inv.estado_paciente !== estado) return false;
+        if (desde) {
+          const fechaInv = parseFechaDD(inv.fecha_intervencion);
+          const fechaDesde = new Date(desde);
+          if (fechaInv < fechaDesde) return false;
+        }
+        if (hasta) {
+          const fechaInv = parseFechaDD(inv.fecha_intervencion);
+          const fechaHasta = new Date(hasta);
+          fechaHasta.setHours(23,59,59);
+          if (fechaInv > fechaHasta) return false;
+        }
+        return true;
+      });
+
+      _paginaActual = 1;
+      renderTabla();
+      renderResumen();
+    }
+
+    function limpiarFiltros() {
+      ['filtro-paciente','filtro-tipo','filtro-estado','filtro-desde','filtro-hasta']
+        .forEach(id => { document.getElementById(id).value = ''; });
+      _filtradas    = [..._todas];
+      _paginaActual = 1;
+      renderTabla();
+      renderResumen();
+    }
+
+    function parseFechaDD(str) {
+      // Formato esperado: dd/mm/yyyy HH:MM
+      if (!str) return new Date(0);
+      const [fecha, hora] = str.split(' ');
+      const [d, m, y]     = fecha.split('/');
+      return new Date(`${y}-${m}-${d}T${hora || '00:00'}`);
+    }
+
+    /* ══ RENDER TABLA ══ */
+    let _sortCol = null;
+    let _sortDir = 'desc';
+
+    function renderTabla() {
+      const cont   = document.getElementById('contenedor-tabla');
+      const pagBtn = document.getElementById('paginacion');
+
+      if (!_filtradas.length) {
+        cont.innerHTML = `
+          <div class="empty-state">
+            <div class="empty-icon">📋</div>
+            <div class="empty-title">Sin intervenciones</div>
+            <div class="empty-sub">No hay registros con los filtros seleccionados</div>
+          </div>`;
+        pagBtn.style.display = 'none';
+        return;
+      }
+
+      const inicio   = (_paginaActual - 1) * POR_PAGINA;
+      const fin      = inicio + POR_PAGINA;
+      const pagina   = _filtradas.slice(inicio, fin);
+      const totalPag = Math.ceil(_filtradas.length / POR_PAGINA);
+
+      cont.innerHTML = `
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th onclick="sortPor('paciente_nombre')"   data-col="paciente_nombre">   Paciente         <span class="sort-icon">▼</span></th>
+                <th onclick="sortPor('fecha_intervencion')"data-col="fecha_intervencion">Fecha            <span class="sort-icon">▼</span></th>
+                <th onclick="sortPor('tipo')"               data-col="tipo">              Tipo             <span class="sort-icon">▼</span></th>
+                <th onclick="sortPor('estado_paciente')"    data-col="estado_paciente">   Estado           <span class="sort-icon">▼</span></th>
+                <th>Duración</th>
+                <th>Nota clínica</th>
+                <th onclick="sortPor('proxima_cita')"       data-col="proxima_cita">      Próxima cita     <span class="sort-icon">▼</span></th>
+                <th>Derivado a</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${pagina.map(inv => `
+                <tr>
+                  <td>
+                    <div class="patient-name">${inv.paciente_nombre} ${inv.paciente_apellidos}</div>
+                    <div class="patient-email">${inv.paciente_correo}</div>
+                  </td>
+                  <td style="white-space:nowrap;font-size:13px">${inv.fecha_intervencion}</td>
+                  <td><span class="tipo-badge tipo-${inv.tipo}">${TIPO_LABEL[inv.tipo]||inv.tipo}</span></td>
+                  <td><span class="estado-badge estado-${inv.estado_paciente}">${ESTADO_LABEL[inv.estado_paciente]||inv.estado_paciente}</span></td>
+                  <td>${inv.duracion_minutos ? `<span style="font-size:13px;color:var(--text2)">⏱️ ${inv.duracion_minutos} min</span>` : '<span style="color:var(--muted);font-size:12px">—</span>'}</td>
+                  <td>
+                    ${inv.nota_clinica
+                      ? `<button class="btn-nota"
+                            onclick='verNota(${JSON.stringify(inv)})'
+                            title="${inv.nota_clinica.replace(/"/g,"&quot;")}">
+                            Ver nota
+                         </button>`
+                      : '<span style="color:var(--muted);font-size:12px">—</span>'}
+                  </td>
+                  <td>${inv.proxima_cita ? `<span class="proxima-fecha">📌 ${inv.proxima_cita}</span>` : '<span style="color:var(--muted);font-size:12px">—</span>'}</td>
+                  <td>${inv.derivado_a ? `<span style="font-size:12px;color:var(--red)">🏥 ${inv.derivado_a}</span>` : '<span style="color:var(--muted);font-size:12px">—</span>'}</td>
+                </tr>`).join('')}
+            </tbody>
+          </table>
+        </div>`;
+
+      // Marcar columna ordenada
+      if (_sortCol) {
+        const th = cont.querySelector(`th[data-col="${_sortCol}"]`);
+        if (th) { th.classList.add('sorted'); th.querySelector('.sort-icon').textContent = _sortDir==='asc'?'▲':'▼'; }
+      }
+
+      // Paginación
+      if (totalPag > 1) {
+        pagBtn.style.display = 'flex';
+        let html = `<span class="pag-info">Mostrando ${inicio+1}–${Math.min(fin,_filtradas.length)} de ${_filtradas.length}</span>`;
+        html += `<button class="pag-btn" onclick="irPagina(${_paginaActual-1})" ${_paginaActual===1?'disabled':''}>‹ Anterior</button>`;
+        for (let i=1; i<=totalPag; i++) {
+          if (totalPag<=7 || i===1 || i===totalPag || Math.abs(i-_paginaActual)<=1) {
+            html += `<button class="pag-btn ${i===_paginaActual?'active':''}" onclick="irPagina(${i})">${i}</button>`;
+          } else if (Math.abs(i-_paginaActual)===2) {
+            html += `<span style="color:var(--muted);padding:0 4px">…</span>`;
+          }
+        }
+        html += `<button class="pag-btn" onclick="irPagina(${_paginaActual+1})" ${_paginaActual===totalPag?'disabled':''}>Siguiente ›</button>`;
+        pagBtn.innerHTML = html;
+      } else {
+        pagBtn.style.display = 'none';
+      }
+    }
+
+    function irPagina(n) {
+      _paginaActual = n;
+      renderTabla();
+      document.querySelector('.card').scrollIntoView({ behavior:'smooth' });
+    }
+
+    /* ══ ORDENAMIENTO ══ */
+    function sortPor(col) {
+      if (_sortCol === col) { _sortDir = _sortDir==='asc'?'desc':'asc'; }
+      else { _sortCol = col; _sortDir = 'asc'; }
+
+      _filtradas.sort((a,b) => {
+        let va = a[col] || '';
+        let vb = b[col] || '';
+        if (col==='fecha_intervencion') { va = parseFechaDD(va); vb = parseFechaDD(vb); }
+        else { va = va.toString().toLowerCase(); vb = vb.toString().toLowerCase(); }
+        if (va < vb) return _sortDir==='asc'?-1:1;
+        if (va > vb) return _sortDir==='asc'?1:-1;
+        return 0;
+      });
+
+      renderTabla();
+    }
+
+    /* ══ RESUMEN ══ */
+    function renderResumen() {
+      const bar = document.getElementById('resumen-bar');
+      if (!_filtradas.length) { bar.style.display='none'; return; }
+      bar.style.display = 'flex';
+
+      const sesiones    = _filtradas.filter(i => i.tipo==='sesion_presencial'||i.tipo==='sesion_virtual').length;
+      const derivaciones = _filtradas.filter(i => i.tipo==='derivacion').length;
+
+      document.getElementById('chip-total').textContent    = `📋 ${_filtradas.length} intervención(es)`;
+      document.getElementById('chip-sesiones').textContent = `🧠 ${sesiones} sesión(es)`;
+      document.getElementById('chip-crisis').textContent   = `🏥 ${derivaciones} derivación(es)`;
+    }
+
+    /* ══ EXPORTAR CSV ══ */
+    function exportarCSV() {
+      if (!_filtradas.length) { mostrarToast('⚠️ No hay datos para exportar','err'); return; }
+
+      const encabezados = ['Paciente','Correo','Fecha intervención','Tipo','Estado','Duración (min)','Nota clínica','Próxima cita','Derivado a'];
+      const filas = _filtradas.map(inv => [
+        `${inv.paciente_nombre} ${inv.paciente_apellidos}`,
+        inv.paciente_correo,
+        inv.fecha_intervencion,
+        TIPO_LABEL[inv.tipo] || inv.tipo,
+        ESTADO_LABEL[inv.estado_paciente] || inv.estado_paciente,
+        inv.duracion_minutos || '',
+        (inv.nota_clinica || '').replace(/\n/g,' '),
+        inv.proxima_cita || '',
+        inv.derivado_a   || ''
+      ].map(v => `"${String(v).replace(/"/g,'""')}"`).join(','));
+
+      const csv     = [encabezados.join(','), ...filas].join('\n');
+      const blob    = new Blob(['\uFEFF'+csv], {type:'text/csv;charset=utf-8;'});
+      const url     = URL.createObjectURL(blob);
+      const link    = document.createElement('a');
+      const fechaHoy = new Date().toISOString().slice(0,10);
+      link.href     = url;
+      link.download = `intervenciones_${fechaHoy}.csv`;
+      link.click();
+      URL.revokeObjectURL(url);
+      mostrarToast('✅ CSV exportado correctamente','ok');
+    }
+
+    /* ══ MODAL NOTA ══ */
+    function verNota(inv) {
+      document.getElementById('modal-nota-header').innerHTML = `
+        <strong>${inv.paciente_nombre} ${inv.paciente_apellidos}</strong> ·
+        ${inv.fecha_intervencion} ·
+        <span style="color:var(--teal)">${TIPO_LABEL[inv.tipo]||inv.tipo}</span>`;
+
+      document.getElementById('modal-nota-texto').textContent = inv.nota_clinica || '—';
+
+      const divDerivado = document.getElementById('modal-nota-derivado');
+      divDerivado.style.display = inv.derivado_a ? 'block' : 'none';
+      if (inv.derivado_a) divDerivado.textContent = `🏥 Derivado a: ${inv.derivado_a}`;
+
+      const divProxima = document.getElementById('modal-nota-proxima');
+      divProxima.style.display = inv.proxima_cita ? 'block' : 'none';
+      if (inv.proxima_cita) divProxima.textContent = `📌 Próxima cita: ${inv.proxima_cita}`;
+
+      document.getElementById('modal-nota').classList.add('open');
+    }
+
+    function cerrarModalNota() {
+      document.getElementById('modal-nota').classList.remove('open');
+    }
+
+    /* ══ TOAST ══ */
+    function mostrarToast(msg, tipo) {
+      const t = document.getElementById('toast');
+      t.textContent = msg; t.className = `toast ${tipo} show`;
+      setTimeout(()=>t.classList.remove('show'), 3500);
+    }
+
+    /* ══ EVENTOS ══ */
+    document.addEventListener('keydown', e => {
+      if (e.key==='Escape') cerrarModalNota();
+      if (e.key==='Enter' && document.activeElement.tagName!=='BUTTON') aplicarFiltros();
+    });
+
+    document.getElementById('modal-nota').addEventListener('click', e => {
+      if (e.target===e.currentTarget) cerrarModalNota();
+    });
+
+    /* ══ INIT ══ */
+    document.addEventListener('DOMContentLoaded', cargarTodas);
+  </script>
+
+</body>
+</html>

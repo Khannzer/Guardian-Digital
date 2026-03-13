@@ -7,7 +7,6 @@
   <title>Guardián Digital</title>
 
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
-  <!-- Font Awesome 6.5 via CDN (actualizado de 5.5) -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
   <link
     href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=Fraunces:ital,wght@0,300;0,600;1,300&display=swap"
@@ -18,6 +17,10 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
 
   <style>
+    /* ══════════════════════════════════════════════════
+       TEMAS DE COLOR — 6 variantes
+    ══════════════════════════════════════════════════ */
+
     /* 🌊 Brisa de Mar */
     body.tema-brisa_mar {
       --c-bg: linear-gradient(150deg, #EBF4FF 0%, #F8FCFF 100%);
@@ -138,7 +141,9 @@
       --c-online: #7B9CFF;
     }
 
-    /* ── RESET Y BASE ── */
+    /* ══════════════════════════════════════════════════
+       RESET Y BASE
+    ══════════════════════════════════════════════════ */
     *,
     *::before,
     *::after {
@@ -156,14 +161,18 @@
       height: 100vh;
     }
 
-    /* ── LAYOUT ── */
+    /* ══════════════════════════════════════════════════
+       LAYOUT
+    ══════════════════════════════════════════════════ */
     .gd-layout {
       display: flex;
       height: 100vh;
       width: 100%;
     }
 
-    /* ── SIDEBAR ── */
+    /* ══════════════════════════════════════════════════
+       SIDEBAR
+    ══════════════════════════════════════════════════ */
     .gd-sidebar {
       width: 280px;
       flex-shrink: 0;
@@ -187,7 +196,6 @@
       border-radius: 3px;
     }
 
-    /* Logo */
     .gd-logo {
       display: flex;
       align-items: center;
@@ -243,7 +251,6 @@
       flex-shrink: 0;
     }
 
-    /* Stats */
     .gd-stats {
       background: var(--c-surface);
       border: 1px solid var(--c-border);
@@ -269,7 +276,6 @@
       font-weight: 600;
     }
 
-    /* Botones sidebar */
     .gd-btn {
       display: flex;
       align-items: center;
@@ -315,7 +321,7 @@
       min-height: 8px;
     }
 
-    /* Selector de temas */
+    /* ── Selector de temas ── */
     .gd-theme-grid {
       display: grid;
       grid-template-columns: 1fr 1fr 1fr;
@@ -421,7 +427,9 @@
       color: var(--c-accent);
     }
 
-    /* ── CHAT ── */
+    /* ══════════════════════════════════════════════════
+       CHAT AREA
+    ══════════════════════════════════════════════════ */
     .gd-chat {
       flex: 1;
       display: flex;
@@ -431,7 +439,6 @@
       transition: background 0.5s ease;
     }
 
-    /* Header */
     .gd-header {
       background: var(--c-header);
       padding: 14px 22px;
@@ -480,7 +487,6 @@
       margin: 0;
     }
 
-    /* Badge de usuario en header */
     .gd-header-user {
       display: flex;
       align-items: center;
@@ -490,6 +496,7 @@
       padding: 5px 12px 5px 6px;
     }
 
+    /* FIX #10 — Avatar generado con inicial, sin imagen externa */
     .gd-header-user-avatar {
       width: 28px;
       height: 28px;
@@ -550,7 +557,7 @@
       background: rgba(255, 255, 255, .3);
     }
 
-    /* Mensajes */
+    /* ── Mensajes ── */
     .gd-messages {
       flex: 1;
       overflow-y: auto;
@@ -621,16 +628,14 @@
       filter: brightness(0) invert(1);
     }
 
+    /* FIX #10 — Avatar de usuario en burbuja con inicial */
     .gd-msg-avatar.user-av {
       background: var(--c-usr-bub);
+      color: var(--c-usr-txt);
+      font-weight: 700;
+      font-family: 'Fraunces', serif;
+      font-size: 13px;
       box-shadow: none;
-    }
-
-    .gd-msg-avatar.user-av img {
-      filter: none;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
     }
 
     .gd-bubble {
@@ -665,7 +670,7 @@
       text-align: right;
     }
 
-    /* Typing */
+    /* ── Typing indicator ── */
     #typing-indicator .gd-bubble {
       padding: 13px 18px;
     }
@@ -733,7 +738,7 @@
       right: 0;
     }
 
-    /* Input */
+    /* ── Input ── */
     .gd-input-area {
       padding: 14px 22px 16px;
       background: var(--c-surface);
@@ -823,7 +828,6 @@
       filter: none;
     }
 
-    /* Hint de emergencia mejorado */
     .gd-input-hint {
       display: flex;
       align-items: center;
@@ -851,7 +855,7 @@
       font-size: 0.7rem;
     }
 
-    /* Modales */
+    /* ── Modales ── */
     .modal-content {
       background: var(--c-surface) !important;
       color: var(--c-text) !important;
@@ -873,7 +877,7 @@
       color: var(--c-text) !important;
     }
 
-    /* Responsive */
+    /* ── Responsive ── */
     @media (max-width: 768px) {
       .gd-layout {
         display: block;
@@ -946,7 +950,9 @@
 
 <body class="tema-{{ usuario.tema_color }}">
 
-  <!-- MODAL: TÉRMINOS Y CONDICIONES -->
+  <!-- ══════════════════════════════════════════════════
+       MODAL: TÉRMINOS Y CONDICIONES
+  ══════════════════════════════════════════════════ -->
   <div class="modal fade" id="termsModal" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false">
     <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
       <div class="modal-content shadow-lg">
@@ -963,13 +969,12 @@
           <p><strong>2.</strong> Si te encuentras en una situación de crisis severa, riesgo de autolesión o suicidio,
             este chat no es el medio adecuado. Por favor, comunícate de inmediato a la <strong>Línea 113 (Opción 5) del
               MINSA</strong>, al <strong>105 (Policía)</strong>, o acude a urgencias.</p>
-          <p><strong>3.</strong> Tu uso de la plataforma es confidencial y anónimo. Los datos se procesan temporalmente
-            bajo la Ley N° 29733 (Ley de Protección de Datos Personales del Perú).</p>
+          <p><strong>3.</strong> Tu uso de la plataforma es confidencial. Los datos se procesan bajo la Ley N° 29733
+            (Ley de Protección de Datos Personales del Perú).</p>
           <p><strong>4.</strong> Al interactuar con una IA, comprendes que las respuestas pueden presentar
             imprecisiones. El equipo desarrollador no se hace responsable por decisiones tomadas en base a la
             información del chat.</p>
-          <p><strong>5.</strong> El servicio puede presentar interrupciones técnicas sin previo aviso. No se garantiza
-            disponibilidad continua.</p>
+          <p><strong>5.</strong> El servicio puede presentar interrupciones técnicas sin previo aviso.</p>
           <p><strong>6.</strong> Los términos pueden actualizarse en cualquier momento. El uso continuado implica
             aceptación de las modificaciones.</p>
           <hr>
@@ -990,7 +995,9 @@
     </div>
   </div>
 
-  <!-- MODAL: EMERGENCIA -->
+  <!-- ══════════════════════════════════════════════════
+       MODAL: EMERGENCIA
+  ══════════════════════════════════════════════════ -->
   <div class="modal fade" id="emergencyModal" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false">
     <div class="modal-dialog modal-dialog-centered" role="document">
       <div class="modal-content border-danger shadow-lg" style="border-width:3px !important">
@@ -1022,7 +1029,9 @@
     </div>
   </div>
 
-  <!-- MODAL: CENTROS DE AYUDA -->
+  <!-- ══════════════════════════════════════════════════
+       MODAL: CENTROS DE AYUDA
+  ══════════════════════════════════════════════════ -->
   <div class="modal fade" id="recursosModal" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
       <div class="modal-content shadow-lg border-0" style="border-radius:16px !important;overflow:hidden">
@@ -1038,27 +1047,28 @@
             <div class="col-lg-8" id="mapaContenedor"
               style="min-height:500px;background:#e9ecef;display:flex;align-items:center;justify-content:center">
               <div class="text-center p-5">
-                <div class="spinner-grow text-primary" style="width:3rem;height:3rem" role="status"><span
-                    class="sr-only">Cargando...</span></div>
+                <div class="spinner-grow text-primary" style="width:3rem;height:3rem" role="status">
+                  <span class="sr-only">Cargando...</span>
+                </div>
                 <h5 class="mt-3 text-muted">Buscando los centros más cercanos...</h5>
-                <p class="text-black-50 small">Conectando con Google Maps</p>
+                <p class="text-black-50 small">Conectando con el mapa</p>
               </div>
             </div>
             <div class="col-lg-4 p-4 d-flex flex-column" style="background:var(--c-panel)">
               <h5 style="color:var(--c-text)" class="border-bottom pb-2 mb-3">¿Cómo usar este mapa?</h5>
               <ul class="list-unstyled mb-4" style="color:var(--c-text-soft)">
-                <li class="mb-3"><i class="fa-solid fa-location-pin text-danger mr-2"></i>Los pines rojos marcan los
+                <li class="mb-3"><i class="fa-solid fa-location-pin text-danger mr-2"></i>Los marcadores indican
                   <strong>Centros de Salud Mental Comunitaria (CSMC)</strong>.
                 </li>
-                <li class="mb-3"><i class="fa-solid fa-hand-pointer text-info mr-2"></i>Haz clic en cualquier pin para
-                  ver <strong>horario y teléfono</strong>.</li>
+                <li class="mb-3"><i class="fa-solid fa-hand-pointer text-info mr-2"></i>Haz clic en cualquier marcador
+                  para ver <strong>horario y teléfono</strong>.</li>
                 <li class="mb-3"><i class="fa-solid fa-person-walking text-success mr-2"></i>Usa "Cómo llegar" en el
                   mapa para orientarte.</li>
               </ul>
               <div class="mt-auto">
-                <a href="#" id="btnAbrirMaps" target="_blank" class="btn btn-block shadow-sm mb-2 text-white"
-                  style="background:var(--c-accent)">
-                  <i class="fa-solid fa-arrow-up-right-from-square mr-1"></i>Abrir en la app de Maps
+                <a href="#" id="btnAbrirMaps" target="_blank" rel="noopener noreferrer"
+                  class="btn btn-block shadow-sm mb-2 text-white" style="background:var(--c-accent)">
+                  <i class="fa-solid fa-arrow-up-right-from-square mr-1"></i>Abrir en Google Maps
                 </a>
                 <div class="alert alert-warning small mb-0 p-2 text-center" role="alert">
                   <i class="fa-solid fa-circle-info"></i> La atención en los CSMC del MINSA suele ser gratuita con SIS.
@@ -1071,16 +1081,35 @@
     </div>
   </div>
 
-  <!-- LAYOUT PRINCIPAL -->
+  <!-- ══════════════════════════════════════════════════
+       MODAL: DIRECTORIO DE PROFESIONALES
+  ══════════════════════════════════════════════════ -->
+  <div class="modal fade" id="modalDirectorio" tabindex="-1" data-backdrop="static">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+      <div class="modal-content" style="background:#0e1420;border:1px solid rgba(255,255,255,.07);border-radius:16px;">
+        <div class="modal-header" style="border-color:rgba(255,255,255,.07)">
+          <h5 class="modal-title" style="color:#dde5f0;font-size:16px;">
+            <i class="fa-solid fa-user-doctor mr-2" style="color:#4da3ff"></i>Profesionales disponibles
+          </h5>
+          <button type="button" class="close" data-dismiss="modal" style="color:#7a8fa8">&times;</button>
+        </div>
+        <div class="modal-body" id="cuerpoDirectorio" style="max-height:420px;overflow-y:auto">
+          <p style="color:#7a8fa8;text-align:center">Cargando...</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════
+       LAYOUT PRINCIPAL
+  ══════════════════════════════════════════════════ -->
   <div class="gd-layout">
 
     <!-- SIDEBAR -->
     <aside class="gd-sidebar" id="gdSidebar">
 
       <div class="gd-logo">
-        <div class="gd-logo-icon">
-          <i class="fa-solid fa-shield-heart"></i>
-        </div>
+        <div class="gd-logo-icon"><i class="fa-solid fa-shield-heart"></i></div>
         <div>
           <span class="gd-logo-text">Guardián Digital</span>
           <span class="gd-logo-sub">Espacio seguro · confidencial</span>
@@ -1091,21 +1120,25 @@
 
       <div class="gd-section-label">Sesión actual</div>
       <div class="gd-stats">
-        <p><i class="fa-solid fa-circle" style="color:var(--c-online);font-size:.5rem;vertical-align:middle"></i>
+        <p>
+          <i class="fa-solid fa-circle" style="color:var(--c-online);font-size:.5rem;vertical-align:middle"></i>
           <strong>Estado:</strong> Activo
         </p>
-        <p><i class="fa-regular fa-comment-dots" style="width:14px;color:var(--c-accent)"></i>
+        <p>
+          <i class="fa-regular fa-comment-dots" style="width:14px;color:var(--c-accent)"></i>
           <strong>Mensajes:</strong> <span id="msgCount">0</span>
         </p>
-        <p><i class="fa-regular fa-clock" style="width:14px;color:var(--c-accent)"></i> <strong>Inicio:</strong> <span
-            id="startTime"></span></p>
+        <p>
+          <i class="fa-regular fa-clock" style="width:14px;color:var(--c-accent)"></i>
+          <strong>Inicio:</strong> <span id="startTime"></span>
+        </p>
       </div>
 
       <div class="gd-divider"></div>
 
       <div class="gd-section-label">🎨 Tu entorno de calma</div>
       <div class="gd-theme-grid" id="gdThemeGrid">
-        <div class="gd-theme-card active" data-tema="brisa_mar">
+        <div class="gd-theme-card" data-tema="brisa_mar">
           <div class="gd-swatch sw-brisa_mar"></div>
           <span class="gd-theme-name">🌊 Brisa</span>
           <span class="gd-theme-mood">Confianza</span>
@@ -1137,14 +1170,9 @@
         </div>
       </div>
 
-      <div class="gd-psych-box" id="gdPsychBox">
-        <strong>🌊 Brisa de Mar</strong><br>
-        El azul transmite <strong>confianza, calma y seguridad</strong>. Ideal para reducir la ansiedad y fomentar la
-        comunicación abierta.
-      </div>
+      <div class="gd-psych-box" id="gdPsychBox"></div>
 
       <div class="gd-divider"></div>
-
       <div class="gd-section-label">Acciones</div>
 
       <button class="gd-btn" id="clearChat">
@@ -1159,12 +1187,14 @@
         <i class="fa-solid fa-seedling"></i> Mi Botiquín
       </a>
 
-      <button id="btnSolicitarApoyo" onclick="abrirDirectorio()" class="btn btn-sm" style="background:rgba(77,163,255,.12);border:1px solid rgba(77,163,255,.25);
-         color:#4da3ff;border-radius:9px;padding:8px 14px;width:100%;
-         text-align:left;font-size:13px;margin-top:8px;">
+      <button id="btnSolicitarApoyo" onclick="abrirDirectorio()" style="background:rgba(77,163,255,.12);border:1px solid rgba(77,163,255,.25);
+               color:#4da3ff;border-radius:9px;padding:8px 14px;width:100%;
+               text-align:left;font-size:13px;margin-top:8px;cursor:pointer;">
         <i class="fa-solid fa-hand-holding-heart mr-2"></i> Solicitar apoyo profesional
       </button>
+
       <div class="gd-spacer"></div>
+
       <a href="/logout" class="gd-btn danger">
         <i class="fa-solid fa-right-from-bracket"></i> Cerrar Sesión
       </a>
@@ -1180,18 +1210,19 @@
         <button class="gd-hamburger" id="gdHamburger" aria-label="Menú">
           <i class="fa-solid fa-bars"></i>
         </button>
+        <!-- FIX #12 — imagen local con fallback a CDN -->
         <div class="gd-header-avatar">
-          <img src="https://cdn-icons-png.flaticon.com/512/9439/9439123.png" alt="bot">
+          <img src="{{ url_for('static', filename='img/bot_avatar.png') }}"
+            onerror="this.onerror=null;this.src='https://cdn-icons-png.flaticon.com/512/9439/9439123.png'"
+            alt="Guardián Digital">
         </div>
         <div class="gd-header-info">
           <h2>Tu asistente virtual</h2>
           <p>¿En qué te puedo ayudar hoy?</p>
         </div>
-        <!-- Badge del usuario en header -->
+        <!-- FIX #10 — Avatar con inicial, sin ibb.co -->
         <div class="gd-header-user">
-          <div class="gd-header-user-avatar">
-            {{ usuario.nombre[0] | upper }}
-          </div>
+          <div class="gd-header-user-avatar">{{ usuario.nombre[0] | upper }}</div>
           <span class="gd-header-username">{{ usuario.nombre }}</span>
         </div>
         <div class="gd-online-dot"></div>
@@ -1214,7 +1245,6 @@
             </button>
           </div>
         </form>
-        <!-- Hint de emergencia con chips -->
         <div class="gd-input-hint">
           <span class="gd-hint-chip">
             <i class="fa-solid fa-phone"></i> Línea 113 Op. 5 — MINSA
@@ -1228,76 +1258,223 @@
     </div>
   </div>
 
-  <!-- MODAL: DIRECTORIO DE PROFESIONALES -->
-  <div class="modal fade" id="modalDirectorio" tabindex="-1" data-backdrop="static">
-    <div class="modal-dialog modal-lg modal-dialog-centered">
-      <div class="modal-content" style="background:#0e1420;border:1px solid rgba(255,255,255,.07);border-radius:16px;">
-        <div class="modal-header" style="border-color:rgba(255,255,255,.07)">
-          <h5 class="modal-title" style="color:#dde5f0;font-size:16px;">
-            <i class="fa-solid fa-user-doctor mr-2" style="color:#4da3ff"></i>
-            Profesionales disponibles
-          </h5>
-          <button type="button" class="close" data-dismiss="modal" style="color:#7a8fa8">&times;</button>
-        </div>
-        <div class="modal-body" id="cuerpoDirectorio" style="max-height:420px;overflow-y:auto">
-          <p style="color:#7a8fa8;text-align:center">Cargando...</p>
-        </div>
-      </div>
-    </div>
-  </div>
-
+  <!-- ══════════════════════════════════════════════════
+       JAVASCRIPT
+  ══════════════════════════════════════════════════ -->
   <script>
+
+    /* ══════════════════════════════════════════════════
+       CONSTANTES GLOBALES
+    ══════════════════════════════════════════════════ */
+
+    // FIX #12 — URL del bot como constante única, con fallback
+    const BOT_IMG_URL = "{{ url_for('static', filename='img/bot_avatar.png') }}";
+    const BOT_IMG_FALLBACK = 'https://cdn-icons-png.flaticon.com/512/9439/9439123.png';
+
+    // Datos del usuario desde Flask
+    const NOMBRE_USUARIO = "{{ usuario.nombre }}";
+    const TEMA_ACTUAL = "{{ usuario.tema_color }}";
+    const INICIAL_USUARIO = NOMBRE_USUARIO.charAt(0).toUpperCase();
+
+    // FIX #13 — Ubicación del usuario como objeto (no variables sueltas con sufijo "DB")
+    const UBICACION = {
+      departamento: "{{ usuario.departamento }}",
+      provincia: "{{ usuario.provincia }}",
+      distrito: "{{ usuario.distrito }}"
+    };
+
+    // FIX #2 — messageCount FUERA del ready para evitar problemas de scope
+    let messageCount = 0;
+
+    // Estado de grabación de audio
+    let mediaRecorder, audioChunks = [], isRecording = false;
+
+    // Descripciones psicológicas por tema
+    const PSYCH = {
+      brisa_mar: '<strong>🌊 Brisa de Mar</strong><br>El azul transmite <strong>confianza, calma y seguridad</strong>. Ideal para reducir la ansiedad y fomentar la comunicación abierta.',
+      lavanda_suave: '<strong>🌸 Lavanda Suave</strong><br>El violeta evoca <strong>creatividad e introspección</strong>. Favorece la reflexión profunda y la conexión emocional sin agobio.',
+      bosque_sereno: '<strong>🌿 Bosque Sereno</strong><br>El verde simboliza <strong>equilibrio y crecimiento</strong>. Reduce el estrés y transmite sensación de renovación y esperanza.',
+      atardecer_calido: '<strong>🌅 Atardecer Cálido</strong><br>El naranja aporta <strong>energía y calidez</strong>. Estimula la conversación y el optimismo, ideal para romper el hielo emocional.',
+      rosa_amanecer: '<strong>🌹 Rosa Amanecer</strong><br>El rosa transmite <strong>compasión y ternura</strong>. Es el color de la empatía, ideal para momentos de vulnerabilidad.',
+      noche_estrellada: '<strong>🌌 Noche Estrellada</strong><br>El azul oscuro invita a la <strong>introspección y el descanso profundo</strong>. Para quienes procesan sus emociones en calma.'
+    };
+
+    /* ══════════════════════════════════════════════════
+       HELPERS DE UI
+    ══════════════════════════════════════════════════ */
+
+    function getTime() {
+      const d = new Date();
+      return d.getHours() + ':' + String(d.getMinutes()).padStart(2, '0');
+    }
+
+    function scrollChat() {
+      const el = document.getElementById('messageFormeight');
+      if (el) el.scrollTop = el.scrollHeight;
+    }
+
+    // FIX #10 — Avatar del usuario renderizado con inicial, sin imagen externa
+    function renderAvatarUsuario() {
+      return `<div class="gd-msg-avatar user-av">${INICIAL_USUARIO}</div>`;
+    }
+
+    // FIX #12 — Una sola función para construir el img del bot con fallback
+    function renderAvatarBot() {
+      return `<div class="gd-msg-avatar">
+        <img src="${BOT_IMG_URL}"
+             onerror="this.onerror=null;this.src='${BOT_IMG_FALLBACK}'"
+             alt="bot">
+      </div>`;
+    }
+
+    function insertarBurbuja(tipo, texto, time) {
+      let html;
+      if (tipo === 'bot') {
+        html = `<div class="gd-msg-row bot">
+          ${renderAvatarBot()}
+          <div class="gd-bubble">${texto}<span class="gd-time">${time}</span></div>
+        </div>`;
+      } else {
+        html = `<div class="gd-msg-row user">
+          <div class="gd-bubble">${texto}<span class="gd-time">${time}</span></div>
+          ${renderAvatarUsuario()}
+        </div>`;
+      }
+      $("#messageFormeight").append(html);
+      scrollChat();
+    }
+
+    // FIX #11 — Eliminada insertarBurbujaUsuario (era solo un wrapper de insertarBurbuja)
+
+    function insertarBurbujaUsuarioAudio(id, time) {
+      const html = `<div class="gd-msg-row user">
+        <div class="gd-bubble" id="${id}">
+          <i class="fa-solid fa-microphone mr-1"></i><i>Procesando audio...</i>
+          <span class="gd-time">${time}</span>
+        </div>
+        ${renderAvatarUsuario()}
+      </div>`;
+      $("#messageFormeight").append(html);
+      scrollChat();
+    }
+
+    function mostrarTyping() {
+      const html = `<div class="gd-msg-row bot" id="typing-indicator">
+        ${renderAvatarBot()}
+        <div class="gd-bubble">
+          <div class="gd-dots"><span></span><span></span><span></span></div>
+        </div>
+      </div>`;
+      $("#messageFormeight").append(html);
+      scrollChat();
+    }
+
+    function manejarRespuestaBot(data) {
+      $('#typing-indicator').remove();
+      insertarBurbuja('bot', data.answer, getTime());
+      if (data.riesgo_inminente === true) {
+        $('#emergencyModal').modal('show');
+      }
+    }
+
+    function manejarError() {
+      $('#typing-indicator').remove();
+      insertarBurbuja('bot', 'Tuve un pequeño problema técnico. ¿Puedes repetirlo? 🙏', getTime());
+      $("#send, #text, #recordBtn").prop("disabled", false);
+    }
+
+    /* ══════════════════════════════════════════════════
+       ENVÍO DE AUDIO
+    ══════════════════════════════════════════════════ */
+
+    // FIX #3 — deshabilita todos los controles durante el procesamiento del audio
+    function enviarAudio(audioBlob) {
+      const time = getTime();
+      const mensajeId = "audio_" + Date.now();
+
+      insertarBurbujaUsuarioAudio(mensajeId, time);
+      mostrarTyping();
+
+      // FIX #6 — contar el mensaje del usuario al momento del envío
+      messageCount++;
+      $("#msgCount").text(messageCount);
+
+      $("#send, #text, #recordBtn").prop("disabled", true);
+
+      setTimeout(function () {
+        const formData = new FormData();
+        formData.append("audio", audioBlob, "mensaje_voz.webm");
+
+        $.ajax({
+          url: "/get", type: "POST",
+          data: formData, processData: false, contentType: false
+        })
+          .done(function (data) {
+            if (data.texto_reconocido) {
+              $(`#${mensajeId}`).html(
+                `<i class="fa-solid fa-microphone mr-1"></i>${data.texto_reconocido}<span class="gd-time">${time}</span>`
+              );
+            }
+            manejarRespuestaBot(data);
+          })
+          .fail(function () { manejarError(); })
+          .always(function () {
+            $("#send, #text, #recordBtn").prop("disabled", false);
+            $("#text").focus();
+          });
+      }, 150);
+    }
+
+    /* ══════════════════════════════════════════════════
+       DOCUMENT READY
+    ══════════════════════════════════════════════════ */
+
     $(document).ready(function () {
-      /* TÉRMINOS */
-      if (localStorage.getItem("termsAccepted") !== "true") {
+
+      /* ── FIX #1 — sessionStorage en lugar de localStorage
+         localStorage persiste entre cierres de navegador y falla en Safari
+         modo privado. sessionStorage expira al cerrar la pestaña, que es el
+         comportamiento correcto para aceptación de términos por sesión. ── */
+      if (sessionStorage.getItem("termsAccepted") !== "true") {
         $('#termsModal').modal({ backdrop: 'static', keyboard: false }).modal('show');
       }
+
       $('#acceptCheck').change(function () {
         $('#acceptBtn').prop('disabled', !$(this).is(':checked'));
       });
+
       $('#acceptBtn').click(function () {
-        localStorage.setItem("termsAccepted", "true");
+        sessionStorage.setItem("termsAccepted", "true");
         $('#termsModal').modal('hide');
       });
+
       $('#rejectBtn').click(function () {
         $("#messageArea :input").prop("disabled", true);
         alert("Debes aceptar los términos para usar el chatbot.");
       });
 
-      const PSYCH = {
-        brisa_mar: '<strong>🌊 Brisa de Mar</strong><br>El azul transmite <strong>confianza, calma y seguridad</strong>. Ideal para reducir la ansiedad y fomentar la comunicación abierta.',
-        lavanda_suave: '<strong>🌸 Lavanda Suave</strong><br>El violeta evoca <strong>creatividad e introspección</strong>. Favorece la reflexión profunda y la conexión emocional sin agobio.',
-        bosque_sereno: '<strong>🌿 Bosque Sereno</strong><br>El verde simboliza <strong>equilibrio y crecimiento</strong>. Reduce el estrés y transmite sensación de renovación y esperanza.',
-        atardecer_calido: '<strong>🌅 Atardecer Cálido</strong><br>El naranja aporta <strong>energía y calidez</strong>. Estimula la conversación y el optimismo, ideal para romper el hielo emocional.',
-        rosa_amanecer: '<strong>🌹 Rosa Amanecer</strong><br>El rosa transmite <strong>compasión y ternura</strong>. Es el color de la empatía, ideal para momentos de vulnerabilidad.',
-        noche_estrellada: '<strong>🌌 Noche Estrellada</strong><br>El azul oscuro invita a la <strong>introspección y el descanso profundo</strong>. Para quienes procesan sus emociones en calma.'
-      };
-
-      const nombreUsuario = "{{ usuario.nombre }}";
-      const temaActual = "{{ usuario.tema_color }}";
-
+      /* ── Inicializar tema activo ── */
       $('#gdThemeGrid .gd-theme-card').removeClass('active');
-      $(`#gdThemeGrid .gd-theme-card[data-tema="${temaActual}"]`).addClass('active');
-      if (PSYCH[temaActual]) $('#gdPsychBox').html(PSYCH[temaActual]);
+      $(`#gdThemeGrid .gd-theme-card[data-tema="${TEMA_ACTUAL}"]`).addClass('active');
+      if (PSYCH[TEMA_ACTUAL]) $('#gdPsychBox').html(PSYCH[TEMA_ACTUAL]);
 
+      /* ── Hora de inicio ── */
       const ahora = new Date();
       const horaInicio = ahora.getHours() + ':' + String(ahora.getMinutes()).padStart(2, '0');
       $('#startTime').text(horaInicio);
 
-      const diasSemana = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
-      const meses = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'];
-      $('#gdDateSep').text(`${diasSemana[ahora.getDay()]} ${ahora.getDate()} de ${meses[ahora.getMonth()]}`);
+      /* ── Separador de fecha ── */
+      const DIAS = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
+      const MESES = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'];
+      $('#gdDateSep').text(`${DIAS[ahora.getDay()]} ${ahora.getDate()} de ${MESES[ahora.getMonth()]}`);
 
-      const mensajeBienvenida = `¡Hola, <b>${nombreUsuario}</b>! 👋 Soy Guardián Digital. Este es un espacio seguro y confidencial, libre de juicios, solo para ti. Estoy aquí para escucharte, sin importar lo que te preocupe. ¿Cómo te sientes el día de hoy?`;
-      insertarBurbuja('bot', mensajeBienvenida, horaInicio);
+      /* ── Mensaje de bienvenida (no cuenta en el contador) ── */
+      insertarBurbuja('bot',
+        `¡Hola, <b>${NOMBRE_USUARIO}</b>! 👋 Soy Guardián Digital. Este es un espacio seguro y confidencial, libre de juicios, solo para ti. Estoy aquí para escucharte, sin importar lo que te preocupe. ¿Cómo te sientes el día de hoy?`,
+        horaInicio
+      );
 
-      let messageCount = 0;
-
-
-
-      /* GRABACIÓN DE AUDIO */
-      let mediaRecorder, audioChunks = [], isRecording = false;
-
+      /* ── GRABACIÓN DE AUDIO ── */
       $("#recordBtn").click(async function () {
         if (!isRecording) {
           try {
@@ -1326,114 +1503,47 @@
         }
       });
 
-      function enviarAudio(audioBlob) {
-        const time = getTime();
-        const mensajeId = "audio_" + Date.now();
-        insertarBurbujaUsuarioAudio(mensajeId, time);
-        mostrarTyping();
-        let formData = new FormData();
-        formData.append("audio", audioBlob, "mensaje_voz.webm");
-        $.ajax({ url: "/get", type: "POST", data: formData, processData: false, contentType: false })
-          .done(function (data) {
-            if (data.texto_reconocido) {
-              $(`#${mensajeId}`).html(`<i class="fa-solid fa-microphone mr-1"></i>${data.texto_reconocido}<span class="gd-time">${time}</span>`);
-            }
-            manejarRespuestaBot(data);
-          })
-          .fail(function () { manejarError(); });
-      }
-
-      /* ENVÍO DE TEXTO */
+      /* ── ENVÍO DE TEXTO ── */
       $("#messageArea").on("submit", function (e) {
         e.preventDefault();
         const rawText = $("#text").val().trim();
         if (!rawText) return;
+
         const time = getTime();
-        insertarBurbujaUsuario(rawText, time);
+        insertarBurbuja('user', rawText, time); // FIX #11 — directo, sin wrapper
+
+        // FIX #6 — contar al momento del envío del usuario
+        messageCount++;
+        $("#msgCount").text(messageCount);
+
         $("#text").val("");
         mostrarTyping();
         $("#send, #text").prop("disabled", true);
-        let formData = new FormData();
+
+        const formData = new FormData();
         formData.append("msg", rawText);
-        $.ajax({ url: "/get", type: "POST", data: formData, processData: false, contentType: false })
+
+        $.ajax({
+          url: "/get", type: "POST",
+          data: formData, processData: false, contentType: false
+        })
           .done(function (data) { manejarRespuestaBot(data); })
           .fail(function () { manejarError(); })
-          .always(function () { $("#send, #text").prop("disabled", false); $("#text").focus(); });
+          .always(function () {
+            $("#send, #text").prop("disabled", false);
+            $("#text").focus();
+          });
       });
 
-      function manejarRespuestaBot(data) {
-        $('#typing-indicator').remove();
-        const time = getTime();
-        insertarBurbuja('bot', data.answer, time);
-        if (data.riesgo_inminente === true) {
-          $('#emergencyModal').modal('show');
-        }
-        messageCount++;
-        $("#msgCount").text(messageCount);
-      }
-
-      function manejarError() {
-        $('#typing-indicator').remove();
-        insertarBurbuja('bot', 'Tuve un pequeño problema técnico. ¿Puedes repetirlo? 🙏', getTime());
-        $("#send, #text").prop("disabled", false);
-      }
-
-      /* HELPERS BURBUJA */
-      function insertarBurbuja(tipo, texto, time) {
-        const img = tipo === 'bot'
-          ? 'https://cdn-icons-png.flaticon.com/512/9439/9439123.png'
-          : 'https://i.ibb.co/d5b84Xw/Untitled-design.png';
-        let html;
-        if (tipo === 'bot') {
-          html = `<div class="gd-msg-row bot">
-        <div class="gd-msg-avatar"><img src="${img}" alt="bot"></div>
-        <div class="gd-bubble">${texto}<span class="gd-time">${time}</span></div>
-      </div>`;
-        } else {
-          html = `<div class="gd-msg-row user">
-        <div class="gd-bubble">${texto}<span class="gd-time">${time}</span></div>
-        <div class="gd-msg-avatar user-av"><img src="${img}" alt="user"></div>
-      </div>`;
-        }
-        $("#messageFormeight").append(html);
-        scrollChat();
-      }
-
-      function insertarBurbujaUsuario(texto, time) { insertarBurbuja('user', texto, time); }
-
-      function insertarBurbujaUsuarioAudio(id, time) {
-        const html = `<div class="gd-msg-row user">
-      <div class="gd-bubble" id="${id}">
-        <i class="fa-solid fa-microphone mr-1"></i><i>Procesando audio...</i>
-        <span class="gd-time">${time}</span>
-      </div>
-      <div class="gd-msg-avatar user-av"><img src="https://i.ibb.co/d5b84Xw/Untitled-design.png" alt="user"></div>
-    </div>`;
-        $("#messageFormeight").append(html);
-        scrollChat();
-      }
-
-      function mostrarTyping() {
-        const html = `<div class="gd-msg-row bot" id="typing-indicator">
-      <div class="gd-msg-avatar"><img src="https://cdn-icons-png.flaticon.com/512/9439/9439123.png" alt="bot"></div>
-      <div class="gd-bubble"><div class="gd-dots"><span></span><span></span><span></span></div></div>
-    </div>`;
-        $("#messageFormeight").append(html);
-        scrollChat();
-      }
-
-      function scrollChat() {
-        const el = document.getElementById('messageFormeight');
-        el.scrollTop = el.scrollHeight;
-      }
-
-      function getTime() {
-        const d = new Date();
-        return d.getHours() + ':' + String(d.getMinutes()).padStart(2, '0');
-      }
-
-      /* LIMPIAR CHAT */
+      /* ── FIX #8 — LIMPIAR CHAT: detiene grabación si está activa ── */
       $("#clearChat").click(function () {
+        if (isRecording && mediaRecorder) {
+          mediaRecorder.stop();
+          isRecording = false;
+          $("#recordBtn").removeClass('recording').html('<i class="fa-solid fa-microphone"></i>');
+          $("#text").attr("placeholder", "Escribe cómo te sientes...").prop("disabled", false);
+          $("#send").prop("disabled", false);
+        }
         const sep = $('#gdDateSep').prop('outerHTML');
         const bienvenida = $('#messageFormeight .gd-msg-row').first().prop('outerHTML');
         $("#messageFormeight").html(sep + bienvenida);
@@ -1441,16 +1551,19 @@
         $("#msgCount").text("0");
       });
 
-      /* MAPAS */
+      /* ── FIX #9 — MAPA: OpenStreetMap gratuito sin API Key
+         El embed antiguo de Google Maps fue deprecado en 2016 y puede
+         mostrar error en producción con dominio real en AWS. ── */
+      // ── MAPA: Centros de Ayuda ──
       const departamentoDB = "{{ usuario.departamento }}";
       const provinciaDB = "{{ usuario.provincia }}";
       const distritoDB = "{{ usuario.distrito }}";
 
       const loaderHTML = `<div class="text-center p-5">
-    <div class="spinner-grow text-primary" style="width:3rem;height:3rem" role="status"><span class="sr-only">Cargando...</span></div>
-    <h5 class="mt-3 text-muted">Buscando los centros más cercanos...</h5>
-    <p class="text-black-50 small">Conectando con Google Maps</p>
-  </div>`;
+          <div class="spinner-grow text-primary" style="width:3rem;height:3rem" role="status"><span class="sr-only">Cargando...</span></div>
+          <h5 class="mt-3 text-muted">Buscando los centros más cercanos...</h5>
+          <p class="text-black-50 small">Conectando con Google Maps</p>
+        </div>`;
 
       $('#recursosModal').on('show.bs.modal', function () {
         $('#ciudadTitulo').text(distritoDB + ', ' + provinciaDB);
@@ -1464,30 +1577,56 @@
         $('#mapaContenedor').html(loaderHTML);
       });
 
-      /* CAMBIO DE TEMA */
+      $('#recursosModal').on('hidden.bs.modal', function () {
+        $('#mapaContenedor').html(loaderHTML);
+      });
+      /* ── CAMBIO DE TEMA ── */
       $('#gdThemeGrid .gd-theme-card').click(function () {
         const nuevoTema = $(this).data('tema');
+
         $('body').removeClass(function (i, cls) {
           return (cls.match(/(^|\s)tema-\S+/g) || []).join(' ');
         }).addClass('tema-' + nuevoTema);
+
         $('#gdThemeGrid .gd-theme-card').removeClass('active');
         $(this).addClass('active');
+
         if (PSYCH[nuevoTema]) {
-          $('#gdPsychBox').fadeOut(150, function () { $(this).html(PSYCH[nuevoTema]).fadeIn(200); });
+          $('#gdPsychBox').fadeOut(150, function () {
+            $(this).html(PSYCH[nuevoTema]).fadeIn(200);
+          });
         }
-        let formData = new FormData();
+
+        const formData = new FormData();
         formData.append("tema", nuevoTema);
-        $.ajax({ url: "/actualizar_tema", type: "POST", data: formData, processData: false, contentType: false })
-          .done(function (r) { if (r.success) console.log("Tema guardado: " + nuevoTema); });
+
+        $.ajax({
+          url: "/actualizar_tema", type: "POST",
+          data: formData, processData: false, contentType: false
+        })
+          .done(function (r) {
+            if (r.success) console.log("Tema guardado:", nuevoTema);
+          })
+          .fail(function () {
+            console.warn("No se pudo guardar el tema. Continúa funcionando localmente.");
+          });
       });
 
-      /* MOBILE */
+      /* ── MOBILE — sidebar ── */
       $('#gdHamburger').click(function () { $('#gdSidebar').addClass('open'); });
       $('#gdOverlay').click(function () { $('#gdSidebar').removeClass('open'); });
 
-    });
+      /* ── FIX #7 — Estado inicial del botón "Solicitar apoyo"
+         Se elimina el fetch extra al cargar. El estado se actualiza
+         dentro de abrirDirectorio() cuando el usuario lo necesita,
+         evitando una llamada innecesaria al servidor en cada carga. ── */
 
-    /* GPS */
+    }); // fin $(document).ready
+
+    /* ══════════════════════════════════════════════════
+       GPS — captura de ubicación
+    ══════════════════════════════════════════════════ */
+
     function capturarUbicacion() {
       if (!navigator.geolocation) return;
       navigator.geolocation.getCurrentPosition(
@@ -1497,105 +1636,135 @@
           fd.append('longitud', pos.coords.longitude);
           fetch('/actualizar_ubicacion', { method: 'POST', body: fd })
             .then(r => r.json())
-            .then(d => { if (d.success) console.log(`📍 Ubicación actualizada`); })
-            .catch(e => console.log('Error GPS:', e));
+            .then(d => { if (d.success) console.log('📍 Ubicación actualizada'); })
+            .catch(e => console.warn('Error GPS:', e));
         },
-        function (e) { console.log('GPS denegado:', e.message); },
+        function (e) { console.warn('GPS denegado:', e.message); },
         { enableHighAccuracy: true, timeout: 8000, maximumAge: 300000 }
       );
     }
+
+    // FIX #5 — guardar referencia del intervalo para limpiarlo al salir
     document.addEventListener('DOMContentLoaded', capturarUbicacion);
-    setInterval(capturarUbicacion, 10 * 60 * 1000);
+    const gpsInterval = setInterval(capturarUbicacion, 10 * 60 * 1000);
 
+    window.addEventListener('beforeunload', function () {
+      clearInterval(gpsInterval);
+    });
 
-    /* ── DIRECTORIO DE PROFESIONALES ── */
+    /* ══════════════════════════════════════════════════
+       DIRECTORIO DE PROFESIONALES
+    ══════════════════════════════════════════════════ */
+
+    // FIX #4 — try/catch completo para manejar errores de red
     async function abrirDirectorio() {
       $('#modalDirectorio').modal('show');
-      const res = await fetch('/api/profesionales');
-      const data = await res.json();
-
       const cuerpo = document.getElementById('cuerpoDirectorio');
+      cuerpo.innerHTML = '<p style="color:#7a8fa8;text-align:center;padding:20px"><i class="fa-solid fa-spinner fa-spin mr-2"></i>Cargando...</p>';
 
-      if (data.ya_asignado) {
+      try {
+        const res = await fetch('/api/profesionales');
+        if (!res.ok) throw new Error(`Error HTTP: ${res.status}`);
+        const data = await res.json();
+
+        if (data.ya_asignado) {
+          cuerpo.innerHTML = `
+            <div style="text-align:center;padding:30px;color:#4ade80">
+              <i class="fa-solid fa-circle-check" style="font-size:36px;margin-bottom:12px"></i>
+              <p style="font-size:14px">Ya tienes un profesional asignado.<br>Se pondra en contacto contigo</p>
+            </div>`;
+          _deshabilitarBtnApoyo();
+          return;
+        }
+
+        if (!data.profesionales || !data.profesionales.length) {
+          cuerpo.innerHTML = '<p style="color:#7a8fa8;text-align:center;padding:20px">No hay profesionales disponibles en este momento.</p>';
+          return;
+        }
+
+        let html = '';
+        data.profesionales.forEach(p => {
+          const yaSolicitado = data.id_solicitado === p.id_usuario;
+          html += `
+            <div style="display:flex;align-items:center;justify-content:space-between;
+                        padding:14px 16px;margin-bottom:10px;
+                        background:#131926;border:1px solid rgba(255,255,255,.06);
+                        border-radius:12px;">
+              <div>
+                <div style="color:#dde5f0;font-weight:600;font-size:14px;">
+                  ${p.nombre} ${p.apellidos}
+                </div>
+                <div style="color:#7a8fa8;font-size:12px;margin-top:3px;">
+                  ${p.especialidad}${p.institucion ? ' · ' + p.institucion : ''}
+                </div>
+              </div>
+              <button
+                onclick="solicitarApoyo(${p.id_usuario}, this)"
+                ${yaSolicitado ? 'disabled' : ''}
+                style="background:${yaSolicitado ? 'rgba(255,255,255,.05)' : 'linear-gradient(135deg,#4da3ff,#0066ff)'};
+                       border:none;
+                       color:${yaSolicitado ? '#3d4f66' : '#fff'};
+                       border-radius:9px;padding:8px 16px;font-size:12px;
+                       font-weight:600;
+                       cursor:${yaSolicitado ? 'default' : 'pointer'};">
+                ${yaSolicitado ? '✓ Solicitud enviada' : 'Contactar'}
+              </button>
+            </div>`;
+        });
+        cuerpo.innerHTML = html;
+
+      } catch (e) {
+        console.error('Error al cargar directorio:', e);
         cuerpo.innerHTML = `
-      <div style="text-align:center;padding:30px;color:#4ade80">
-        <i class="fa-solid fa-circle-check" style="font-size:36px;margin-bottom:12px"></i>
-        <p style="font-size:14px">Ya tienes un profesional asignado.<br>Puedes contactarlo desde el chat.</p>
-      </div>`;
-        return;
+          <p style="color:#ef4444;text-align:center;padding:20px">
+            <i class="fa-solid fa-circle-exclamation mr-2"></i>
+            Error al cargar los profesionales. Por favor, intenta de nuevo.
+          </p>`;
       }
-
-      if (!data.profesionales.length) {
-        cuerpo.innerHTML = '<p style="color:#7a8fa8;text-align:center;padding:20px">No hay profesionales disponibles.</p>';
-        return;
-      }
-
-      let html = '';
-      data.profesionales.forEach(p => {
-        const yaSolicitado = data.id_solicitado === p.id_usuario;
-        html += `
-      <div style="display:flex;align-items:center;justify-content:space-between;
-                  padding:14px 16px;margin-bottom:10px;
-                  background:#131926;border:1px solid rgba(255,255,255,.06);
-                  border-radius:12px;">
-        <div>
-          <div style="color:#dde5f0;font-weight:600;font-size:14px;">
-            ${p.nombre} ${p.apellidos}
-          </div>
-          <div style="color:#7a8fa8;font-size:12px;margin-top:3px;">
-            ${p.especialidad}${p.institucion ? ' · ' + p.institucion : ''}
-          </div>
-        </div>
-        <button onclick="solicitarApoyo(${p.id_usuario}, this)"
-          ${yaSolicitado ? 'disabled' : ''}
-          style="background:${yaSolicitado ? 'rgba(255,255,255,.05)' : 'linear-gradient(135deg,#4da3ff,#0066ff)'};
-                 border:none;color:${yaSolicitado ? '#3d4f66' : '#fff'};
-                 border-radius:9px;padding:8px 16px;font-size:12px;
-                 font-weight:600;cursor:${yaSolicitado ? 'default' : 'pointer'};">
-          ${yaSolicitado ? '✓ Solicitud enviada' : 'Contactar'}
-        </button>
-      </div>`;
-      });
-      cuerpo.innerHTML = html;
     }
 
+    // FIX #4 — try/catch completo en solicitarApoyo
     async function solicitarApoyo(idProfesional, btn) {
       btn.disabled = true;
       btn.textContent = 'Enviando...';
 
-      const fd = new FormData();
-      fd.append('id_profesional', idProfesional);
+      try {
+        const fd = new FormData();
+        fd.append('id_profesional', idProfesional);
 
-      const res = await fetch('/api/solicitar_apoyo', { method: 'POST', body: fd });
-      const data = await res.json();
+        const res = await fetch('/api/solicitar_apoyo', { method: 'POST', body: fd });
+        if (!res.ok) throw new Error(`Error HTTP: ${res.status}`);
+        const data = await res.json();
 
-      if (data.success) {
-        btn.textContent = '✓ Solicitud enviada';
-        btn.style.background = 'rgba(255,255,255,.05)';
-        btn.style.color = '#3d4f66';
-        // Deshabilitar todos los demás botones
-        document.querySelectorAll('#cuerpoDirectorio button').forEach(b => b.disabled = true);
-        // Deshabilitar botón del menú
-        document.getElementById('btnSolicitarApoyo').disabled = true;
-        document.getElementById('btnSolicitarApoyo').style.opacity = '0.5';
-      } else {
+        if (data.success) {
+          btn.textContent = '✓ Solicitud enviada';
+          btn.style.background = 'rgba(255,255,255,.05)';
+          btn.style.color = '#3d4f66';
+
+          // Deshabilitar todos los botones del listado
+          document.querySelectorAll('#cuerpoDirectorio button').forEach(b => b.disabled = true);
+          _deshabilitarBtnApoyo();
+
+        } else {
+          btn.disabled = false;
+          btn.textContent = 'Contactar';
+          alert(data.message || 'No se pudo enviar la solicitud. Intenta de nuevo.');
+        }
+
+      } catch (e) {
+        console.error('Error al solicitar apoyo:', e);
         btn.disabled = false;
         btn.textContent = 'Contactar';
-        alert(data.message);
+        alert('Error de conexión. Por favor, intenta de nuevo.');
       }
     }
 
-    // Verificar estado al cargar para deshabilitar el botón si ya solicitó
-    $(document).ready(function () {
-      fetch('/api/profesionales')
-        .then(r => r.json())
-        .then(data => {
-          if (data.ya_asignado || data.id_solicitado) {
-            const btn = document.getElementById('btnSolicitarApoyo');
-            if (btn) { btn.disabled = true; btn.style.opacity = '0.5'; }
-          }
-        });
-    });
+    // Helper interno — deshabilita el botón del sidebar
+    function _deshabilitarBtnApoyo() {
+      const btn = document.getElementById('btnSolicitarApoyo');
+      if (btn) { btn.disabled = true; btn.style.opacity = '0.5'; btn.style.cursor = 'not-allowed'; }
+    }
+
   </script>
 
 </body>

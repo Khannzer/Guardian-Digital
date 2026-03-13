@@ -21,6 +21,8 @@
       --red:          #dc2626;
       --red-light:    #fee2e2;
       --navy:         #0f3460;
+      --amber:        #d97706;
+      --amber-light:  #fef3c7;
       --radius:       14px;
       --shadow:       0 4px 24px rgba(0,0,0,.09);
     }
@@ -34,7 +36,7 @@
       grid-template-columns: 1fr 1fr;
     }
 
-    /* ── PANEL IZQUIERDO (decorativo) ── */
+    /* ── PANEL IZQUIERDO ── */
     .left-panel {
       background: var(--navy);
       padding: 48px;
@@ -70,24 +72,23 @@
       line-height: 1.7; max-width: 320px; margin-bottom: 32px;
     }
 
-    .feature-list { display: flex; flex-direction: column; gap: 14px; }
-    .feature-item {
-      display: flex; align-items: flex-start; gap: 12px;
-    }
-    .feature-dot {
-      width: 32px; height: 32px; border-radius: 8px;
-      background: rgba(255,255,255,.06);
+    /* Pasos de validación en el panel izquierdo */
+    .steps { display: flex; flex-direction: column; gap: 16px; }
+    .step  { display: flex; align-items: flex-start; gap: 14px; }
+    .step-num {
+      width: 28px; height: 28px; border-radius: 50%;
+      background: rgba(13,148,136,.25);
+      border: 1.5px solid var(--teal);
       display: flex; align-items: center; justify-content: center;
-      font-size: 16px; flex-shrink: 0;
+      font-size: 12px; font-weight: 700; color: var(--teal-light);
+      flex-shrink: 0;
     }
-    .feature-title { font-size: 13px; font-weight: 600; color: #fff; margin-bottom: 2px; }
-    .feature-desc  { font-size: 12px; color: rgba(255,255,255,.4); line-height: 1.5; }
+    .step-title { font-size: 13px; font-weight: 600; color: #fff; margin-bottom: 2px; }
+    .step-desc  { font-size: 12px; color: rgba(255,255,255,.4); line-height: 1.5; }
 
-    .left-footer {
-      font-size: 12px; color: rgba(255,255,255,.25);
-    }
+    .left-footer { font-size: 12px; color: rgba(255,255,255,.25); }
 
-    /* ── PANEL DERECHO (formulario) ── */
+    /* ── PANEL DERECHO ── */
     .right-panel {
       overflow-y: auto;
       padding: 48px 40px;
@@ -109,6 +110,19 @@
     }
     .form-sub { font-size: 13.5px; color: var(--text2); }
 
+    /* Alerta informativa */
+    .info-alert {
+      display: flex; align-items: flex-start; gap: 10px;
+      background: var(--amber-light);
+      border: 1.5px solid #fcd34d;
+      border-radius: 10px;
+      padding: 12px 14px;
+      margin-bottom: 8px;
+    }
+    .info-alert-icon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+    .info-alert-text { font-size: 12.5px; color: #92400e; line-height: 1.6; }
+    .info-alert-text strong { font-weight: 600; }
+
     /* SECCIONES */
     .section-label {
       display: flex; align-items: center; gap: 8px;
@@ -120,7 +134,7 @@
       content: ''; flex: 1; height: 1px; background: var(--border);
     }
 
-    /* GRID DE CAMPOS */
+    /* GRID */
     .fields-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -130,9 +144,7 @@
 
     /* CAMPO */
     .field { display: flex; flex-direction: column; gap: 6px; }
-    .field-label {
-      font-size: 12px; font-weight: 600; color: var(--text2);
-    }
+    .field-label { font-size: 12px; font-weight: 600; color: var(--text2); }
     .field-label span { color: var(--red); margin-left: 2px; }
 
     .field-input {
@@ -143,17 +155,15 @@
       color: var(--text);
       font-family: 'Outfit', sans-serif; font-size: 14px;
       transition: border-color .2s, box-shadow .2s;
-      outline: none;
-      appearance: none;
+      outline: none; appearance: none;
     }
     .field-input:focus {
-      border-color: var(--border-focus);  
+      border-color: var(--border-focus);
       box-shadow: 0 0 0 3px rgba(13,148,136,.1);
     }
     .field-input::placeholder { color: var(--muted); }
     .field-hint { font-size: 11px; color: var(--muted); }
 
-    /* SELECT personalizado */
     .field-select {
       width: 100%; padding: 11px 14px;
       border: 1.5px solid var(--border); border-radius: 10px;
@@ -164,7 +174,73 @@
     }
     .field-select:focus { border-color: var(--border-focus); }
 
-    /* BOTÓN SUBMIT */
+    /* ── UPLOAD DE DOCUMENTOS ── */
+    .doc-grid {
+      display: flex; flex-direction: column; gap: 12px;
+    }
+
+    .doc-upload {
+      border: 2px dashed var(--border);
+      border-radius: 12px;
+      padding: 16px 18px;
+      cursor: pointer;
+      transition: border-color .2s, background .2s;
+      position: relative;
+    }
+    .doc-upload:hover { border-color: var(--teal); background: rgba(13,148,136,.03); }
+    .doc-upload.has-file {
+      border-color: var(--green);
+      border-style: solid;
+      background: var(--green-light);
+    }
+    .doc-upload.required-missing {
+      border-color: var(--red);
+      background: var(--red-light);
+    }
+
+    .doc-upload input[type="file"] {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%;
+      opacity: 0; cursor: pointer;
+    }
+
+    .doc-upload-inner {
+      display: flex; align-items: center; gap: 14px;
+      pointer-events: none;
+    }
+    .doc-icon {
+      width: 40px; height: 40px; border-radius: 10px;
+      background: rgba(13,148,136,.1);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 20px; flex-shrink: 0;
+      transition: background .2s;
+    }
+    .doc-upload.has-file .doc-icon { background: rgba(22,163,74,.15); }
+
+    .doc-info { flex: 1; }
+    .doc-name {
+      font-size: 13px; font-weight: 600; color: var(--text);
+      margin-bottom: 2px;
+    }
+    .doc-name .doc-required { color: var(--red); margin-left: 2px; }
+    .doc-name .doc-optional {
+      font-size: 11px; font-weight: 400;
+      color: var(--muted); margin-left: 6px;
+    }
+    .doc-desc { font-size: 11.5px; color: var(--text2); }
+    .doc-filename {
+      font-size: 11px; color: var(--green);
+      font-weight: 600; margin-top: 3px;
+      display: none;
+    }
+    .doc-upload.has-file .doc-filename { display: block; }
+    .doc-upload.has-file .doc-desc    { display: none; }
+
+    .doc-status {
+      font-size: 20px; flex-shrink: 0;
+    }
+
+    /* BOTÓN */
     .submit-btn {
       width: 100%; padding: 14px;
       background: var(--teal); color: #fff;
@@ -193,7 +269,6 @@
     .feedback.ok  { background: var(--green-light); color: var(--green); display: flex; }
     .feedback.err { background: var(--red-light);   color: var(--red);   display: flex; }
 
-    /* LINK A LOGIN */
     .login-link {
       text-align: center; margin-top: 24px;
       font-size: 13px; color: var(--text2);
@@ -201,7 +276,6 @@
     .login-link a { color: var(--teal); font-weight: 600; text-decoration: none; }
     .login-link a:hover { text-decoration: underline; }
 
-    /* SPINNER */
     .spinner {
       width: 18px; height: 18px;
       border: 2px solid rgba(255,255,255,.4);
@@ -210,7 +284,6 @@
     }
     @keyframes spin { to { transform: rotate(360deg); } }
 
-    /* RESPONSIVE */
     @media(max-width: 768px) {
       body { grid-template-columns: 1fr; }
       .left-panel { display: none; }
@@ -221,7 +294,7 @@
 </head>
 <body>
 
-<!-- ── PANEL IZQUIERDO ─────────────────────── -->
+<!-- ── PANEL IZQUIERDO ── -->
 <div class="left-panel">
   <div class="left-logo">
     <div class="logo-icon">🛡️</div>
@@ -236,18 +309,51 @@
       Acompañamiento<br>emocional con<br><em>inteligencia artificial</em>
     </h2>
     <p class="left-desc">
-      Como profesional de salud mental, tendrás acceso a un panel clínico para monitorear el bienestar emocional de tus pacientes en tiempo real.
+      Tu postulación será revisada por nuestro equipo. Una vez aprobada, tendrás acceso al panel clínico.
     </p>
+
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div>
+          <div class="step-title">Completa tu registro</div>
+          <div class="step-desc">Datos personales, profesionales y documentos de acreditación.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div>
+          <div class="step-title">Revisión por el administrador</div>
+          <div class="step-desc">Validamos tu título, CMP y especialización. Plazo estimado: 24–48 h.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div>
+          <div class="step-title">Acceso al panel clínico</div>
+          <div class="step-desc">Recibirás un correo de aprobación para iniciar sesión.</div>
+        </div>
+      </div>
+    </div>
   </div>
+
+  <div class="left-footer">© 2025 Guardian Digital · Todos los derechos reservados</div>
 </div>
 
-<!-- ── PANEL DERECHO (FORMULARIO) ─────────── -->
+<!-- ── PANEL DERECHO ── -->
 <div class="right-panel">
 
   <div class="form-header">
     <div class="form-badge">🩺 Acceso profesional</div>
-    <h1 class="form-title">Registro de psicólogo</h1>
-    <p class="form-sub">Completa tus datos para acceder al panel clínico de Guardian Digital.</p>
+    <h1 class="form-title">Postulación de psicólogo</h1>
+    <p class="form-sub">Completa tus datos y adjunta tus documentos para solicitar acceso al panel clínico.</p>
+  </div>
+
+  <div class="info-alert">
+    <div class="info-alert-icon">⏳</div>
+    <div class="info-alert-text">
+      <strong>Tu cuenta requiere validación.</strong> Luego de registrarte, un administrador revisará tus documentos y recibirás un correo de confirmación antes de poder iniciar sesión.
+    </div>
   </div>
 
   <form id="formProfesional">
@@ -311,7 +417,7 @@
     <div class="section-label">Datos profesionales</div>
     <div class="fields-grid">
       <div class="field">
-        <label class="field-label">N° CMP (Colegio Médico del Perú)<span>*</span></label>
+        <label class="field-label">N° CMP<span>*</span></label>
         <input type="text" class="field-input" id="txtCMP" placeholder="Ej: 12345" required/>
         <span class="field-hint">Código de habilitación del Colegio de Psicólogos del Perú</span>
       </div>
@@ -336,30 +442,88 @@
       <div class="field full">
         <label class="field-label">Teléfono de contacto profesional</label>
         <input type="tel" class="field-input" id="txtTelefono" placeholder="Ej: 987654321"/>
-        <span class="field-hint">Opcional — para contacto entre colegas</span>
+        <span class="field-hint">Opcional</span>
       </div>
+    </div>
+
+    <!-- DOCUMENTOS DE ACREDITACIÓN -->
+    <div class="section-label">Documentos de acreditación</div>
+
+    <div class="doc-grid">
+
+      <!-- Título profesional -->
+      <div class="doc-upload" id="wrapTitulo">
+        <input type="file" id="docTitulo" accept=".pdf,.jpg,.jpeg,.png"
+               onchange="onFileChange(this, 'wrapTitulo', 'nombreTitulo')"/>
+        <div class="doc-upload-inner">
+          <div class="doc-icon">🎓</div>
+          <div class="doc-info">
+            <div class="doc-name">
+              Título profesional<span class="doc-required">*</span>
+            </div>
+            <div class="doc-desc">PDF, JPG o PNG · máx. 16 MB</div>
+            <div class="doc-filename" id="nombreTitulo"></div>
+          </div>
+          <div class="doc-status" id="statusTitulo">📎</div>
+        </div>
+      </div>
+
+      <!-- Certificado CMP -->
+      <div class="doc-upload" id="wrapCMP">
+        <input type="file" id="docCMP" accept=".pdf,.jpg,.jpeg,.png"
+               onchange="onFileChange(this, 'wrapCMP', 'nombreCMP')"/>
+        <div class="doc-upload-inner">
+          <div class="doc-icon">📋</div>
+          <div class="doc-info">
+            <div class="doc-name">
+              Certificado CMP<span class="doc-required">*</span>
+            </div>
+            <div class="doc-desc">Colegio de Psicólogos del Perú · PDF, JPG o PNG · máx. 16 MB</div>
+            <div class="doc-filename" id="nombreCMP"></div>
+          </div>
+          <div class="doc-status" id="statusCMP">📎</div>
+        </div>
+      </div>
+
+      <!-- Certificado de especialización (opcional) -->
+      <div class="doc-upload" id="wrapEspec">
+        <input type="file" id="docEspecializacion" accept=".pdf,.jpg,.jpeg,.png"
+               onchange="onFileChange(this, 'wrapEspec', 'nombreEspec')"/>
+        <div class="doc-upload-inner">
+          <div class="doc-icon">🏅</div>
+          <div class="doc-info">
+            <div class="doc-name">
+              Certificado de especialización
+              <span class="doc-optional">(opcional)</span>
+            </div>
+            <div class="doc-desc">PDF, JPG o PNG · máx. 16 MB</div>
+            <div class="doc-filename" id="nombreEspec"></div>
+          </div>
+          <div class="doc-status" id="statusEspec">📎</div>
+        </div>
+      </div>
+
     </div>
 
     <!-- BOTÓN -->
     <button type="button" class="submit-btn" id="btnRegistrar" onclick="registrarProfesional()">
       <div class="spinner" id="spinner"></div>
-      <span id="btnTexto">Crear cuenta profesional</span>
+      <span id="btnTexto">Enviar postulación</span>
     </button>
 
-    <!-- FEEDBACK -->
     <div class="feedback" id="feedback"></div>
 
     <p class="login-link">
-      ¿Ya tienes cuenta? <a href="/">Inicia sesión aquí</a>
+      ¿Ya tienes cuenta aprobada? <a href="/">Inicia sesión aquí</a>
     </p>
 
   </form>
 </div>
 
 <script>
-// ── CARGA DINÁMICA DE PROVINCIAS Y DISTRITOS ──────────────
+// ── PROVINCIAS Y DISTRITOS ────────────────────────────────
 document.getElementById('selectDepartamento').addEventListener('change', async function() {
-  const id = this.value;
+  const id      = this.value;
   const selProv = document.getElementById('selectProvincia');
   const selDist = document.getElementById('selectDistrito');
 
@@ -370,8 +534,8 @@ document.getElementById('selectDepartamento').addEventListener('change', async f
 
   if (!id) return;
 
-  const res   = await fetch(`/provincias/${id}`);
-  const data  = await res.json();
+  const res  = await fetch(`/provincias/${id}`);
+  const data = await res.json();
   selProv.innerHTML = '<option value="">Selecciona provincia</option>';
   data.forEach(p => {
     selProv.innerHTML += `<option value="${p.id_provincia}">${p.nombre}</option>`;
@@ -380,7 +544,7 @@ document.getElementById('selectDepartamento').addEventListener('change', async f
 });
 
 document.getElementById('selectProvincia').addEventListener('change', async function() {
-  const id = this.value;
+  const id      = this.value;
   const selDist = document.getElementById('selectDistrito');
 
   selDist.innerHTML = '<option value="">Cargando...</option>';
@@ -397,24 +561,66 @@ document.getElementById('selectProvincia').addEventListener('change', async func
   selDist.disabled = false;
 });
 
+// ── MANEJO DE ARCHIVOS ────────────────────────────────────
+function onFileChange(input, wrapId, nombreId) {
+  const wrap   = document.getElementById(wrapId);
+  const nombre = document.getElementById(nombreId);
+  const statusId = {
+    wrapTitulo: 'statusTitulo',
+    wrapCMP:    'statusCMP',
+    wrapEspec:  'statusEspec'
+  }[wrapId];
+
+  if (input.files && input.files[0]) {
+    const archivo = input.files[0];
+    const maxSize = 16 * 1024 * 1024;
+
+    if (archivo.size > maxSize) {
+      mostrarFeedback('❌ El archivo "' + archivo.name + '" supera los 16 MB permitidos.', 'err');
+      input.value = '';
+      return;
+    }
+
+    const tiposPermitidos = ['application/pdf','image/jpeg','image/png','image/jpg'];
+    if (!tiposPermitidos.includes(archivo.type)) {
+      mostrarFeedback('❌ Formato no permitido. Usa PDF, JPG o PNG.', 'err');
+      input.value = '';
+      return;
+    }
+
+    wrap.classList.add('has-file');
+    wrap.classList.remove('required-missing');
+    nombre.textContent = '✓ ' + archivo.name;
+    document.getElementById(statusId).textContent = '✅';
+  } else {
+    wrap.classList.remove('has-file');
+    nombre.textContent = '';
+    document.getElementById(statusId).textContent = '📎';
+  }
+}
+
 // ── REGISTRO ──────────────────────────────────────────────
 async function registrarProfesional() {
   const feedbackEl = document.getElementById('feedback');
   feedbackEl.className = 'feedback';
 
-  // Validaciones frontend
-  const nombre      = document.getElementById('txtNombre').value.trim();
-  const apellidos   = document.getElementById('txtApellidos').value.trim();
-  const correo      = document.getElementById('txtCorreo').value.trim();
-  const edad        = document.getElementById('txtEdad').value.trim();
-  const contra      = document.getElementById('txtContrasenia').value;
-  const confirmar   = document.getElementById('txtConfirmar').value;
-  const distrito    = document.getElementById('selectDistrito').value;
-  const cmp         = document.getElementById('txtCMP').value.trim();
-  const especialidad= document.getElementById('txtEspecialidad').value;
-  const institucion = document.getElementById('txtInstitucion').value.trim();
-  const telefono    = document.getElementById('txtTelefono').value.trim();
+  const nombre       = document.getElementById('txtNombre').value.trim();
+  const apellidos    = document.getElementById('txtApellidos').value.trim();
+  const correo       = document.getElementById('txtCorreo').value.trim();
+  const edad         = document.getElementById('txtEdad').value.trim();
+  const contra       = document.getElementById('txtContrasenia').value;
+  const confirmar    = document.getElementById('txtConfirmar').value;
+  const distrito     = document.getElementById('selectDistrito').value;
+  const cmp          = document.getElementById('txtCMP').value.trim();
+  const especialidad = document.getElementById('txtEspecialidad').value;
+  const institucion  = document.getElementById('txtInstitucion').value.trim();
+  const telefono     = document.getElementById('txtTelefono').value.trim();
 
+  const docTitulo = document.getElementById('docTitulo').files[0];
+  const docCMP    = document.getElementById('docCMP').files[0];
+  const docEspec  = document.getElementById('docEspecializacion').files[0];
+
+  // Validaciones de campos
   if (!nombre || !apellidos || !correo || !edad || !contra || !distrito || !cmp || !especialidad) {
     mostrarFeedback('Por favor completa todos los campos obligatorios (*).', 'err');
     return;
@@ -428,30 +634,52 @@ async function registrarProfesional() {
     return;
   }
 
+  // Validar documentos obligatorios
+  let docValido = true;
+  if (!docTitulo) {
+    document.getElementById('wrapTitulo').classList.add('required-missing');
+    docValido = false;
+  }
+  if (!docCMP) {
+    document.getElementById('wrapCMP').classList.add('required-missing');
+    docValido = false;
+  }
+  if (!docValido) {
+    mostrarFeedback('Debes adjuntar el Título profesional y el Certificado CMP.', 'err');
+    return;
+  }
+
   // Mostrar spinner
   document.getElementById('spinner').style.display = 'block';
-  document.getElementById('btnTexto').textContent = 'Registrando...';
-  document.getElementById('btnRegistrar').disabled = true;
+  document.getElementById('btnTexto').textContent   = 'Enviando postulación...';
+  document.getElementById('btnRegistrar').disabled  = true;
 
   const fd = new FormData();
-  fd.append('txtNombre',      nombre);
-  fd.append('txtApellidos',   apellidos);
-  fd.append('txtCorreo',      correo);
-  fd.append('txtEdad',        edad);
-  fd.append('txtContrasenia', contra);
-  fd.append('selectDistrito', distrito);
-  fd.append('txtCMP',         cmp);
-  fd.append('txtEspecialidad',especialidad);
-  fd.append('txtInstitucion', institucion);
-  fd.append('txtTelefono',    telefono);
+  fd.append('txtNombre',       nombre);
+  fd.append('txtApellidos',    apellidos);
+  fd.append('txtCorreo',       correo);
+  fd.append('txtEdad',         edad);
+  fd.append('txtContrasenia',  contra);
+  fd.append('selectDistrito',  distrito);
+  fd.append('txtCMP',          cmp);
+  fd.append('txtEspecialidad', especialidad);
+  fd.append('txtInstitucion',  institucion);
+  fd.append('txtTelefono',     telefono);
+  fd.append('docTitulo',       docTitulo);
+  fd.append('docCMP',          docCMP);
+  if (docEspec) fd.append('docEspecializacion', docEspec);
 
   try {
     const res  = await fetch('/registrar-profesional', { method: 'POST', body: fd });
     const data = await res.json();
 
     if (data.success) {
-      mostrarFeedback('✅ Cuenta creada correctamente. Redirigiendo al login...', 'ok');
-      setTimeout(() => window.location.href = '/', 2000);
+      mostrarFeedback(
+        '✅ ' + data.message,
+        'ok'
+      );
+      // Deshabilitar el formulario tras éxito
+      document.getElementById('btnRegistrar').style.display = 'none';
     } else {
       mostrarFeedback('❌ ' + data.message, 'err');
     }
@@ -459,7 +687,7 @@ async function registrarProfesional() {
     mostrarFeedback('❌ Error de conexión. Intenta de nuevo.', 'err');
   } finally {
     document.getElementById('spinner').style.display = 'none';
-    document.getElementById('btnTexto').textContent = 'Crear cuenta profesional';
+    document.getElementById('btnTexto').textContent  = 'Enviar postulación';
     document.getElementById('btnRegistrar').disabled = false;
   }
 }
@@ -467,7 +695,7 @@ async function registrarProfesional() {
 function mostrarFeedback(msg, tipo) {
   const el = document.getElementById('feedback');
   el.textContent = msg;
-  el.className = `feedback ${tipo}`;
+  el.className   = `feedback ${tipo}`;
   el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 }
 </script>

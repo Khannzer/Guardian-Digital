@@ -1,0 +1,1216 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Panel Administrador — Guardian Digital</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,600;0,700;1,400&family=Outfit:wght@300;400;500;600&display=swap"
+    rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #f0ede8;
+      --surface: #faf9f7;
+      --border: #e2ddd6;
+      --border-focus: #0d9488;
+      --text: #1c1917;
+      --text2: #57534e;
+      --muted: #a8a29e;
+      --teal: #0d9488;
+      --teal-light: #ccfbf1;
+      --teal-dark: #0f766e;
+      --green: #16a34a;
+      --green-light: #dcfce7;
+      --red: #dc2626;
+      --red-light: #fee2e2;
+      --amber: #d97706;
+      --amber-light: #fef3c7;
+      --navy: #0f3460;
+      --navy2: #162a4a;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      min-height: 100vh;
+      background: var(--bg);
+      font-family: 'Outfit', sans-serif;
+      display: grid;
+      grid-template-columns: 260px 1fr;
+    }
+
+    /* ══ SIDEBAR ══════════════════════════════════════════ */
+    .sidebar {
+      background: var(--navy);
+      min-height: 100vh;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      padding: 32px 0;
+      overflow-y: auto;
+    }
+
+    .sidebar-logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 0 24px 32px;
+      border-bottom: 1px solid rgba(255, 255, 255, .07);
+    }
+
+    .logo-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      background: var(--teal);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+    }
+
+    .logo-text {
+      font-family: 'Fraunces', serif;
+      font-size: 17px;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .logo-sub {
+      font-size: 11px;
+      color: rgba(255, 255, 255, .35);
+    }
+
+    .sidebar-admin {
+      padding: 20px 24px;
+      border-bottom: 1px solid rgba(255, 255, 255, .07);
+    }
+
+    .admin-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      background: rgba(13, 148, 136, .2);
+      color: var(--teal-light);
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      padding: 3px 10px;
+      border-radius: 100px;
+      margin-bottom: 8px;
+    }
+
+    .admin-name {
+      font-size: 14px;
+      font-weight: 600;
+      color: #fff;
+    }
+
+    .admin-email {
+      font-size: 11px;
+      color: rgba(255, 255, 255, .35);
+    }
+
+    .sidebar-nav {
+      flex: 1;
+      padding: 16px 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .nav-section-label {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, .25);
+      padding: 12px 12px 6px;
+    }
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 12px;
+      border-radius: 10px;
+      font-size: 13.5px;
+      color: rgba(255, 255, 255, .6);
+      cursor: pointer;
+      transition: all .2s;
+      text-decoration: none;
+    }
+
+    .nav-item:hover {
+      background: rgba(255, 255, 255, .06);
+      color: #fff;
+    }
+
+    .nav-item.active {
+      background: rgba(13, 148, 136, .2);
+      color: var(--teal-light);
+    }
+
+    .nav-item .nav-icon {
+      font-size: 16px;
+      width: 20px;
+      text-align: center;
+    }
+
+    .nav-badge {
+      margin-left: auto;
+      background: var(--teal);
+      color: #fff;
+      font-size: 10px;
+      font-weight: 700;
+      padding: 2px 7px;
+      border-radius: 100px;
+      min-width: 20px;
+      text-align: center;
+    }
+
+    .nav-badge.red {
+      background: var(--red);
+    }
+
+    .sidebar-footer {
+      padding: 16px 24px;
+      border-top: 1px solid rgba(255, 255, 255, .07);
+    }
+
+    .logout-btn {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      color: rgba(255, 255, 255, .4);
+      text-decoration: none;
+      cursor: pointer;
+      transition: color .2s;
+    }
+
+    .logout-btn:hover {
+      color: var(--red-light);
+    }
+
+    /* ══ MAIN ═════════════════════════════════════════════ */
+    .main {
+      overflow-y: auto;
+      padding: 36px 40px;
+      display: flex;
+      flex-direction: column;
+      gap: 28px;
+    }
+
+    /* Header */
+    .page-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .page-title {
+      font-family: 'Fraunces', serif;
+      font-size: 26px;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .page-sub {
+      font-size: 13.5px;
+      color: var(--text2);
+      margin-top: 4px;
+    }
+
+    /* Stats */
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+
+    .stat-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 20px 22px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .stat-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      flex-shrink: 0;
+    }
+
+    .stat-icon.amber {
+      background: var(--amber-light);
+    }
+
+    .stat-icon.green {
+      background: var(--green-light);
+    }
+
+    .stat-icon.red {
+      background: var(--red-light);
+    }
+
+    .stat-num {
+      font-family: 'Fraunces', serif;
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--text);
+      line-height: 1;
+    }
+
+    .stat-label {
+      font-size: 12px;
+      color: var(--text2);
+      margin-top: 3px;
+    }
+
+    /* Filtros */
+    .filters-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .filter-btn {
+      padding: 7px 16px;
+      border-radius: 100px;
+      border: 1.5px solid var(--border);
+      background: var(--surface);
+      font-family: 'Outfit', sans-serif;
+      font-size: 12.5px;
+      font-weight: 500;
+      color: var(--text2);
+      cursor: pointer;
+      transition: all .2s;
+    }
+
+    .filter-btn:hover {
+      border-color: var(--teal);
+      color: var(--teal);
+    }
+
+    .filter-btn.active {
+      background: var(--navy);
+      border-color: var(--navy);
+      color: #fff;
+    }
+
+    .filter-btn.pendiente.active {
+      background: var(--amber);
+      border-color: var(--amber);
+    }
+
+    .filter-btn.aprobado.active {
+      background: var(--green);
+      border-color: var(--green);
+    }
+
+    .filter-btn.rechazado.active {
+      background: var(--red);
+      border-color: var(--red);
+    }
+
+    /* Tabla de postulaciones */
+    .table-wrap {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+    }
+
+    .table-head {
+      padding: 18px 24px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .table-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .table-count {
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    thead th {
+      padding: 10px 20px;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-align: left;
+      background: rgba(0, 0, 0, .02);
+      border-bottom: 1px solid var(--border);
+    }
+
+    tbody tr {
+      border-bottom: 1px solid var(--border);
+      transition: background .15s;
+    }
+
+    tbody tr:last-child {
+      border-bottom: none;
+    }
+
+    tbody tr:hover {
+      background: rgba(13, 148, 136, .03);
+    }
+
+    tbody td {
+      padding: 14px 20px;
+      font-size: 13.5px;
+      color: var(--text);
+      vertical-align: middle;
+    }
+
+    .prof-info {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .prof-avatar {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: var(--navy);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      font-weight: 700;
+      color: #fff;
+      flex-shrink: 0;
+    }
+
+    .prof-name {
+      font-size: 13.5px;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .prof-email {
+      font-size: 11.5px;
+      color: var(--muted);
+    }
+
+    /* Badges de estado */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 4px 10px;
+      border-radius: 100px;
+      font-size: 11px;
+      font-weight: 600;
+    }
+
+    .badge.pendiente {
+      background: var(--amber-light);
+      color: var(--amber);
+    }
+
+    .badge.aprobado {
+      background: var(--green-light);
+      color: var(--green);
+    }
+
+    .badge.rechazado {
+      background: var(--red-light);
+      color: var(--red);
+    }
+
+    /* Documentos mini */
+    .doc-chips {
+      display: flex;
+      gap: 5px;
+      flex-wrap: wrap;
+    }
+
+    .doc-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 3px 9px;
+      border-radius: 6px;
+      font-size: 10.5px;
+      font-weight: 500;
+      background: rgba(13, 148, 136, .08);
+      color: var(--teal-dark);
+      text-decoration: none;
+      cursor: pointer;
+      transition: background .15s;
+      border: none;
+    }
+
+    .doc-chip:hover {
+      background: rgba(13, 148, 136, .18);
+    }
+
+    /* Acciones */
+    .action-btns {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+    }
+
+    .btn-aprobar {
+      padding: 6px 14px;
+      border-radius: 8px;
+      background: var(--green-light);
+      color: var(--green);
+      border: 1.5px solid #86efac;
+      font-family: 'Outfit', sans-serif;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all .2s;
+    }
+
+    .btn-aprobar:hover {
+      background: var(--green);
+      color: #fff;
+      border-color: var(--green);
+    }
+
+    .btn-rechazar {
+      padding: 6px 14px;
+      border-radius: 8px;
+      background: var(--red-light);
+      color: var(--red);
+      border: 1.5px solid #fca5a5;
+      font-family: 'Outfit', sans-serif;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all .2s;
+    }
+
+    .btn-rechazar:hover {
+      background: var(--red);
+      color: #fff;
+      border-color: var(--red);
+    }
+
+    .btn-ver {
+      padding: 6px 10px;
+      border-radius: 8px;
+      background: transparent;
+      color: var(--muted);
+      border: 1.5px solid var(--border);
+      font-size: 14px;
+      cursor: pointer;
+      transition: all .2s;
+    }
+
+    .btn-ver:hover {
+      color: var(--teal);
+      border-color: var(--teal);
+    }
+
+    .estado-label {
+      font-size: 11.5px;
+      color: var(--muted);
+      font-style: italic;
+    }
+
+    /* ══ MODAL ════════════════════════════════════════════ */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, .45);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      padding: 20px;
+    }
+
+    .modal-overlay.open {
+      display: flex;
+    }
+
+    .modal {
+      background: var(--surface);
+      border-radius: 20px;
+      width: 100%;
+      max-width: 520px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, .2);
+      overflow: hidden;
+    }
+
+    .modal-header {
+      background: var(--navy);
+      padding: 20px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .modal-title {
+      font-family: 'Fraunces', serif;
+      font-size: 16px;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .modal-close {
+      background: rgba(255, 255, 255, .1);
+      border: none;
+      color: rgba(255, 255, 255, .7);
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background .2s;
+    }
+
+    .modal-close:hover {
+      background: rgba(255, 255, 255, .2);
+    }
+
+    .modal-body {
+      padding: 24px;
+    }
+
+    .modal-prof-info {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 14px;
+      background: var(--bg);
+      border-radius: 12px;
+      margin-bottom: 20px;
+    }
+
+    .modal-avatar {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: var(--navy);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      font-weight: 700;
+      color: #fff;
+      flex-shrink: 0;
+    }
+
+    .modal-prof-name {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .modal-prof-meta {
+      font-size: 12px;
+      color: var(--text2);
+      margin-top: 2px;
+    }
+
+    .modal-docs {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .modal-doc-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 14px;
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      background: var(--surface);
+      text-decoration: none;
+      transition: border-color .2s, background .2s;
+      cursor: pointer;
+    }
+
+    .modal-doc-item:hover {
+      border-color: var(--teal);
+      background: var(--teal-light);
+    }
+
+    .modal-doc-icon {
+      font-size: 22px;
+      flex-shrink: 0;
+    }
+
+    .modal-doc-tipo {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .modal-doc-nombre {
+      font-size: 11px;
+      color: var(--muted);
+      margin-top: 1px;
+    }
+
+    .modal-doc-arrow {
+      margin-left: auto;
+      font-size: 16px;
+      color: var(--muted);
+    }
+
+    .motivo-label {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text2);
+      margin-bottom: 6px;
+      display: block;
+    }
+
+    .motivo-label span {
+      color: var(--red);
+    }
+
+    textarea.motivo-input {
+      width: 100%;
+      padding: 11px 14px;
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Outfit', sans-serif;
+      font-size: 13.5px;
+      resize: vertical;
+      min-height: 90px;
+      outline: none;
+      transition: border-color .2s;
+    }
+
+    textarea.motivo-input:focus {
+      border-color: var(--red);
+    }
+
+    .modal-actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    .modal-btn {
+      flex: 1;
+      padding: 12px;
+      border-radius: 10px;
+      border: none;
+      font-family: 'Outfit', sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all .2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    .modal-btn.cancel {
+      background: var(--bg);
+      color: var(--text2);
+      border: 1.5px solid var(--border);
+    }
+
+    .modal-btn.cancel:hover {
+      border-color: var(--muted);
+    }
+
+    .modal-btn.confirm-rechazar {
+      background: var(--red);
+      color: #fff;
+    }
+
+    .modal-btn.confirm-rechazar:hover {
+      background: #b91c1c;
+    }
+
+    .modal-btn:disabled {
+      opacity: .5;
+      cursor: not-allowed;
+    }
+
+    /* Toast */
+    .toast {
+      position: fixed;
+      bottom: 28px;
+      right: 28px;
+      padding: 12px 20px;
+      border-radius: 12px;
+      font-size: 13.5px;
+      font-weight: 500;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, .15);
+      transform: translateY(80px);
+      opacity: 0;
+      transition: all .3s;
+      z-index: 2000;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .toast.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    .toast.ok {
+      background: var(--green);
+      color: #fff;
+    }
+
+    .toast.err {
+      background: var(--red);
+      color: #fff;
+    }
+
+    /* Fila vacía */
+    .empty-row td {
+      text-align: center;
+      padding: 40px 20px;
+      color: var(--muted);
+      font-size: 13.5px;
+    }
+
+    @media(max-width: 900px) {
+      body {
+        grid-template-columns: 1fr;
+      }
+
+      .sidebar {
+        display: none;
+      }
+
+      .main {
+        padding: 24px 18px;
+      }
+
+      .stats-row {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ══ SIDEBAR ══════════════════════════════════════════ -->
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <div class="logo-icon">🛡️</div>
+      <div>
+        <div class="logo-text">Guardian Digital</div>
+        <div class="logo-sub">Panel Administrador</div>
+      </div>
+    </div>
+
+    <div class="sidebar-admin">
+      <div class="admin-badge">⚙️ Admin</div>
+      <div class="admin-name">{{ admin.nombre }} {{ admin.apellidos }}</div>
+      <div class="admin-email">Administrador del sistema</div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <div class="nav-section-label">Gestión</div>
+      <a class="nav-item active" href="/admin">
+        <span class="nav-icon">📋</span>
+        Postulaciones
+        <span class="nav-badge red" id="badge-sidebar">
+          {{ postulaciones | selectattr('estado_validacion','equalto','pendiente') | list | length }}
+        </span>
+      </a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <a class="logout-btn" href="/logout">
+        <span>🚪</span> Cerrar sesión
+      </a>
+    </div>
+  </aside>
+
+  <!-- ══ MAIN ═════════════════════════════════════════════ -->
+  <main class="main">
+
+    <div class="page-header">
+      <div>
+        <h1 class="page-title">Postulaciones profesionales</h1>
+        <p class="page-sub">Revisa los documentos y aprueba o rechaza cada solicitud.</p>
+      </div>
+    </div>
+
+    <!-- Stats -->
+    <div class="stats-row">
+      <div class="stat-card">
+        <div class="stat-icon amber">⏳</div>
+        <div>
+          <div class="stat-num" id="count-pendiente">
+            {{ postulaciones | selectattr('estado_validacion','equalto','pendiente') | list | length }}
+          </div>
+          <div class="stat-label">Pendientes</div>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon green">✅</div>
+        <div>
+          <div class="stat-num" id="count-aprobado">
+            {{ postulaciones | selectattr('estado_validacion','equalto','aprobado') | list | length }}
+          </div>
+          <div class="stat-label">Aprobados</div>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon red">❌</div>
+        <div>
+          <div class="stat-num" id="count-rechazado">
+            {{ postulaciones | selectattr('estado_validacion','equalto','rechazado') | list | length }}
+          </div>
+          <div class="stat-label">Rechazados</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Filtros -->
+    <div class="filters-row">
+      <button class="filter-btn active" onclick="filtrar('todos', this)">Todos</button>
+      <button class="filter-btn pendiente" onclick="filtrar('pendiente', this)">⏳ Pendientes</button>
+      <button class="filter-btn aprobado" onclick="filtrar('aprobado',  this)">✅ Aprobados</button>
+      <button class="filter-btn rechazado" onclick="filtrar('rechazado', this)">❌ Rechazados</button>
+    </div>
+
+    <!-- Tabla -->
+    <div class="table-wrap">
+      <div class="table-head">
+        <div class="table-title">Listado de postulaciones</div>
+        <div class="table-count" id="tabla-count">
+          {{ postulaciones | length }} registros
+        </div>
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th>Profesional</th>
+            <th>Especialidad</th>
+            <th>CMP</th>
+            <th>Documentos</th>
+            <th>Fecha</th>
+            <th>Estado</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody id="tabla-body">
+
+          {% for p in postulaciones %}
+          <tr data-estado="{{ p.estado_validacion }}">
+
+            <!-- Profesional -->
+            <td>
+              <div class="prof-info">
+                <div class="prof-avatar">
+                  {{ p.nombre[0] | upper }}{{ p.apellidos[0] | upper }}
+                </div>
+                <div>
+                  <div class="prof-name">{{ p.nombre }} {{ p.apellidos }}</div>
+                  <div class="prof-email">{{ p.correo }}</div>
+                </div>
+              </div>
+            </td>
+
+            <!-- Especialidad -->
+            <td>{{ p.especialidad or '—' }}</td>
+
+            <!-- CMP -->
+            <td>{{ p.cmp or '—' }}</td>
+
+            <!-- Documentos -->
+            <td>
+              <div class="doc-chips">
+                {% for doc in p.documentos %}
+                <a class="doc-chip" href="{{ doc.url_s3 }}" target="_blank" title="{{ doc.nombre_archivo }}">
+                  {% if doc.tipo == 'titulo' %}🎓 Título
+                  {% elif doc.tipo == 'cmp' %}📋 CMP
+                  {% else %}🏅 Espec.
+                  {% endif %}
+                </a>
+                {% endfor %}
+                {% if not p.documentos %}
+                <span style="font-size:12px;color:var(--muted)">Sin docs</span>
+                {% endif %}
+              </div>
+            </td>
+
+            <!-- Fecha -->
+            <td style="font-size:12px;color:var(--text2)">
+              {{ p.fecha_registro or '—' }}
+            </td>
+
+            <!-- Estado -->
+            <td>
+              <span class="badge {{ p.estado_validacion }}">
+                {% if p.estado_validacion == 'pendiente' %}⏳ Pendiente
+                {% elif p.estado_validacion == 'aprobado' %}✅ Aprobado
+                {% else %}❌ Rechazado
+                {% endif %}
+              </span>
+            </td>
+
+            <!-- Acciones -->
+            <td>
+              {% if p.estado_validacion == 'pendiente' %}
+              <div class="action-btns">
+                <button class="btn-aprobar" data-id="{{ p.id_usuario }}" data-nombre="{{ p.nombre }} {{ p.apellidos }}"
+                  onclick="confirmarAprobar(this.dataset.id, this.dataset.nombre)">
+                  Aprobar
+                </button>
+                <button class="btn-rechazar" data-id="{{ p.id_usuario }}" data-nombre="{{ p.nombre }} {{ p.apellidos }}"
+                  data-especialidad="{{ p.especialidad }}" data-correo="{{ p.correo }}"
+                  onclick="abrirModalRechazo(this.dataset.id, this.dataset.nombre, this.dataset.especialidad, this.dataset.correo)">
+                  Rechazar
+                </button>
+              </div>
+              {% else %}
+              <span class="estado-label">
+                {% if p.estado_validacion == 'aprobado' %}Revisado ✓{% else %}Rechazado ✗{% endif %}
+              </span>
+              {% endif %}
+            </td>
+
+          </tr>
+          {% else %}
+          <tr class="empty-row">
+            <td colspan="7">🎉 No hay postulaciones registradas aún.</td>
+          </tr>
+          {% endfor %}
+
+        </tbody>
+      </table>
+    </div>
+
+  </main>
+
+  <!-- ══ MODAL RECHAZO ════════════════════════════════════ -->
+  <div class="modal-overlay" id="modalRechazo">
+    <div class="modal">
+      <div class="modal-header">
+        <div class="modal-title">❌ Rechazar postulación</div>
+        <button class="modal-close" onclick="cerrarModal()">✕</button>
+      </div>
+      <div class="modal-body">
+
+        <div class="modal-prof-info">
+          <div class="modal-avatar" id="modal-avatar">—</div>
+          <div>
+            <div class="modal-prof-name" id="modal-nombre">—</div>
+            <div class="modal-prof-meta" id="modal-meta">—</div>
+          </div>
+        </div>
+
+        <label class="motivo-label">
+          Motivo del rechazo<span>*</span>
+        </label>
+        <textarea class="motivo-input" id="txtMotivo"
+          placeholder="Ej: El certificado CMP adjunto está vencido. Por favor sube un certificado vigente del Colegio de Psicólogos del Perú."></textarea>
+
+        <div class="modal-actions">
+          <button class="modal-btn cancel" onclick="cerrarModal()">Cancelar</button>
+          <button class="modal-btn confirm-rechazar" id="btnConfirmarRechazo" onclick="confirmarRechazo()">
+            Confirmar rechazo
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ TOAST ════════════════════════════════════════════ -->
+  <div class="toast" id="toast"></div>
+
+  <script>
+    // ── Estado global ─────────────────────────────────────
+    let idUsuarioActual = null;
+
+    // ── FILTRO DE TABLA ───────────────────────────────────
+    function filtrar(estado, btn) {
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+
+      const filas = document.querySelectorAll('#tabla-body tr[data-estado]');
+      let visible = 0;
+      filas.forEach(fila => {
+        const mostrar = estado === 'todos' || fila.dataset.estado === estado;
+        fila.style.display = mostrar ? '' : 'none';
+        if (mostrar) visible++;
+      });
+      document.getElementById('tabla-count').textContent = visible + ' registros';
+    }
+
+    // ── APROBAR ───────────────────────────────────────────
+    async function confirmarAprobar(idUsuario, nombre) {
+      if (!confirm(`¿Aprobar la postulación de ${nombre}?\n\nSe le enviará un correo de confirmación.`)) return;
+
+      const fd = new FormData();
+      fd.append('id_usuario', idUsuario);
+
+      try {
+        const res = await fetch('/api/admin/aprobar', { method: 'POST', body: fd });
+        const data = await res.json();
+
+        if (data.success) {
+          mostrarToast('✅ ' + data.message, 'ok');
+          actualizarFila(idUsuario, 'aprobado');
+        } else {
+          mostrarToast('❌ ' + data.message, 'err');
+        }
+      } catch (e) {
+        mostrarToast('❌ Error de conexión.', 'err');
+      }
+    }
+
+    // ── MODAL RECHAZO ─────────────────────────────────────
+    function abrirModalRechazo(idUsuario, nombre, especialidad, correo) {
+      idUsuarioActual = idUsuario;
+
+      const iniciales = nombre.split(' ').slice(0, 2).map(p => p[0].toUpperCase()).join('');
+      document.getElementById('modal-avatar').textContent = iniciales;
+      document.getElementById('modal-nombre').textContent = nombre;
+      document.getElementById('modal-meta').textContent = (especialidad || 'Sin especialidad') + ' · ' + correo;
+      document.getElementById('txtMotivo').value = '';
+
+      document.getElementById('modalRechazo').classList.add('open');
+    }
+
+    function cerrarModal() {
+      document.getElementById('modalRechazo').classList.remove('open');
+      idUsuarioActual = null;
+    }
+
+    async function confirmarRechazo() {
+      const motivo = document.getElementById('txtMotivo').value.trim();
+      if (!motivo) {
+        document.getElementById('txtMotivo').style.borderColor = 'var(--red)';
+        document.getElementById('txtMotivo').focus();
+        return;
+      }
+      document.getElementById('txtMotivo').style.borderColor = '';
+
+      const btn = document.getElementById('btnConfirmarRechazo');
+      btn.disabled = true;
+      btn.textContent = 'Enviando...';
+
+      const fd = new FormData();
+      fd.append('id_usuario', idUsuarioActual);
+      fd.append('motivo', motivo);
+
+      try {
+        const res = await fetch('/api/admin/rechazar', { method: 'POST', body: fd });
+        const data = await res.json();
+
+        if (data.success) {
+          mostrarToast('❌ ' + data.message, 'ok');
+          actualizarFila(idUsuarioActual, 'rechazado');
+          cerrarModal();
+        } else {
+          mostrarToast('⚠️ ' + data.message, 'err');
+        }
+      } catch (e) {
+        mostrarToast('❌ Error de conexión.', 'err');
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Confirmar rechazo';
+      }
+    }
+
+    // ── ACTUALIZAR FILA SIN RECARGAR ──────────────────────
+    function actualizarFila(idUsuario, nuevoEstado) {
+      const filas = document.querySelectorAll('#tabla-body tr[data-estado]');
+      filas.forEach(fila => {
+        // Busca la fila que contiene el botón con ese id
+        const btnAprobar = fila.querySelector(`[onclick*="confirmarAprobar(${idUsuario}"]`);
+        const btnRechazar = fila.querySelector(`[onclick*="abrirModalRechazo(${idUsuario}"]`);
+        if (!btnAprobar && !btnRechazar) return;
+
+        fila.dataset.estado = nuevoEstado;
+
+        // Badge de estado
+        const badgeCell = fila.cells[5];
+        const iconos = { aprobado: '✅ Aprobado', rechazado: '❌ Rechazado' };
+        badgeCell.innerHTML = `<span class="badge ${nuevoEstado}">${iconos[nuevoEstado]}</span>`;
+
+        // Acciones
+        const accionCell = fila.cells[6];
+        const labelTexto = nuevoEstado === 'aprobado' ? 'Revisado ✓' : 'Rechazado ✗';
+        accionCell.innerHTML = `<span class="estado-label">${labelTexto}</span>`;
+
+        // Actualizar contadores
+        actualizarContadores();
+      });
+    }
+
+    function actualizarContadores() {
+      const filas = document.querySelectorAll('#tabla-body tr[data-estado]');
+      let pendiente = 0, aprobado = 0, rechazado = 0;
+      filas.forEach(f => {
+        if (f.dataset.estado === 'pendiente') pendiente++;
+        if (f.dataset.estado === 'aprobado') aprobado++;
+        if (f.dataset.estado === 'rechazado') rechazado++;
+      });
+      document.getElementById('count-pendiente').textContent = pendiente;
+      document.getElementById('count-aprobado').textContent = aprobado;
+      document.getElementById('count-rechazado').textContent = rechazado;
+      document.getElementById('badge-sidebar').textContent = pendiente;
+    }
+
+    // ── TOAST ─────────────────────────────────────────────
+    function mostrarToast(msg, tipo) {
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.className = `toast ${tipo} show`;
+      setTimeout(() => t.classList.remove('show'), 3500);
+    }
+
+    // Cerrar modal al click fuera
+    document.getElementById('modalRechazo').addEventListener('click', function (e) {
+      if (e.target === this) cerrarModal();
+    });
+  </script>
+</body>
+
+</html>
