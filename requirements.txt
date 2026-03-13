@@ -31,19 +31,6 @@ s3transfer==0.16.0
 # ── Twilio (SMS alertas) ─────────────────────────────────
 twilio==9.10.2
  
-# ── Audio y emociones ────────────────────────────────────
-librosa==0.11.0
-soundfile==0.13.1
-soxr==1.0.0
-torch==2.10.0
-transformers==4.57.6
-tokenizers==0.22.2
-safetensors==0.7.0
-huggingface_hub==0.36.2
- 
-# ── NLP / Embeddings ─────────────────────────────────────
-sentence-transformers==4.1.0
- 
 # ── Utilidades ───────────────────────────────────────────
 pydantic==2.11.7
 pypdf==5.6.1
