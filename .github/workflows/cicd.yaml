@@ -4,7 +4,6 @@ on:
   push:
     branches: [main]
 
-
 jobs:
   Continuous-Integration:
     runs-on: ubuntu-latest
@@ -55,4 +54,14 @@ jobs:
 
       - name: Run Docker Image to serve users
         run: |
-         docker run -d -e AWS_ACCESS_KEY_ID="${{ secrets.AWS_ACCESS_KEY_ID }}" -e AWS_SECRET_ACCESS_KEY="${{ secrets.AWS_SECRET_ACCESS_KEY }}" -e AWS_DEFAULT_REGION="${{ secrets.AWS_DEFAULT_REGION }}" -e PINECONE_API_KEY="${{ secrets.PINECONE_API_KEY }}" -e OPENAI_API_KEY="${{ secrets.OPENAI_API_KEY }}" -p 8080:8080 "${{ steps.login-ecr.outputs.registry }}"/"${{ secrets.ECR_REPO }}":latest
+          # 1. Descargar la imagen más reciente de ECR
+          docker pull "${{ steps.login-ecr.outputs.registry }}"/"${{ secrets.ECR_REPO }}":latest
+          
+          # 2. Detener el contenedor viejo (si existe)
+          docker stop mi-app-flask || true
+          
+          # 3. Borrar el contenedor viejo (si existe)
+          docker rm mi-app-flask || true
+          
+          # 4. Correr el nuevo contenedor con el nombre 'mi-app-flask' en el puerto 8080
+          docker run -d --name mi-app-flask -e AWS_ACCESS_KEY_ID="${{ secrets.AWS_ACCESS_KEY_ID }}" -e AWS_SECRET_ACCESS_KEY="${{ secrets.AWS_SECRET_ACCESS_KEY }}" -e AWS_DEFAULT_REGION="${{ secrets.AWS_DEFAULT_REGION }}" -e PINECONE_API_KEY="${{ secrets.PINECONE_API_KEY }}" -e OPENAI_API_KEY="${{ secrets.OPENAI_API_KEY }}" -p 8080:8080 "${{ steps.login-ecr.outputs.registry }}"/"${{ secrets.ECR_REPO }}":latest
