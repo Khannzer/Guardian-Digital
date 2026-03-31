@@ -1,4 +1,4 @@
-# Herramientas principales de Flask
+# Herramientas e importaciones  principales de Flask
 from flask import Flask, render_template, jsonify, request, redirect, url_for, session
 from src.helper import download_embeddings
 from src.prompt import system_prompt
