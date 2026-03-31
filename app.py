@@ -29,10 +29,13 @@ from functools import wraps
 import boto3
 from botocore.exceptions import ClientError
 
-# BLOQUE 2 — CONFIGURACIÓN S3
-# Agregar junto a las demás variables de entorno (después de load_dotenv())
+# Cargar variables de entorno desde el archivo .env
+# CONFIGURACIÓN S3
 # ============================================================
- 
+app = Flask(__name__)
+load_dotenv()
+
+
 AWS_ACCESS_KEY     = os.getenv("AWS_ACCESS_KEY_ID")
 AWS_SECRET_KEY     = os.getenv("AWS_SECRET_ACCESS_KEY")
 AWS_REGION         = os.getenv("AWS_REGION", "us-east-2")
@@ -64,9 +67,6 @@ try:
     logger.info("Modelo HuBERT listo.")
 except Exception as e:
     logger.warning(f"Modelo HuBERT no disponible: {e}. La app seguira sin deteccion por voz.")
-
-app = Flask(__name__)
-load_dotenv()
 
 TWILIO_SID    = os.getenv("TWILIO_ACCOUNT_SID")
 TWILIO_TOKEN  = os.getenv("TWILIO_AUTH_TOKEN")
@@ -190,8 +190,7 @@ def _subir_documento_s3(archivo, id_usuario: int, tipo: str) -> str | None:
         logger.error(f"Error subiendo a S3: {e}")
         return None, None
 
-# BLOQUE 4 — FUNCIÓN AUXILIAR: email de resultado de validación
-# Agregar en la sección de FUNCIONES AUXILIARES
+# FUNCIÓN AUXILIAR: email de resultado de validación
 # ============================================================
  
 def _enviar_email_validacion(correo_destino: str, nombre: str, aprobado: bool, motivo: str = None) -> bool:
