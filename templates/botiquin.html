@@ -3,254 +3,754 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tu Espacio de Calma - Guardián Digital</title>
-    
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.css') }}">
+    <title>Mi Botiquín — Guardián Digital</title>
+
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Fraunces:ital,wght@1,300;1,600&display=swap" rel="stylesheet">
-    
+   
+
     <style>
-        /* === VARIABLES DE COLOR Y ESTILO === */
         :root {
-            --bg-deep: #080E1A; /* Azul noche profundo para contención */
-            --accent-calm: #52C4E8; /* Cian para el aire y la respiración */
-            --accent-hope: #F2A97E; /* Melocotón cálido para la esperanza */
-            --text-main: #E8F0F7;
-            --text-muted: rgba(255, 255, 255, 0.6);
-            --glass: rgba(255, 255, 255, 0.05);
-            --border: rgba(255, 255, 255, 0.1);
+            --bg-deep:       #070d18;
+            --accent-calm:   #52C4E8;
+            --accent-hope:   #F2A97E;
+            --accent-ground: #88d9b0;
+            --accent-crisis: #f07c7c;
+            --text-main:     #e8f0f7;
+            --text-muted:    rgba(255,255,255,0.55);
+            --glass:         rgba(255,255,255,0.04);
+            --glass-hover:   rgba(255,255,255,0.07);
+            --border:        rgba(255,255,255,0.09);
+            --border-hover:  rgba(255,255,255,0.18);
         }
+
+        * { box-sizing: border-box; }
 
         body {
             background-color: var(--bg-deep);
-            background-image: 
-                radial-gradient(circle at 10% 20%, rgba(82, 196, 232, 0.07) 0%, transparent 50%),
-                radial-gradient(circle at 90% 80%, rgba(242, 169, 126, 0.05) 0%, transparent 50%);
+            background-image:
+                radial-gradient(ellipse at 15% 25%, rgba(82,196,232,0.06) 0%, transparent 55%),
+                radial-gradient(ellipse at 85% 75%, rgba(242,169,126,0.05) 0%, transparent 55%),
+                radial-gradient(ellipse at 50% 50%, rgba(136,217,176,0.03) 0%, transparent 60%);
             font-family: 'DM Sans', sans-serif;
             color: var(--text-main);
             min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center; /* Centra todo verticalmente */
         }
 
-        /* === BOTONES Y NAVEGACIÓN === */
+        /* ── TOP BAR ── */
+        .topbar {
+            position: sticky; top: 0; z-index: 100;
+            padding: 1rem 1.5rem;
+            background: rgba(7,13,24,0.85);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+            display: flex; align-items: center; justify-content: space-between;
+        }
         .btn-volver {
-            background: var(--glass);
-            border: 1px solid var(--border);
-            color: var(--text-main);
-            border-radius: 12px;
-            transition: all 0.3s ease;
-            backdrop-filter: blur(10px);
-            text-decoration: none;
+            display: inline-flex; align-items: center; gap: 8px;
+            background: var(--glass); border: 1px solid var(--border);
+            color: var(--text-main); border-radius: 12px;
+            padding: 8px 18px; font-size: 0.88rem;
+            text-decoration: none; transition: all 0.25s;
         }
         .btn-volver:hover {
-            background: rgba(82, 196, 232, 0.1);
-            border-color: var(--accent-calm);
-            color: var(--accent-calm);
-            transform: translateX(-5px);
+            background: rgba(82,196,232,0.1);
+            border-color: var(--accent-calm); color: var(--accent-calm);
+            transform: translateX(-3px);
+        }
+        .crisis-pill {
+            display: inline-flex; align-items: center; gap: 8px;
+            background: rgba(240,124,124,0.12);
+            border: 1px solid rgba(240,124,124,0.25);
+            color: var(--accent-crisis); border-radius: 100px;
+            padding: 6px 16px; font-size: 0.82rem; font-weight: 600;
+            text-decoration: none; letter-spacing: 0.3px;
+            transition: all 0.25s; white-space: nowrap;
+        }
+        .crisis-pill:hover {
+            background: rgba(240,124,124,0.22); color: var(--accent-crisis);
+            transform: scale(1.03);
+        }
+        .crisis-pill .dot {
+            width: 7px; height: 7px; background: var(--accent-crisis);
+            border-radius: 50%; animation: pulse-dot 1.8s infinite;
+        }
+        @keyframes pulse-dot {
+            0%,100% { opacity:1; transform: scale(1); }
+            50%      { opacity:0.5; transform: scale(0.7); }
         }
 
-        /* === TARJETAS PRINCIPALES === */
-        .glass-card {
+        /* ── HERO ── */
+        .hero {
+            text-align: center;
+            padding: 3.5rem 1rem 2rem;
+        }
+        .hero-badge {
+            display: inline-flex; align-items: center; gap: 6px;
+            background: rgba(82,196,232,0.08);
+            border: 1px solid rgba(82,196,232,0.2);
+            color: var(--accent-calm); border-radius: 100px;
+            padding: 5px 16px; font-size: 0.78rem;
+            font-weight: 600; letter-spacing: 1px;
+            text-transform: uppercase; margin-bottom: 1.2rem;
+        }
+        .hero h1 {
+            font-family: 'Fraunces', serif;
+            font-style: italic; font-weight: 300;
+            font-size: clamp(2rem, 5vw, 3rem);
+            line-height: 1.1; margin-bottom: 0.8rem;
+        }
+        .hero p { color: var(--text-muted); font-size: 1.05rem; max-width: 480px; margin: 0 auto; }
+
+        /* ── TARJETAS BASE ── */
+        .card-kit {
             background: var(--glass);
             border: 1px solid var(--border);
             border-radius: 24px;
-            backdrop-filter: blur(15px);
-            padding: 2.5rem;
+            backdrop-filter: blur(12px);
+            overflow: hidden;
+            transition: border-color 0.3s;
             height: 100%;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
         }
+        .card-kit:hover { border-color: var(--border-hover); }
+        .card-body-kit { padding: 2rem 2rem 2.5rem; }
 
-        .titulo-serif {
+        .section-label {
+            font-size: 0.72rem; font-weight: 700;
+            letter-spacing: 1.8px; text-transform: uppercase;
+            margin-bottom: 0.4rem;
+        }
+        .card-title-kit {
             font-family: 'Fraunces', serif;
-            font-style: italic;
-            font-weight: 300;
+            font-weight: 400; font-size: 1.5rem;
+            margin-bottom: 0.4rem; line-height: 1.2;
+        }
+        .card-desc { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.5rem; }
+
+        /* ── SEPARADOR SECCIÓN ── */
+        .section-sep {
+            display: flex; align-items: center; gap: 12px;
+            margin: 3rem 0 1.5rem;
+        }
+        .section-sep span {
+            font-size: 0.72rem; font-weight: 700; letter-spacing: 2px;
+            text-transform: uppercase; color: var(--text-muted); white-space: nowrap;
+        }
+        .section-sep::before, .section-sep::after {
+            content: ''; flex: 1; height: 1px; background: var(--border);
         }
 
-        /* === ANIMACIÓN DE RESPIRACIÓN (MÉTODO 4-4-8) === */
-        .escena-respiracion {
+        /* ══════════════════════════════════════════
+           TÉCNICA 1 — RESPIRACIÓN 4-4-8
+        ══════════════════════════════════════════ */
+        .breath-wrap {
             position: relative;
-            width: 100%;
-            height: 350px; /* Espacio amplio para que el círculo crezca */
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 20px 0;
+            display: flex; align-items: center; justify-content: center;
+            height: 280px; margin: 0.5rem 0 1.5rem;
         }
 
-        .circulo-respiracion {
-            width: 220px; /* Tamaño base grande */
-            height: 220px;
-            background: radial-gradient(circle at 30% 30%, #82dcff, var(--accent-calm), #1d6fd1);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            box-shadow: 0 0 40px rgba(82, 196, 232, 0.3);
-            animation: breathe 16s infinite linear; 
-            z-index: 2;
+        /* Anillos de fondo decorativos */
+        .breath-ring {
+            position: absolute; border-radius: 50%;
+            border: 1px solid rgba(82,196,232,0.12);
+            animation: ring-pulse 8s ease-in-out infinite;
+        }
+        .breath-ring:nth-child(1) { width: 260px; height: 260px; animation-delay: 0s; }
+        .breath-ring:nth-child(2) { width: 220px; height: 220px; animation-delay: 0.5s; opacity:0.6; }
+
+        @keyframes ring-pulse {
+            0%,100% { transform: scale(1); opacity: 0.3; }
+            50%      { transform: scale(1.08); opacity: 0.12; }
         }
 
-        /* Ondas expansivas suaves */
-        .circulo-respiracion::before {
-            content: '';
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
-            border: 2px solid var(--accent-calm);
-            animation: ripples 16s infinite linear;
-            z-index: 1;
+        .breath-circle {
+            position: relative; z-index: 2;
+            width: 160px; height: 160px; border-radius: 50%;
+            background: radial-gradient(circle at 35% 35%, #9ee8ff, var(--accent-calm), #1d6fd1);
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+            box-shadow: 0 0 40px rgba(82,196,232,0.25);
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        .breath-circle.running {
+            animation: breathe-478 16s ease-in-out infinite;
+        }
+        .breath-circle:not(.running):hover { transform: scale(1.04); }
+
+        @keyframes breathe-478 {
+            0%        { transform: scale(1);   box-shadow: 0 0 30px rgba(82,196,232,0.2); }
+            0.1%      { transform: scale(1); }
+            25%       { transform: scale(1.55); box-shadow: 0 0 80px rgba(82,196,232,0.55); }
+            50%       { transform: scale(1.55); box-shadow: 0 0 80px rgba(82,196,232,0.55); }
+            99.9%     { transform: scale(1);   box-shadow: 0 0 30px rgba(82,196,232,0.2); }
+            100%      { transform: scale(1); }
         }
 
-        @keyframes breathe {
-            0%   { transform: scale(1); box-shadow: 0 0 30px rgba(82, 196, 232, 0.3); }
-            25%  { transform: scale(1.5); box-shadow: 0 0 80px rgba(82, 196, 232, 0.6); }
-            50%  { transform: scale(1.5); box-shadow: 0 0 80px rgba(82, 196, 232, 0.6); }
-            100% { transform: scale(1); box-shadow: 0 0 30px rgba(82, 196, 232, 0.3); }
+        .breath-label {
+            font-family: 'Fraunces', serif; font-style: italic;
+            font-size: 1.25rem; color: white;
+            font-weight: 300; line-height: 1;
+        }
+        .breath-count {
+            font-size: 2rem; font-weight: 700; color: white; line-height: 1;
+            font-variant-numeric: tabular-nums;
+        }
+        .breath-hint {
+            font-size: 0.72rem; color: rgba(255,255,255,0.6);
+            letter-spacing: 0.5px; margin-top: 2px;
         }
 
-        @keyframes ripples {
-            0%   { transform: scale(1); opacity: 0.5; }
-            25%  { transform: scale(1.8); opacity: 0; }
-            50%  { transform: scale(1); opacity: 0; }
-            100% { transform: scale(1); opacity: 0; }
+        /* Barra de progreso circular */
+        .breath-progress-wrap {
+            position: absolute; z-index: 1;
+            width: 185px; height: 185px;
+        }
+        .breath-progress-wrap svg { transform: rotate(-90deg); }
+        #breath-arc {
+            stroke: var(--accent-calm);
+            stroke-linecap: round;
+            transition: stroke-dashoffset 1s linear, stroke 0.5s;
+            filter: drop-shadow(0 0 6px rgba(82,196,232,0.6));
         }
 
-        /* Texto dinámico del círculo */
-        .texto-respiracion {
-            font-family: 'Fraunces', serif;
-            font-weight: 600;
-            font-size: 1.8rem;
-            color: white;
-            text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        .btn-breath {
+            display: flex; align-items: center; justify-content: center; gap: 8px;
+            width: 100%; padding: 14px;
+            background: rgba(82,196,232,0.1);
+            border: 1.5px solid rgba(82,196,232,0.3);
+            border-radius: 16px; color: var(--accent-calm);
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.95rem; font-weight: 600;
+            cursor: pointer; transition: all 0.25s;
+        }
+        .btn-breath:hover {
+            background: rgba(82,196,232,0.18);
+            border-color: rgba(82,196,232,0.6);
+            transform: translateY(-2px);
+        }
+        .btn-breath.active {
+            background: rgba(82,196,232,0.2);
+            border-color: var(--accent-calm);
         }
 
-        .texto-respiracion::after {
-            content: 'Inhala';
-            animation: cambiaTexto 16s infinite;
+        .phases-strip {
+            display: flex; gap: 6px; margin-top: 1.2rem;
         }
-
-        @keyframes cambiaTexto {
-            0%, 24%   { content: 'Inhala'; }
-            25%, 49%  { content: 'Retén'; }
-            50%, 100% { content: 'Exhala'; }
-        }
-
-        /* === CAJA DE ESPERANZA === */
-        .caja-esperanza {
-            background: linear-gradient(145deg, rgba(242, 169, 126, 0.08), rgba(255, 255, 255, 0.02));
-            border-color: rgba(242, 169, 126, 0.15);
-        }
-
-        .icono-caja {
-            font-size: 4rem;
-            color: var(--accent-hope);
-            filter: drop-shadow(0 0 15px rgba(242, 169, 126, 0.3));
-            margin-bottom: 1.5rem;
-        }
-
-        .item-esperanza {
-            background: rgba(0, 0, 0, 0.2);
+        .phase-chip {
+            flex: 1; text-align: center;
+            background: rgba(255,255,255,0.04);
             border: 1px solid var(--border);
-            border-radius: 16px;
-            padding: 1.2rem;
-            transition: transform 0.3s, border-color 0.3s;
+            border-radius: 10px; padding: 8px 4px;
+            font-size: 0.78rem; transition: all 0.3s;
         }
-        .item-esperanza:hover {
-            transform: translateY(-5px);
-            border-color: var(--accent-hope);
+        .phase-chip.active-phase {
+            background: rgba(82,196,232,0.12);
+            border-color: rgba(82,196,232,0.4);
+            color: var(--accent-calm);
+        }
+        .phase-chip .p-num { font-size: 1.2rem; font-weight: 700; display: block; }
+        .phase-chip .p-lbl { color: var(--text-muted); font-size: 0.72rem; }
+
+        /* Contador de ciclos */
+        .cycles-row {
+            display: flex; align-items: center; gap: 8px;
+            margin-top: 1rem; justify-content: center;
+        }
+        .cycle-dot {
+            width: 10px; height: 10px; border-radius: 50%;
+            border: 1.5px solid rgba(82,196,232,0.35);
+            transition: all 0.4s;
+        }
+        .cycle-dot.done {
+            background: var(--accent-calm);
+            border-color: var(--accent-calm);
+            box-shadow: 0 0 8px rgba(82,196,232,0.5);
         }
 
-        .alert-calma {
-            background: rgba(82, 196, 232, 0.08);
-            border: 1px solid rgba(82, 196, 232, 0.2);
-            color: var(--text-main);
-            border-radius: 16px;
-            padding: 1.2rem;
+        /* ══════════════════════════════════════════
+           TÉCNICA 2 — GROUNDING 5-4-3-2-1
+        ══════════════════════════════════════════ */
+        .ground-card { border-color: rgba(136,217,176,0.15); }
+
+        .ground-steps { display: flex; flex-direction: column; gap: 10px; }
+
+        .ground-step {
+            display: flex; align-items: flex-start; gap: 14px;
+            background: rgba(0,0,0,0.18);
+            border: 1px solid var(--border);
+            border-radius: 16px; padding: 1rem 1.2rem;
+            cursor: pointer; transition: all 0.3s; position: relative;
+            overflow: hidden;
         }
-        
-        /* Ajustes responsivos */
-        @media (max-width: 991px) {
-            body { padding: 2rem 0; justify-content: flex-start; }
-            .escena-respiracion { height: 300px; }
-            .circulo-respiracion { width: 180px; height: 180px; }
+        .ground-step::before {
+            content: '';
+            position: absolute; left: 0; top: 0; bottom: 0; width: 3px;
+            background: var(--accent-ground); opacity: 0;
+            transition: opacity 0.3s;
+        }
+        .ground-step.active { border-color: rgba(136,217,176,0.35); }
+        .ground-step.active::before { opacity: 1; }
+
+        .step-num-badge {
+            width: 38px; height: 38px; flex-shrink: 0;
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            font-size: 1.2rem; font-weight: 700;
+            background: rgba(136,217,176,0.1);
+            border: 1.5px solid rgba(136,217,176,0.25);
+            color: var(--accent-ground); transition: all 0.3s;
+        }
+        .ground-step.done .step-num-badge {
+            background: rgba(136,217,176,0.2);
+            border-color: var(--accent-ground);
+        }
+
+        .step-body { flex: 1; }
+        .step-sense {
+            font-size: 0.72rem; font-weight: 700; letter-spacing: 1.5px;
+            text-transform: uppercase; color: var(--accent-ground);
+            margin-bottom: 2px;
+        }
+        .step-instruction { font-size: 0.9rem; color: var(--text-muted); }
+        .step-instruction strong { color: var(--text-main); }
+
+        .step-check {
+            width: 20px; height: 20px; flex-shrink: 0;
+            border-radius: 50%; border: 1.5px solid var(--border);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 0.7rem; transition: all 0.3s; margin-top: 8px;
+        }
+        .ground-step.done .step-check {
+            background: var(--accent-ground);
+            border-color: var(--accent-ground); color: #070d18;
+
+        }
+
+        .ground-complete {
+            display: none;
+            background: rgba(136,217,176,0.08);
+            border: 1px solid rgba(136,217,176,0.2);
+            border-radius: 16px; padding: 1.2rem;
+            text-align: center; margin-top: 1rem;
+        }
+        .ground-complete.visible { display: block; }
+
+        /* ══════════════════════════════════════════
+           TÉCNICA 3 — CAJA DE ESPERANZA
+        ══════════════════════════════════════════ */
+        .hope-card { border-color: rgba(242,169,126,0.15); }
+
+        .hope-item {
+            background: rgba(0,0,0,0.18);
+            border: 1px solid var(--border);
+            border-radius: 16px; padding: 1.2rem;
+            transition: all 0.3s;
+        }
+        .hope-item:hover {
+            border-color: rgba(242,169,126,0.3);
+            transform: translateY(-3px);
+            background: rgba(242,169,126,0.05);
+        }
+        .hope-item-label {
+            font-size: 0.7rem; font-weight: 700; letter-spacing: 1.5px;
+            text-transform: uppercase; color: var(--accent-hope);
+            margin-bottom: 6px; display: flex; align-items: center; gap: 6px;
+        }
+        .hope-item-value { font-size: 1.15rem; color: var(--text-main); }
+
+        .affirmation-box {
+            background: rgba(242,169,126,0.07);
+            border: 1px solid rgba(242,169,126,0.18);
+            border-radius: 18px; padding: 1.5rem;
+            text-align: center; margin-top: 1.2rem;
+            min-height: 110px; display: flex; flex-direction: column;
+            align-items: center; justify-content: center; gap: 10px;
+        }
+        .affirmation-text {
+            font-family: 'Fraunces', serif; font-style: italic;
+            font-size: 1.15rem; color: white; line-height: 1.5;
+            transition: opacity 0.5s;
+        }
+        .btn-affirmation {
+            background: none; border: 1px solid rgba(242,169,126,0.25);
+            color: var(--accent-hope); border-radius: 100px;
+            padding: 4px 14px; font-size: 0.75rem; cursor: pointer;
+            transition: all 0.25s;
+        }
+        .btn-affirmation:hover { background: rgba(242,169,126,0.1); }
+
+        /* ══════════════════════════════════════════
+           MISC
+        ══════════════════════════════════════════ */
+        .tip-box {
+            background: rgba(82,196,232,0.06);
+            border: 1px solid rgba(82,196,232,0.15);
+            border-radius: 14px; padding: 1rem 1.2rem;
+            font-size: 0.87rem; color: var(--text-muted);
+            display: flex; gap: 10px; align-items: flex-start;
+            margin-top: 1rem;
+        }
+        .tip-box i { color: var(--accent-calm); margin-top: 2px; flex-shrink: 0; }
+
+        /* Responsive */
+        @media(max-width: 767px) {
+            .card-body-kit { padding: 1.4rem; }
+            .hero { padding: 2rem 1rem 1.5rem; }
+            .crisis-links { flex-direction: column; }
+            .phases-strip .phase-chip .p-lbl { display: none; }
         }
     </style>
 </head>
 <body>
 
-<div class="container py-4">
-    
-    <div class="d-flex justify-content-between align-items-center mb-5">
-        <a href="/chat" class="btn btn-volver px-4 py-2">
-            <i class="fas fa-arrow-left me-2"></i> Volver al Chat
-        </a>
+<!-- ── TOP BAR ── -->
+<div class="topbar">
+    <a href="/chat" class="btn-volver">
+        <i class="fas fa-arrow-left"></i> Volver al Chat
+    </a>
+</div>
+
+<div class="py-3" style="max-width: 50%; margin: 0 auto;">
+    <!-- ── HERO ── -->
+    <div class="hero">
+        <div class="hero-badge">
+            <i class="fas fa-kit-medical" style="font-size:0.7rem;"></i>
+            Mi Botiquín de Calma
+        </div>
+        <h1>Estás a salvo, <span style="color: var(--accent-calm);">{{ usuario.nombre }}</span>.<br>Esto va a pasar.</h1>
+        <p>Elige la técnica que más necesites ahora mismo. No hay orden correcto.</p>
+    </div>
+
+    <!-- ════════════════════════════════════════
+         FILA 1: RESPIRACIÓN + GROUNDING
+    ════════════════════════════════════════ -->
+    <div class="row g-4 align-items-stretch mb-4">
+
+        <!-- RESPIRACIÓN 4-4-8 -->
+        <div class="col-lg-6">
+            <div class="card-kit">
+                <div class="card-body-kit">
+                    <div class="section-label" style="color: var(--accent-calm);">Técnica 1 · Respiración</div>
+                    <div class="card-title-kit">Respira 4 — 4 — 8</div>
+                    <div class="card-desc">Inhala 4 s · Retén 4 s · Exhala 8 s. Activa el nervio vago y reduce el cortisol en minutos.</div>
+
+                    <div class="breath-wrap">
+                        <div class="breath-ring"></div>
+                        <div class="breath-ring"></div>
+                        <div class="breath-progress-wrap">
+                            <svg width="185" height="185" viewBox="0 0 185 185">
+                                <circle cx="92.5" cy="92.5" r="83"
+                                    fill="none" stroke="rgba(82,196,232,0.08)" stroke-width="3"/>
+                                <circle id="breath-arc" cx="92.5" cy="92.5" r="83"
+                                    fill="none" stroke-width="3"
+                                    stroke-dasharray="521.5" stroke-dashoffset="521.5"/>
+                            </svg>
+                        </div>
+                        <div class="breath-circle" id="breathCircle">
+                            <div class="breath-label" id="breathLabel">Listo</div>
+                            <div class="breath-count" id="breathCount" style="display:none;">—</div>
+                            <div class="breath-hint" id="breathHint">Toca para empezar</div>
+                        </div>
+                    </div>
+
+                    <!-- Fases -->
+                    <div class="phases-strip">
+                        <div class="phase-chip" id="phase0">
+                            <span class="p-num">4</span>
+                            <span class="p-lbl">Inhala</span>
+                        </div>
+                        <div class="phase-chip" id="phase1">
+                            <span class="p-num">4</span>
+                            <span class="p-lbl">Retén</span>
+                        </div>
+                        <div class="phase-chip" id="phase2">
+                            <span class="p-num">8</span>
+                            <span class="p-lbl">Exhala</span>
+                        </div>
+                    </div>
+
+                    <!-- Ciclos -->
+                    <div class="cycles-row" id="cyclesRow" style="margin-bottom:1rem;">
+                        <span style="font-size:0.75rem; color: var(--text-muted);">Ciclos:</span>
+                        <div class="cycle-dot" id="c0"></div>
+                        <div class="cycle-dot" id="c1"></div>
+                        <div class="cycle-dot" id="c2"></div>
+                        <div class="cycle-dot" id="c3"></div>
+                    </div>
+
+                    <button class="btn-breath" id="btnBreath" onclick="toggleBreath()">
+                        <i class="fas fa-play" id="breathIcon"></i>
+                        <span id="breathBtnText">Iniciar respiración guiada</span>
+                    </button>
+
+                    <div class="tip-box">
+                        <i class="fas fa-info-circle"></i>
+                        <span>Pon una mano en el pecho y otra en el abdomen. Solo el abdomen debe moverse.</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br>
+        <!-- GROUNDING 5-4-3-2-1 -->
+        <div class="col-lg-6">
+            <div class="card-kit ground-card">
+                <div class="card-body-kit">
+                    <div class="section-label" style="color: var(--accent-ground);">Técnica 2 · Anclaje</div>
+                    <div class="card-title-kit">Grounding 5-4-3-2-1</div>
+                    <div class="card-desc">Ancla tu mente al presente usando tus sentidos. Toca cada paso cuando lo hayas completado.</div>
+
+                    <div class="ground-steps">
+                        <div class="ground-step" id="gs0" onclick="toggleGround(0)">
+                            <div class="step-num-badge">5</div>
+                            <div class="step-body">
+                                <div class="step-sense">👁 Vista</div>
+                                <div class="step-instruction">Nombra <strong>5 cosas que puedes ver</strong> ahora mismo a tu alrededor.</div>
+                            </div>
+                            <div class="step-check" id="gch0"><i class="fas fa-check"></i></div>
+                        </div>
+                        <div class="ground-step" id="gs1" onclick="toggleGround(1)">
+                            <div class="step-num-badge">4</div>
+                            <div class="step-body">
+                                <div class="step-sense">✋ Tacto</div>
+                                <div class="step-instruction">Toca <strong>4 cosas</strong> y siente su textura: suave, rugosa, fría, cálida.</div>
+                            </div>
+                            <div class="step-check" id="gch1"><i class="fas fa-check"></i></div>
+                        </div>
+                        <div class="ground-step" id="gs2" onclick="toggleGround(2)">
+                            <div class="step-num-badge">3</div>
+                            <div class="step-body">
+                                <div class="step-sense">👂 Oído</div>
+                                <div class="step-instruction">Escucha <strong>3 sonidos distintos</strong> en tu entorno ahora mismo.</div>
+                            </div>
+                            <div class="step-check" id="gch2"><i class="fas fa-check"></i></div>
+                        </div>
+                        <div class="ground-step" id="gs3" onclick="toggleGround(3)">
+                            <div class="step-num-badge">2</div>
+                            <div class="step-body">
+                                <div class="step-sense">👃 Olfato</div>
+                                <div class="step-instruction">Identifica <strong>2 olores</strong> que percibes o que recuerdes con claridad.</div>
+                            </div>
+                            <div class="step-check" id="gch3"><i class="fas fa-check"></i></div>
+                        </div>
+                        <div class="ground-step" id="gs4" onclick="toggleGround(4)">
+                            <div class="step-num-badge">1</div>
+                            <div class="step-body">
+                                <div class="step-sense">👅 Gusto</div>
+                                <div class="step-instruction">Identifica <strong>1 sabor</strong> que tengas en la boca ahora mismo.</div>
+                            </div>
+                            <div class="step-check" id="gch4"><i class="fas fa-check"></i></div>
+                        </div>
+                    </div>
+
+                    <div class="ground-complete" id="groundComplete">
+                        <div style="font-size: 1.8rem; margin-bottom: 8px;">🌿</div>
+                        <div style="font-weight: 600; margin-bottom: 4px;">Bien hecho, {{ usuario.nombre }}.</div>
+                        <div style="font-size: 0.87rem; color: var(--text-muted);">Acabas de traer tu mente al presente. ¿Cómo te sientes ahora?</div>
+                        <button onclick="resetGround()" style="background:none; border:1px solid var(--border); color: var(--text-muted); border-radius: 100px; padding: 4px 14px; font-size: 0.75rem; cursor:pointer; margin-top: 10px; transition: 0.2s;" onmouseover="this.style.color='white'" onmouseout="this.style.color=''">
+                            Repetir ejercicio
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
     <br>
-    <div class="row g-4 align-items-stretch">
-        
-        <div class="col-lg-6">
-            <div class="glass-card text-center">
-                <h2 class="titulo-serif mb-2" style="color: var(--accent-calm); font-size: 2.2rem;">Tu espacio de calma</h2>
-                <p class="text-muted" style="font-size: 1.50rem;">Sigue el ritmo del círculo • Método 4-4-8</p>
-                
-                <div class="escena-respiracion">
-                    <div class="circulo-respiracion">
-                        <span class="texto-respiracion"></span>
-                    </div>
-                </div>
-                
-                <p class="mt-2" style="font-size: 1.50rem; color: var(--text-muted); line-height: 1.6;">
-                    Respira profundo desde el abdomen.<br>
-                    Suelta los hombros y relaja la mandíbula.
-                </p>
-            </div>
-        </div>
+    <!-- ════════════════════════════════════════
+         FILA 2: RELAJACIÓN + CAJA DE ESPERANZA
+    ════════════════════════════════════════ -->
+    <div class="row g-4 align-items-stretch mb-4">
+        <!-- CAJA DE ESPERANZA -->
+        <div class="col-lg-7">
+            <div class="card-kit hope-card">
+                <div class="card-body-kit">
+                    <div class="section-label" style="color: var(--accent-hope);">Recordatorio · Tú</div>
+                    <div class="card-title-kit">Caja de Esperanza</div>
+                    <div class="card-desc">Lo que te mantiene firme. Hoy también.</div>
 
-        <div class="col-lg-6">
-            <div class="glass-card caja-esperanza text-center">
-                <i class="fas fa-box-open icono-caja"></i>
-                <h2 class="titulo-serif mb-2" style="font-size: 2rem; color: white;">Caja de Esperanza</h2>
-                <p class="text-muted mb-4" style="font-size: 1.1rem;">Recuerda lo que te mantiene firme, {{ usuario.nombre }}.</p>
-
-                <div class="row g-3 text-start mb-4">
-                    <div class="col-sm-6">
-                        <div class="item-esperanza h-100">
-                            <h6 style="color: var(--accent-hope); font-weight: 700; font-size: 1rem; text-transform: uppercase; letter-spacing: 1px;">
-                                <i class="fas fa-heart me-2"></i>Tus Intereses
-                            </h6>
-                            <div style="font-size: 1.5rem; color: white;">{{ usuario.gustos }}</div>
+                    <div class="row g-3 mb-0">
+                        <div class="col-sm-6">
+                            <div class="hope-item">
+                                <div class="hope-item-label"><i class="fas fa-heart"></i> Lo que te gusta</div>
+                                <div class="hope-item-value">{{ usuario.gustos }}</div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="hope-item">
+                                <div class="hope-item-label"><i class="fas fa-paw"></i> Lo que te alegra</div>
+                                <div class="hope-item-value">{{ usuario.mascota_favorita }}</div>
+                            </div>
                         </div>
                     </div>
-                    <div class="col-sm-6">
-                        <div class="item-esperanza h-100">
-                            <h6 style="color: var(--accent-hope); font-weight: 700; font-size: 1rem; text-transform: uppercase; letter-spacing: 1px;">
-                                <i class="fas fa-paw me-2"></i>Te alegra
-                            </h6>
-                            <div style="font-size: 1.5rem; color: white;">{{ usuario.mascota_favorita }}</div>
-                        </div>
+
+                    <div class="affirmation-box">
+                        <div style="font-size: 0.72rem; letter-spacing: 1.5px; text-transform: uppercase; color: var(--accent-hope); margin-bottom: 4px;">Frase para este momento</div>
+                        <div class="affirmation-text" id="affirmText">"Tus emociones son válidas, pero no te definen."</div>
+                        <button class="btn-affirmation" onclick="nextAffirmation()">
+                            <i class="fas fa-sync-alt me-1" style="font-size:0.7rem;"></i> Otra frase
+                        </button>
                     </div>
-                </div>
-                <br>
-                <div class="alert alert-calma text-start mb-0">
-                    <div class="d-flex align-items-start">
-                        <i class="fas fa-lightbulb mt-1 me-3" style="color: var(--accent-calm); font-size: 1.2rem;"></i>
-                        <span style="font-size: 1 rem; line-height: 1.5; color: var(--text-muted);">
-                            <strong style="color: white;">Sugerencia:</strong> 
-                            Dedica los próximos 5 minutos a buscar una foto, un video o una canción sobre estas cosas que amas. Ayudará a distraer tu mente.
-                        </span>
+
+                    <div class="tip-box" style="margin-top: 1.2rem; background: rgba(242,169,126,0.05); border-color: rgba(242,169,126,0.15);">
+                        <i class="fas fa-lightbulb" style="color: var(--accent-hope);"></i>
+                        <span>Dedica 5 minutos a buscar una foto, canción o video sobre lo que acabas de leer. Eso redirige tu atención de forma activa.</span>
                     </div>
                 </div>
             </div>
         </div>
-        
     </div>
-</div>
+
+</div><!-- /container -->
+
+<script>
+/* ══════════════════════════════════
+   RESPIRACIÓN 4-4-8
+══════════════════════════════════ */
+const PHASES = [
+    { label: 'Inhala', secs: 4, color: '#52C4E8' },
+    { label: 'Retén',  secs: 4, color: '#88d9b0' },
+    { label: 'Exhala', secs: 8, color: '#a78bfa' }
+];
+const TOTAL_CYCLE = 16; // 4+4+8
+const CIRCUMFERENCE = 521.5;
+
+let breathRunning = false;
+let breathTimer = null;
+let breathElapsed = 0;    // segundos dentro del ciclo actual
+let totalElapsed = 0;     // segundos totales desde start
+let cycleCount = 0;
+let phaseIndex = 0;
+let phaseElapsed = 0;
+
+function toggleBreath() {
+    if (!breathRunning) startBreath(); else stopBreath();
+}
+
+function startBreath() {
+    breathRunning = true;
+    document.getElementById('breathCircle').classList.add('running');
+    document.getElementById('breathBtnText').textContent = 'Detener';
+    document.getElementById('breathIcon').className = 'fas fa-stop';
+    document.getElementById('btnBreath').classList.add('active');
+    document.getElementById('breathCount').style.display = 'block';
+    document.getElementById('breathHint').textContent = '';
+    tickBreath();
+    breathTimer = setInterval(tickBreath, 1000);
+}
+
+function stopBreath() {
+    breathRunning = false;
+    clearInterval(breathTimer);
+    document.getElementById('breathCircle').classList.remove('running');
+    document.getElementById('breathBtnText').textContent = 'Iniciar respiración guiada';
+    document.getElementById('breathIcon').className = 'fas fa-play';
+    document.getElementById('btnBreath').classList.remove('active');
+    document.getElementById('breathLabel').textContent = 'Listo';
+    document.getElementById('breathCount').style.display = 'none';
+    document.getElementById('breathHint').textContent = 'Toca para empezar';
+    document.getElementById('breath-arc').style.strokeDashoffset = CIRCUMFERENCE;
+    document.querySelectorAll('.phase-chip').forEach(c => c.classList.remove('active-phase'));
+    breathElapsed = 0; totalElapsed = 0; cycleCount = 0; phaseIndex = 0; phaseElapsed = 0;
+    for(let i=0;i<4;i++) document.getElementById('c'+i).classList.remove('done');
+}
+
+function tickBreath() {
+    const phase = PHASES[phaseIndex];
+    phaseElapsed++;
+
+    document.getElementById('breathLabel').textContent = phase.label;
+    document.getElementById('breathCount').textContent = phase.secs - phaseElapsed + 1;
+    document.getElementById('breath-arc').style.stroke = phase.color;
+
+    // Progreso del arco: mapea el tiempo dentro del ciclo total
+    const cycleElapsed = PHASES.slice(0, phaseIndex).reduce((a,p) => a+p.secs, 0) + phaseElapsed;
+    const ratio = cycleElapsed / TOTAL_CYCLE;
+    document.getElementById('breath-arc').style.strokeDashoffset = CIRCUMFERENCE * (1 - ratio);
+
+    // Activar chip de fase
+    document.querySelectorAll('.phase-chip').forEach((c,i) => {
+        c.classList.toggle('active-phase', i === phaseIndex);
+    });
+
+    if (phaseElapsed >= phase.secs) {
+        phaseIndex++;
+        phaseElapsed = 0;
+        if (phaseIndex >= PHASES.length) {
+            phaseIndex = 0;
+            if (cycleCount < 4) {
+                document.getElementById('c'+cycleCount).classList.add('done');
+                cycleCount++;
+            }
+            if (cycleCount >= 4) {
+                stopBreath();
+                document.getElementById('breathLabel').textContent = '✓ Completo';
+                document.getElementById('breathHint').textContent = '4 ciclos terminados · Muy bien';
+                return;
+            }
+        }
+    }
+}
+
+/* ══════════════════════════════════
+   GROUNDING 5-4-3-2-1
+══════════════════════════════════ */
+const groundState = [false,false,false,false,false];
+
+function toggleGround(i) {
+    groundState[i] = !groundState[i];
+    const step = document.getElementById('gs'+i);
+    const chk  = document.getElementById('gch'+i);
+    if (groundState[i]) {
+        step.classList.add('done'); step.classList.remove('active');
+        chk.style.background = 'var(--accent-ground)';
+        chk.style.borderColor = 'var(--accent-ground)';
+        chk.style.color = '#070d18';
+    } else {
+        step.classList.remove('done'); step.classList.remove('active');
+        chk.style.background = ''; chk.style.borderColor = ''; chk.style.color = '';
+    }
+    const done = groundState.filter(Boolean).length;
+    if (done === 5) document.getElementById('groundComplete').classList.add('visible');
+    else           document.getElementById('groundComplete').classList.remove('visible');
+}
+
+function resetGround() {
+    for(let i=0;i<5;i++) { groundState[i]=false; toggleGround(i); groundState[i]=false; }
+    document.getElementById('groundComplete').classList.remove('visible');
+    for(let i=0;i<5;i++) {
+        const step = document.getElementById('gs'+i);
+        const chk  = document.getElementById('gch'+i);
+        step.classList.remove('done','active');
+        chk.style.background=''; chk.style.borderColor=''; chk.style.color='';
+    }
+}
+
+/* ══════════════════════════════════
+   AFIRMACIONES
+══════════════════════════════════ */
+const AFFIRMATIONS = [
+    '"Tus emociones son válidas, pero no te definen."',
+    '"Este momento difícil también va a pasar."',
+    '"Has superado cosas difíciles antes. Puedes con esto."',
+    '"Pedir ayuda es un acto de valentía, no de debilidad."',
+    '"No tienes que sentirte bien ahora mismo. Solo tienes que seguir."',
+    '"Tu presencia en este mundo importa."',
+    '"Un paso a la vez. Solo el siguiente paso."',
+    '"Mereces apoyo y cuidado, igual que cualquier otra persona."',
+];
+let affirmIdx = 0;
+
+function nextAffirmation() {
+    const el = document.getElementById('affirmText');
+    el.style.opacity = '0';
+    setTimeout(() => {
+        affirmIdx = (affirmIdx + 1) % AFFIRMATIONS.length;
+        el.textContent = AFFIRMATIONS[affirmIdx];
+        el.style.opacity = '1';
+    }, 300);
+}
+
+// Rotar afirmaciones automáticamente cada 12s
+setInterval(nextAffirmation, 12000);
+</script>
 
 </body>
 </html>

@@ -945,6 +945,552 @@
         padding: 10px 14px 12px;
       }
     }
+
+    /* ── Tarjeta modal centros de ayuda ─────────────────────────────────────── */
+    .gd-modal-card {
+      border: none;
+      border-radius: 18px !important;
+      overflow: hidden;
+      box-shadow: 0 24px 60px rgba(0, 0, 0, .22);
+    }
+
+    /* ── Header ────────────────────────────────────────────── */
+    .gd-modal-header {
+      background: var(--c-header);
+      padding: 1rem 1.4rem;
+      border-bottom: none;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .gd-modal-header .modal-title {
+      color: #fff;
+      font-size: .96rem;
+    }
+
+    .gd-header-sub {
+      color: rgba(255, 255, 255, .72);
+      font-size: .76rem;
+      display: block;
+      margin-top: 2px;
+    }
+
+    .gd-header-icon {
+      width: 40px;
+      height: 40px;
+      background: rgba(255, 255, 255, .18);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 1.1rem;
+      flex-shrink: 0;
+    }
+
+    .gd-close-btn {
+      background: rgba(255, 255, 255, .15);
+      border: none;
+      border-radius: 8px;
+      color: #fff;
+      width: 34px;
+      height: 34px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: background .2s;
+      flex-shrink: 0;
+    }
+
+    .gd-close-btn:hover {
+      background: rgba(255, 255, 255, .28);
+    }
+
+    /* ── Tabs ──────────────────────────────────────────────── */
+    .gd-tabs-nav {
+      display: flex;
+      background: var(--c-panel, #f8f9fa);
+      border-bottom: 1px solid rgba(0, 0, 0, .08);
+      padding: 0 1rem;
+      gap: 2px;
+    }
+
+    .gd-tab {
+      background: none;
+      border: none;
+      padding: .6rem .95rem;
+      font-size: .81rem;
+      font-weight: 600;
+      color: #6c757d;
+      border-bottom: 2.5px solid transparent;
+      cursor: pointer;
+      transition: all .18s;
+      border-radius: 6px 6px 0 0;
+      white-space: nowrap;
+    }
+
+    .gd-tab:hover {
+      color: var(--c-accent);
+      background: rgba(0, 0, 0, .04);
+    }
+
+    .gd-tab.active {
+      color: var(--c-accent);
+      border-bottom-color: var(--c-accent);
+      background: rgba(0, 0, 0, .04);
+    }
+
+    /* ── Paneles ───────────────────────────────────────────── */
+    .gd-panel {
+      display: none;
+      padding: 1.2rem 1.3rem;
+      animation: gdFadeIn .22s ease;
+    }
+
+    .gd-panel.active {
+      display: block;
+    }
+
+    @keyframes gdFadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(5px);
+      }
+
+      to {
+        opacity: 1;
+        transform: none;
+      }
+    }
+
+    /* ── Banner crisis ─────────────────────────────────────── */
+    .gd-crisis-banner {
+      background: linear-gradient(135deg, #c53030, #9b2c2c);
+      color: #fff;
+      border-radius: 10px;
+      padding: .75rem 1rem;
+      font-size: .81rem;
+      font-weight: 600;
+      margin-bottom: 1.1rem;
+      display: flex;
+      align-items: center;
+      line-height: 1.45;
+    }
+
+    /* ── Tarjetas líneas ───────────────────────────────────── */
+    .gd-lines-grid {
+      display: flex;
+      flex-direction: column;
+      gap: .6rem;
+    }
+
+    .gd-line-card {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      background: var(--c-panel, #f8f9fa);
+      border: 1px solid rgba(0, 0, 0, .07);
+      border-radius: 12px;
+      padding: .85rem 1rem;
+      transition: box-shadow .2s, transform .15s;
+    }
+
+    .gd-line-card:hover {
+      box-shadow: 0 4px 18px rgba(0, 0, 0, .10);
+      transform: translateY(-1px);
+    }
+
+    .gd-line-primary {
+      border-color: rgba(197, 48, 48, .25);
+      background: rgba(255, 245, 245, .6);
+    }
+
+    /* Íconos coloreados */
+    .gd-line-logo {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 1.05rem;
+    }
+
+    .gd-logo-red {
+      background: linear-gradient(135deg, #e53e3e, #c53030);
+    }
+
+    .gd-logo-blue {
+      background: linear-gradient(135deg, #3182ce, #2b6cb0);
+    }
+
+    .gd-logo-orange {
+      background: linear-gradient(135deg, #dd6b20, #c05621);
+    }
+
+    .gd-logo-fire {
+      background: linear-gradient(135deg, #e53e3e, #dd6b20);
+    }
+
+    .gd-logo-purple {
+      background: linear-gradient(135deg, #805ad5, #6b46c1);
+    }
+
+    .gd-line-info {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      min-width: 0;
+    }
+
+    .gd-line-name {
+      font-weight: 700;
+      font-size: .85rem;
+      color: var(--c-text, #2d3748);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .gd-line-desc {
+      font-size: .75rem;
+      color: #718096;
+      line-height: 1.4;
+    }
+
+    .gd-line-tags {
+      display: flex;
+      gap: 4px;
+      margin-top: 4px;
+      flex-wrap: wrap;
+    }
+
+    /* Tags con colores según tipo */
+    .gd-tag {
+      font-size: .66rem;
+      font-weight: 700;
+      border-radius: 20px;
+      padding: 1px 7px;
+    }
+
+    .gd-tag-red {
+      background: rgba(229, 62, 62, .13);
+      color: #c53030;
+    }
+
+    .gd-tag-blue {
+      background: rgba(49, 130, 206, .12);
+      color: #2b6cb0;
+    }
+
+    .gd-tag-orange {
+      background: rgba(221, 107, 32, .12);
+      color: #c05621;
+    }
+
+    .gd-tag-fire {
+      background: rgba(229, 62, 62, .10);
+      color: #c53030;
+    }
+
+    .gd-tag-purple {
+      background: rgba(128, 90, 213, .12);
+      color: #6b46c1;
+    }
+
+    /* Botones de llamada */
+    .gd-call-btn {
+      flex-shrink: 0;
+      padding: .48rem 1.05rem;
+      color: #fff !important;
+      border-radius: 9px;
+      font-weight: 700;
+      font-size: .83rem;
+      text-decoration: none;
+      white-space: nowrap;
+      transition: opacity .18s, transform .15s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 80px;
+    }
+
+    .gd-call-btn:hover {
+      opacity: .86;
+      transform: scale(1.03);
+    }
+
+    .gd-call-red {
+      background: linear-gradient(135deg, #e53e3e, #c53030);
+    }
+
+    .gd-call-blue {
+      background: linear-gradient(135deg, #3182ce, #2b6cb0);
+    }
+
+    .gd-call-orange {
+      background: linear-gradient(135deg, #dd6b20, #c05621);
+    }
+
+    .gd-call-fire {
+      background: linear-gradient(135deg, #e53e3e, #dd6b20);
+    }
+
+    .gd-call-purple {
+      background: linear-gradient(135deg, #805ad5, #6b46c1);
+    }
+
+    /* ── Nota informativa ──────────────────────────────────── */
+    .gd-note-box {
+      background: rgba(49, 130, 206, .07);
+      border-left: 3px solid var(--c-accent, #3182ce);
+      border-radius: 0 8px 8px 0;
+      padding: .65rem .9rem;
+      font-size: .77rem;
+      color: #4a5568;
+    }
+
+    /* ── Badge de ubicación ────────────────────────────────── */
+    .gd-location-badge {
+      background: var(--c-panel, #f0f4f8);
+      border: 1px solid rgba(0, 0, 0, .08);
+      border-radius: 8px;
+      padding: .5rem .85rem;
+      font-size: .79rem;
+      color: #4a5568;
+      display: flex;
+      align-items: center;
+    }
+
+    .gd-location-badge i {
+      color: var(--c-accent, #3182ce);
+    }
+
+    /* ── Buscador ──────────────────────────────────────────── */
+    .gd-search-bar {
+      display: flex;
+      align-items: center;
+      background: var(--c-panel, #f8f9fa);
+      border: 1px solid rgba(0, 0, 0, .1);
+      border-radius: 10px;
+      padding: .5rem .9rem;
+      gap: .55rem;
+    }
+
+    .gd-search-bar i {
+      color: #a0aec0;
+      flex-shrink: 0;
+    }
+
+    .gd-search-bar input {
+      border: none;
+      background: none;
+      outline: none;
+      flex: 1;
+      font-size: .84rem;
+      color: var(--c-text, #2d3748);
+    }
+
+    .gd-search-bar input::placeholder {
+      color: #a0aec0;
+    }
+
+    /* ── Lista centros ─────────────────────────────────────── */
+    .gd-centers-list {
+      display: flex;
+      flex-direction: column;
+      gap: .55rem;
+    }
+
+    .gd-center-card {
+      display: flex;
+      align-items: flex-start;
+      gap: .85rem;
+      background: var(--c-panel, #f8f9fa);
+      border: 1px solid rgba(0, 0, 0, .07);
+      border-radius: 12px;
+      padding: .8rem .95rem;
+      transition: box-shadow .2s, transform .15s;
+    }
+
+    .gd-center-card:hover {
+      box-shadow: 0 4px 14px rgba(0, 0, 0, .09);
+      transform: translateY(-1px);
+    }
+
+    .gd-center-icon {
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      flex-shrink: 0;
+      background: linear-gradient(135deg, var(--c-accent, #3182ce), #2b6cb0);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: .9rem;
+    }
+
+    .gd-center-body {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .gd-center-name {
+      font-weight: 700;
+      font-size: .83rem;
+      color: var(--c-text, #2d3748);
+    }
+
+    .gd-center-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .3rem .85rem;
+      margin-top: 4px;
+    }
+
+    .gd-center-meta span {
+      font-size: .73rem;
+      color: #718096;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .gd-center-meta span i {
+      color: #a0aec0;
+      font-size: .68rem;
+    }
+
+    .gd-center-actions {
+      display: flex;
+      gap: 5px;
+      flex-shrink: 0;
+      flex-direction: column;
+    }
+
+    .gd-btn-sm {
+      padding: .3rem .65rem;
+      border-radius: 7px;
+      font-size: .71rem;
+      font-weight: 600;
+      text-decoration: none;
+      border: none;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: opacity .18s;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .gd-btn-sm:hover {
+      opacity: .82;
+    }
+
+    .gd-btn-tel {
+      background: linear-gradient(135deg, #38a169, #276749);
+      color: #fff !important;
+    }
+
+    .gd-btn-map {
+      background: rgba(49, 130, 206, .12);
+      color: var(--c-accent, #3182ce) !important;
+    }
+
+    /* Estado vacío / sin resultados */
+    .gd-empty-state {
+      text-align: center;
+      padding: 2rem 1rem;
+      color: #a0aec0;
+    }
+
+    .gd-empty-state i {
+      font-size: 2rem;
+      margin-bottom: .6rem;
+      display: block;
+    }
+
+    .gd-empty-state p {
+      font-size: .82rem;
+      margin: 0;
+    }
+
+    /* ── Mapa ──────────────────────────────────────────────── */
+    .gd-map-wrapper {
+      padding: 1rem 1rem 0;
+    }
+
+    .gd-map-container {
+      border-radius: 12px;
+      overflow: hidden;
+      min-height: 370px;
+      background: var(--c-panel, #e9ecef);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .gd-map-loader {
+      text-align: center;
+      padding: 2rem;
+    }
+
+    .gd-map-actions {
+      display: flex;
+      gap: .6rem;
+      flex-wrap: wrap;
+    }
+
+    .gd-btn-maps {
+      background: var(--c-accent, #3182ce);
+      color: #fff !important;
+      border-radius: 8px;
+      font-size: .82rem;
+      font-weight: 600;
+      padding: .5rem 1.1rem;
+      flex: 1;
+      text-align: center;
+      transition: opacity .18s;
+    }
+
+    .gd-btn-maps:hover {
+      opacity: .87;
+    }
+
+    /* ── Responsive ────────────────────────────────────────── */
+    @media (max-width: 576px) {
+      .gd-line-card {
+        flex-wrap: wrap;
+      }
+
+      .gd-call-btn {
+        width: 100%;
+        justify-content: center;
+      }
+
+      .gd-line-name {
+        white-space: normal;
+      }
+
+      .gd-center-actions {
+        flex-direction: row;
+      }
+
+      .gd-tabs-nav {
+        overflow-x: auto;
+      }
+
+      .gd-tab {
+        font-size: .74rem;
+        padding: .5rem .7rem;
+      }
+    }
   </style>
 </head>
 
@@ -1033,51 +1579,224 @@
        MODAL: CENTROS DE AYUDA
   ══════════════════════════════════════════════════ -->
   <div class="modal fade" id="recursosModal" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
-      <div class="modal-content shadow-lg border-0" style="border-radius:16px !important;overflow:hidden">
-        <div class="modal-header text-white" style="background:var(--c-header);border-bottom:none">
-          <h5 class="modal-title font-weight-bold">
-            <i class="fa-solid fa-hand-holding-heart mr-2"></i>Centros de Salud Mental en
-            <span id="ciudadTitulo" class="ml-1" style="color:rgba(255,255,255,.85)">...</span>
-          </h5>
-          <button type="button" class="close text-white" data-dismiss="modal"><span>×</span></button>
-        </div>
-        <div class="modal-body p-0">
-          <div class="row no-gutters">
-            <div class="col-lg-8" id="mapaContenedor"
-              style="min-height:500px;background:#e9ecef;display:flex;align-items:center;justify-content:center">
-              <div class="text-center p-5">
-                <div class="spinner-grow text-primary" style="width:3rem;height:3rem" role="status">
-                  <span class="sr-only">Cargando...</span>
-                </div>
-                <h5 class="mt-3 text-muted">Buscando los centros más cercanos...</h5>
-                <p class="text-black-50 small">Conectando con el mapa</p>
-              </div>
+    <div class="modal-dialog modal-dialog-centered" style="max-width:900px;width:95vw" role="document">
+      <div class="modal-content gd-modal-card">
+
+        <!-- HEADER -->
+        <div class="modal-header gd-modal-header">
+          <div class="d-flex align-items-center">
+            <div class="gd-header-icon">
+              <i class="fa-solid fa-heart-pulse"></i>
             </div>
-            <div class="col-lg-4 p-4 d-flex flex-column" style="background:var(--c-panel)">
-              <h5 style="color:var(--c-text)" class="border-bottom pb-2 mb-3">¿Cómo usar este mapa?</h5>
-              <ul class="list-unstyled mb-4" style="color:var(--c-text-soft)">
-                <li class="mb-3"><i class="fa-solid fa-location-pin text-danger mr-2"></i>Los marcadores indican
-                  <strong>Centros de Salud Mental Comunitaria (CSMC)</strong>.
-                </li>
-                <li class="mb-3"><i class="fa-solid fa-hand-pointer text-info mr-2"></i>Haz clic en cualquier marcador
-                  para ver <strong>horario y teléfono</strong>.</li>
-                <li class="mb-3"><i class="fa-solid fa-person-walking text-success mr-2"></i>Usa "Cómo llegar" en el
-                  mapa para orientarte.</li>
-              </ul>
-              <div class="mt-auto">
-                <a href="#" id="btnAbrirMaps" target="_blank" rel="noopener noreferrer"
-                  class="btn btn-block shadow-sm mb-2 text-white" style="background:var(--c-accent)">
-                  <i class="fa-solid fa-arrow-up-right-from-square mr-1"></i>Abrir en Google Maps
-                </a>
-                <div class="alert alert-warning small mb-0 p-2 text-center" role="alert">
-                  <i class="fa-solid fa-circle-info"></i> La atención en los CSMC del MINSA suele ser gratuita con SIS.
-                </div>
-              </div>
+            <div class="ml-3">
+              <h5 class="modal-title mb-0">Centros de Apoyo en Salud Mental</h5>
+              <small class="gd-header-sub">
+                <i class="fa-solid fa-location-dot mr-1"></i>
+                {# Datos del paciente desde Flask #}
+                {{ usuario.distrito }}, {{ usuario.provincia }} — {{ usuario.departamento }}
+              </small>
             </div>
           </div>
+          <button type="button" class="gd-close-btn" data-dismiss="modal">
+            <i class="fa-solid fa-xmark"></i>
+          </button>
         </div>
-      </div>
+
+        <!-- TABS NAV -->
+        <div class="gd-tabs-nav">
+          <button class="gd-tab active" data-tab="lineas">
+            <i class="fa-solid fa-phone-volume mr-2"></i>Líneas de Crisis
+          </button>
+          <button class="gd-tab" data-tab="centros">
+            <i class="fa-solid fa-hospital mr-2"></i>Centros CSMC
+          </button>
+          <button class="gd-tab" data-tab="mapa">
+            <i class="fa-solid fa-map-location-dot mr-2"></i>Mapa
+          </button>
+        </div>
+
+        <!-- MODAL BODY -->
+        <div class="modal-body p-0" style="max-height:72vh;overflow-y:auto">
+
+          <!-- ══════════════════════════════════════════════════════
+             TAB 1 — LÍNEAS DE CRISIS NACIONALES GRATUITAS PERÚ
+        ══════════════════════════════════════════════════════ -->
+          <div class="gd-panel active" id="tab-lineas">
+
+            <div class="gd-crisis-banner">
+              <i class="fa-solid fa-triangle-exclamation fa-lg mr-2"></i>
+              Si estás en peligro o en crisis, llama ahora. Todas estas líneas son
+              <strong>gratuitas y disponibles en todo el Perú.</strong>
+            </div>
+              <!-- 113 MINSA -->
+            <div class="gd-lines-grid">
+              <div class="gd-line-card">
+                <div class="gd-line-logo gd-logo-fire">
+                  <i class="fa-solid fa-stethoscope"></i>
+                </div>
+                <div class="gd-line-info">
+                  <span class="gd-line-name">Línea 113 — MINSA</span>
+                  <span class="gd-line-desc">Salud mental: marca 113 y elige <strong>opción 5</strong>. Atención
+                    psicológica inmediata.</span>
+                  <span class="gd-line-tags">
+                    <span class="gd-tag gd-tag-fire">Gratuita</span>
+                    <span class="gd-tag gd-tag-fire">24 / 7</span>
+                    <span class="gd-tag gd-tag-fire">Nacional</span>
+                  </span>
+                </div>
+                <a href="tel:116" class="gd-call-btn gd-call-fire">
+                  <i class="fa-solid fa-phone mr-1"></i>116
+                </a>
+              </div>
+
+              <!-- 105 PNP -->
+              <div class="gd-line-card">
+                <div class="gd-line-logo gd-logo-blue">
+                  <i class="fa-solid fa-shield-halved"></i>
+                </div>
+                <div class="gd-line-info">
+                  <span class="gd-line-name">Línea 105 — Policía Nacional del Perú</span>
+                  <span class="gd-line-desc">Emergencias policiales, asistencia inmediata en situaciones de
+                    riesgo.</span>
+                  <span class="gd-line-tags">
+                    <span class="gd-tag gd-tag-blue">Gratuita</span>
+                    <span class="gd-tag gd-tag-blue">24 / 7</span>
+                    <span class="gd-tag gd-tag-blue">Nacional</span>
+                  </span>
+                </div>
+                <a href="tel:105" class="gd-call-btn gd-call-blue">
+                  <i class="fa-solid fa-phone mr-1"></i>105
+                </a>
+              </div>
+
+              <!-- 106 SAMU -->
+              <div class="gd-line-card">
+                <div class="gd-line-logo gd-logo-orange">
+                  <i class="fa-solid fa-truck-medical"></i>
+                </div>
+                <div class="gd-line-info">
+                  <span class="gd-line-name">Línea 106 — SAMU</span>
+                  <span class="gd-line-desc">Servicio de Atención Móvil de Urgencias. Emergencias médicas y
+                    psiquiátricas.</span>
+                  <span class="gd-line-tags">
+                    <span class="gd-tag gd-tag-orange">Gratuita</span>
+                    <span class="gd-tag gd-tag-orange">24 / 7</span>
+                    <span class="gd-tag gd-tag-orange">Nacional</span>
+                  </span>
+                </div>
+                <a href="tel:106" class="gd-call-btn gd-call-orange">
+                  <i class="fa-solid fa-phone mr-1"></i>106
+                </a>
+              </div>
+
+              <!-- 116 Bomberos -->
+              <div class="gd-line-card">
+                <div class="gd-line-logo gd-logo-fire">
+                  <i class="fa-solid fa-fire-extinguisher"></i>
+                </div>
+                <div class="gd-line-info">
+                  <span class="gd-line-name">Línea 116 — Bomberos Voluntarios del Perú</span>
+                  <span class="gd-line-desc">Rescate, emergencias y auxilio en situaciones de peligro inminente.</span>
+                  <span class="gd-line-tags">
+                    <span class="gd-tag gd-tag-fire">Gratuita</span>
+                    <span class="gd-tag gd-tag-fire">24 / 7</span>
+                    <span class="gd-tag gd-tag-fire">Nacional</span>
+                  </span>
+                </div>
+                <a href="tel:116" class="gd-call-btn gd-call-fire">
+                  <i class="fa-solid fa-phone mr-1"></i>116
+                </a>
+              </div>
+
+              <!-- 100 MIMP -->
+              <div class="gd-line-card">
+                <div class="gd-line-logo gd-logo-purple">
+                  <i class="fa-solid fa-hands-holding-child"></i>
+                </div>
+                <div class="gd-line-info">
+                  <span class="gd-line-name">Línea 100 — MIMP / Programa Aurora</span>
+                  <span class="gd-line-desc">Violencia familiar y sexual. Orientación y asistencia psicológica
+                    especializada.</span>
+                  <span class="gd-line-tags">
+                    <span class="gd-tag gd-tag-purple">Gratuita</span>
+                    <span class="gd-tag gd-tag-purple">24 / 7</span>
+                    <span class="gd-tag gd-tag-purple">Nacional</span>
+                  </span>
+                </div>
+                <a href="tel:100" class="gd-call-btn gd-call-purple">
+                  <i class="fa-solid fa-phone mr-1"></i>100
+                </a>
+              </div>
+
+            </div><!-- /gd-lines-grid -->
+
+            <div class="gd-note-box mt-3">
+              <i class="fa-solid fa-circle-info mr-2"></i>
+              Todas estas líneas son <strong>completamente gratuitas desde cualquier teléfono fijo o celular</strong>
+              a nivel nacional, sin importar tu operador. No necesitas saldo.
+            </div>
+
+          </div><!-- /tab-lineas -->
+
+
+          <!-- ══════════════════════════════════════════════════════
+             TAB 2 — CENTROS CSMC  (dinámico por ubicación Flask)
+        ══════════════════════════════════════════════════════ -->
+          <div class="gd-panel" id="tab-centros">
+
+            <!-- Ubicación activa del paciente -->
+            <div class="gd-location-badge mb-3">
+              <i class="fa-solid fa-location-dot mr-2"></i>
+              Mostrando centros para:
+              <strong>{{ usuario.distrito }}, {{ usuario.provincia }}, {{ usuario.departamento }}</strong>
+            </div>
+
+            <!-- Buscador -->
+            <div class="gd-search-bar mb-3">
+              <i class="fa-solid fa-magnifying-glass"></i>
+              <input type="text" id="inputBuscarCentro" placeholder="Buscar por nombre, distrito o provincia…" />
+            </div>
+
+            <!-- Lista generada por JS con los datos del paciente -->
+            <div id="listaCentros" class="gd-centers-list">
+              <div class="gd-loader-centros text-center py-4">
+                <div class="spinner-border text-primary" style="width:1.8rem;height:1.8rem" role="status"></div>
+                <p class="mt-2 small text-muted mb-0">Buscando centros en tu zona…</p>
+              </div>
+            </div>
+
+            <div class="gd-note-box mt-3">
+              <i class="fa-solid fa-circle-info mr-2"></i>
+              Los Centros de Salud Mental Comunitaria (CSMC) del MINSA ofrecen
+              <strong>atención gratuita con SIS</strong>. Si no encuentras uno en tu distrito,
+              busca en la provincia o departamento más cercano.
+            </div>
+
+          </div><!-- /tab-centros -->
+
+
+          <!-- ══════════════════════════════════════════════════════
+             TAB 3 — MAPA  (usa datos del registro del paciente)
+        ══════════════════════════════════════════════════════ -->
+          <div class="gd-panel" id="tab-mapa">
+            <div class="gd-map-wrapper">
+              <div id="mapaContenedor" class="gd-map-container">
+                <div class="gd-map-loader">
+                  <div class="spinner-grow text-primary" style="width:2.2rem;height:2.2rem" role="status"></div>
+                  <p class="mt-3 mb-1 font-weight-bold text-muted">Cargando mapa…</p>
+                  <small class="text-black-50">Buscando centros cercanos a tu ubicación</small>
+                </div>
+              </div>
+            </div>
+            <div class="gd-map-actions px-3 pb-3 pt-2">
+              <a href="#" id="btnAbrirMaps" target="_blank" rel="noopener noreferrer" class="btn gd-btn-maps">
+                <i class="fa-solid fa-arrow-up-right-from-square mr-2"></i>Abrir en Google Maps
+              </a>
+            </div>
+          </div><!-- /tab-mapa -->
+
+        </div><!-- /modal-body -->
+      </div><!-- /modal-content -->
     </div>
   </div>
 
@@ -1101,7 +1820,7 @@
   </div>
 
   <!-- ══════════════════════════════════════════════════
-       LAYOUT PRINCIPAL
+       LAYOUT PRINCIPAL     
   ══════════════════════════════════════════════════ -->
   <div class="gd-layout">
 
@@ -1180,7 +1899,7 @@
       </button>
 
       <button class="gd-btn" data-toggle="modal" data-target="#recursosModal">
-        <i class="fa-solid fa-location-dot"></i> Centros de Ayuda
+        <i class="fa-solid fa-location-dot"></i> Centros de Apoyo
       </button>
 
       <a href="/botiquin" class="gd-btn">
@@ -1555,31 +2274,241 @@
          El embed antiguo de Google Maps fue deprecado en 2016 y puede
          mostrar error en producción con dominio real en AWS. ── */
       // ── MAPA: Centros de Ayuda ──
-      const departamentoDB = "{{ usuario.departamento }}";
-      const provinciaDB = "{{ usuario.provincia }}";
-      const distritoDB = "{{ usuario.distrito }}";
+      (function () {
 
-      const loaderHTML = `<div class="text-center p-5">
-          <div class="spinner-grow text-primary" style="width:3rem;height:3rem" role="status"><span class="sr-only">Cargando...</span></div>
-          <h5 class="mt-3 text-muted">Buscando los centros más cercanos...</h5>
-          <p class="text-black-50 small">Conectando con Google Maps</p>
-        </div>`;
+        /* ── Datos del paciente inyectados desde Flask ────────────
+           Estos valores vienen del registro del paciente en la BD  */
+        const PAC_DEPARTAMENTO = "{{ usuario.departamento | lower }}";
+        const PAC_PROVINCIA = "{{ usuario.provincia    | lower }}";
+        const PAC_DISTRITO = "{{ usuario.distrito     | lower }}";
 
-      $('#recursosModal').on('show.bs.modal', function () {
-        $('#ciudadTitulo').text(distritoDB + ', ' + provinciaDB);
-        const busqueda = encodeURIComponent('centros de salud mental comunitaria en ' + distritoDB + ', ' + provinciaDB + ', ' + departamentoDB);
-        $('#btnAbrirMaps').attr('href', 'https://maps.google.com/maps?q=' + busqueda);
-        setTimeout(function () {
-          $('#mapaContenedor').html(`<iframe width="100%" height="100%" frameborder="0" style="border:0;min-height:500px" src="https://maps.google.com/maps?q=${busqueda}&t=&z=14&ie=UTF8&iwloc=&output=embed" allowfullscreen></iframe>`);
-        }, 800);
-      });
-      $('#recursosModal').on('hidden.bs.modal', function () {
-        $('#mapaContenedor').html(loaderHTML);
-      });
+        /* Texto para el mapa — usamos los datos originales sin lower */
+        const PAC_DISTRITO_ORIG = "{{ usuario.distrito }}";
+        const PAC_PROVINCIA_ORIG = "{{ usuario.provincia }}";
+        const PAC_DEPARTAMENTO_ORIG = "{{ usuario.departamento }}";
 
-      $('#recursosModal').on('hidden.bs.modal', function () {
-        $('#mapaContenedor').html(loaderHTML);
-      });
+        /* ── Base de datos CSMC del MINSA (nivel nacional) ────────
+           Cada entrada incluye: nombre, distrito, provincia,
+           departamento, teléfono, horario y término de búsqueda
+           para Google Maps.
+           Agrega o actualiza entradas según nuevos CSMC del MINSA.  */
+        const TODOS_LOS_CSMC = [
+
+          /* ──── LIMA ──── */
+          { nombre: "CSMC Ate-Vitarte", distrito: "ate", provincia: "lima", departamento: "lima", tel: "01-494-5800", horario: "Lun-Sáb 8am-8pm", q: "CSMC Ate Vitarte Lima MINSA" },
+          { nombre: "CSMC San Juan de Lurigancho", distrito: "san juan de lurigancho", provincia: "lima", departamento: "lima", tel: "01-458-1620", horario: "Lun-Sáb 8am-8pm", q: "CSMC San Juan de Lurigancho Lima MINSA" },
+          { nombre: "CSMC Villa El Salvador", distrito: "villa el salvador", provincia: "lima", departamento: "lima", tel: "01-287-5000", horario: "Lun-Sáb 8am-6pm", q: "CSMC Villa El Salvador Lima MINSA" },
+          { nombre: "CSMC Comas", distrito: "comas", provincia: "lima", departamento: "lima", tel: "01-545-1221", horario: "Lun-Sáb 8am-8pm", q: "CSMC Comas Lima MINSA" },
+          { nombre: "CSMC San Martín de Porres", distrito: "san martín de porres", provincia: "lima", departamento: "lima", tel: "01-525-3600", horario: "Lun-Sáb 8am-6pm", q: "CSMC San Martin de Porres Lima MINSA" },
+          { nombre: "CSMC Carabayllo", distrito: "carabayllo", provincia: "lima", departamento: "lima", tel: "01-524-2810", horario: "Lun-Sáb 8am-6pm", q: "CSMC Carabayllo Lima MINSA" },
+          { nombre: "CSMC Santa Anita", distrito: "santa anita", provincia: "lima", departamento: "lima", tel: "01-362-2800", horario: "Lun-Sáb 8am-6pm", q: "CSMC Santa Anita Lima MINSA" },
+          { nombre: "CSMC Independencia", distrito: "independencia", provincia: "lima", departamento: "lima", tel: "01-533-1200", horario: "Lun-Sáb 8am-6pm", q: "CSMC Independencia Lima MINSA" },
+          { nombre: "CSMC Chorrillos", distrito: "chorrillos", provincia: "lima", departamento: "lima", tel: "01-254-0600", horario: "Lun-Sáb 8am-6pm", q: "CSMC Chorrillos Lima MINSA" },
+          { nombre: "CSMC El Agustino", distrito: "el agustino", provincia: "lima", departamento: "lima", tel: "01-327-5600", horario: "Lun-Sáb 8am-6pm", q: "CSMC El Agustino Lima MINSA" },
+          { nombre: "CSMC San Juan de Miraflores", distrito: "san juan de miraflores", provincia: "lima", departamento: "lima", tel: "01-276-6300", horario: "Lun-Sáb 8am-6pm", q: "CSMC San Juan Miraflores Lima MINSA" },
+          { nombre: "CSMC Puente Piedra", distrito: "puente piedra", provincia: "lima", departamento: "lima", tel: "01-556-4800", horario: "Lun-Sáb 8am-6pm", q: "CSMC Puente Piedra Lima MINSA" },
+          { nombre: "CSMC Barranco – Miraflores", distrito: "barranco", provincia: "lima", departamento: "lima", tel: "01-247-0023", horario: "Lun-Sáb 8am-6pm", q: "CSMC Barranco Miraflores Lima MINSA" },
+          { nombre: "Instituto Nacional de Salud Mental Honorio Delgado", distrito: "rímac", provincia: "lima", departamento: "lima", tel: "01-614-7700", horario: "Lun-Vie 7am-3pm", q: "INSM Honorio Delgado Lima" },
+
+          /* ──── CALLAO ──── */
+          { nombre: "CSMC Callao Cercado", distrito: "callao", provincia: "callao", departamento: "callao", tel: "01-429-8888", horario: "Lun-Sáb 8am-6pm", q: "CSMC Callao MINSA" },
+          { nombre: "CSMC Ventanilla", distrito: "ventanilla", provincia: "callao", departamento: "callao", tel: "01-553-1500", horario: "Lun-Sáb 8am-6pm", q: "CSMC Ventanilla Callao MINSA" },
+
+          /* ──── AREQUIPA ──── */
+          { nombre: "CSMC Arequipa – Cerro Colorado", distrito: "cerro colorado", provincia: "arequipa", departamento: "arequipa", tel: "054-601-000", horario: "Lun-Sáb 8am-6pm", q: "CSMC Cerro Colorado Arequipa MINSA" },
+          { nombre: "CSMC Alto Selva Alegre", distrito: "alto selva alegre", provincia: "arequipa", departamento: "arequipa", tel: "054-451-200", horario: "Lun-Sáb 8am-6pm", q: "CSMC Alto Selva Alegre Arequipa MINSA" },
+          { nombre: "Hospital Regional Honorio Delgado – Psiquiatría", distrito: "arequipa", provincia: "arequipa", departamento: "arequipa", tel: "054-231-818", horario: "Lun-Vie 7am-3pm", q: "Hospital Honorio Delgado Arequipa psiquiatria" },
+
+          /* ──── LA LIBERTAD ──── */
+          { nombre: "CSMC Trujillo", distrito: "trujillo", provincia: "trujillo", departamento: "la libertad", tel: "044-231-581", horario: "Lun-Sáb 8am-6pm", q: "CSMC Trujillo La Libertad MINSA" },
+          { nombre: "CSMC Víctor Larco Herrera (Trujillo)", distrito: "víctor larco", provincia: "trujillo", departamento: "la libertad", tel: "044-464-700", horario: "Lun-Sáb 8am-6pm", q: "CSMC Victor Larco Trujillo MINSA" },
+
+          /* ──── PIURA ──── */
+          { nombre: "CSMC Piura", distrito: "piura", provincia: "piura", departamento: "piura", tel: "073-345-672", horario: "Lun-Sáb 8am-6pm", q: "CSMC Piura MINSA salud mental" },
+          { nombre: "CSMC Castilla", distrito: "castilla", provincia: "piura", departamento: "piura", tel: "073-346-100", horario: "Lun-Sáb 8am-6pm", q: "CSMC Castilla Piura MINSA" },
+
+          /* ──── CUSCO ──── */
+          { nombre: "CSMC Cusco", distrito: "cusco", provincia: "cusco", departamento: "cusco", tel: "084-226-511", horario: "Lun-Sáb 8am-6pm", q: "CSMC Cusco MINSA salud mental" },
+          { nombre: "Hospital Regional del Cusco – Salud Mental", distrito: "cusco", provincia: "cusco", departamento: "cusco", tel: "084-227-461", horario: "Lun-Vie 7am-3pm", q: "Hospital Regional Cusco salud mental" },
+
+          /* ──── LAMBAYEQUE ──── */
+          { nombre: "CSMC Chiclayo", distrito: "chiclayo", provincia: "chiclayo", departamento: "lambayeque", tel: "074-236-981", horario: "Lun-Sáb 8am-6pm", q: "CSMC Chiclayo Lambayeque MINSA" },
+          { nombre: "CSMC José Leonardo Ortiz", distrito: "josé leonardo ortiz", provincia: "chiclayo", departamento: "lambayeque", tel: "074-245-100", horario: "Lun-Sáb 8am-6pm", q: "CSMC Jose Leonardo Ortiz Chiclayo MINSA" },
+
+          /* ──── JUNÍN ──── */
+          { nombre: "CSMC Huancayo", distrito: "huancayo", provincia: "huancayo", departamento: "junín", tel: "064-234-600", horario: "Lun-Sáb 8am-6pm", q: "CSMC Huancayo Junin MINSA salud mental" },
+          { nombre: "CSMC El Tambo", distrito: "el tambo", provincia: "huancayo", departamento: "junín", tel: "064-248-900", horario: "Lun-Sáb 8am-6pm", q: "CSMC El Tambo Huancayo MINSA" },
+
+          /* ──── ANCASH ──── */
+          { nombre: "CSMC Huaraz", distrito: "huaraz", provincia: "huaraz", departamento: "ancash", tel: "043-421-861", horario: "Lun-Sáb 8am-6pm", q: "CSMC Huaraz Ancash MINSA" },
+
+          /* ──── ICA ──── */
+          { nombre: "CSMC Ica", distrito: "ica", provincia: "ica", departamento: "ica", tel: "056-223-411", horario: "Lun-Sáb 8am-6pm", q: "CSMC Ica MINSA salud mental" },
+
+          /* ──── LORETO ──── */
+          { nombre: "CSMC Iquitos", distrito: "iquitos", provincia: "maynas", departamento: "loreto", tel: "065-231-452", horario: "Lun-Sáb 8am-6pm", q: "CSMC Iquitos Loreto MINSA" },
+
+          /* ──── SAN MARTÍN ──── */
+          { nombre: "CSMC Tarapoto", distrito: "tarapoto", provincia: "san martín", departamento: "san martín", tel: "042-522-730", horario: "Lun-Sáb 8am-6pm", q: "CSMC Tarapoto San Martin MINSA" },
+
+          /* ──── UCAYALI ──── */
+          { nombre: "CSMC Pucallpa", distrito: "callería", provincia: "coronel portillo", departamento: "ucayali", tel: "061-571-300", horario: "Lun-Sáb 8am-6pm", q: "CSMC Pucallpa Ucayali MINSA" },
+
+          /* ──── PUNO ──── */
+          { nombre: "CSMC Puno", distrito: "puno", provincia: "puno", departamento: "puno", tel: "051-351-021", horario: "Lun-Sáb 8am-6pm", q: "CSMC Puno MINSA salud mental" },
+
+          /* ──── HUÁNUCO ──── */
+          { nombre: "CSMC Huánuco", distrito: "huánuco", provincia: "huánuco", departamento: "huánuco", tel: "062-512-200", horario: "Lun-Sáb 8am-6pm", q: "CSMC Huanuco MINSA salud mental" },
+
+          /* ──── TUMBES ──── */
+          { nombre: "CSMC Tumbes", distrito: "tumbes", provincia: "tumbes", departamento: "tumbes", tel: "072-524-125", horario: "Lun-Sáb 8am-6pm", q: "CSMC Tumbes MINSA" },
+
+          /* ──── MADRE DE DIOS ──── */
+          { nombre: "CSMC Puerto Maldonado", distrito: "tambopata", provincia: "tambopata", departamento: "madre de dios", tel: "082-571-046", horario: "Lun-Sáb 8am-6pm", q: "CSMC Puerto Maldonado Madre de Dios MINSA" },
+        ];
+
+        /* ── Filtrar por ubicación del paciente ──────────────────
+           Prioridad: 1° distrito  2° provincia  3° departamento   */
+        function filtrarCentros(query) {
+          const q = (query || '').toLowerCase().trim();
+
+          let base = TODOS_LOS_CSMC;
+
+          if (q) {
+            /* Búsqueda libre en buscador */
+            base = TODOS_LOS_CSMC.filter(c =>
+              c.nombre.toLowerCase().includes(q) ||
+              c.distrito.toLowerCase().includes(q) ||
+              c.provincia.toLowerCase().includes(q) ||
+              c.departamento.toLowerCase().includes(q)
+            );
+            return base;
+          }
+
+          /* Sin búsqueda → orden por proximidad al paciente */
+          const porDistrito = base.filter(c => c.distrito.includes(PAC_DISTRITO));
+          const porProvincia = base.filter(c => c.provincia.includes(PAC_PROVINCIA)
+            && !porDistrito.includes(c));
+          const porDepartamento = base.filter(c => c.departamento.includes(PAC_DEPARTAMENTO)
+            && !porDistrito.includes(c)
+            && !porProvincia.includes(c));
+          const resto = base.filter(c => !porDistrito.includes(c)
+            && !porProvincia.includes(c)
+            && !porDepartamento.includes(c));
+
+          return [...porDistrito, ...porProvincia, ...porDepartamento, ...resto];
+        }
+
+        /* ── Render tarjetas ─────────────────────────────────────── */
+        function renderCentros(lista) {
+          const cont = document.getElementById('listaCentros');
+          if (!lista.length) {
+            cont.innerHTML = `<div class="gd-empty-state">
+        <i class="fa-solid fa-circle-info"></i>
+        <p>No se encontraron centros con ese término.<br>
+           Intenta buscar por departamento (ej: "Lima", "Arequipa").</p>
+      </div>`;
+            return;
+          }
+
+          cont.innerHTML = lista.map((c, idx) => {
+            /* Badge de proximidad solo para los primeros resultados sin búsqueda */
+            const esLocal = c.distrito.includes(PAC_DISTRITO) ||
+              c.provincia.includes(PAC_PROVINCIA);
+            const badge = (esLocal && idx < 6)
+              ? `<span style="font-size:.66rem;font-weight:700;background:rgba(56,161,105,.14);
+               color:#276749;border-radius:20px;padding:1px 7px;margin-left:6px;">
+             <i class="fa-solid fa-location-dot"></i> Cercano</span>`
+              : '';
+            return `
+      <div class="gd-center-card">
+        <div class="gd-center-icon"><i class="fa-solid fa-hospital-user"></i></div>
+        <div class="gd-center-body">
+          <div class="gd-center-name">${c.nombre}${badge}</div>
+          <div class="gd-center-meta">
+            <span><i class="fa-solid fa-location-dot"></i>
+              ${c.distrito.charAt(0).toUpperCase() + c.distrito.slice(1)},
+              ${c.provincia.charAt(0).toUpperCase() + c.provincia.slice(1)}
+            </span>
+            <span><i class="fa-solid fa-clock"></i>${c.horario}</span>
+            ${c.tel ? `<span><i class="fa-solid fa-phone"></i>${c.tel}</span>` : ''}
+          </div>
+        </div>
+        <div class="gd-center-actions">
+          ${c.tel
+                ? ``
+                : ''}
+          <a href="https://maps.google.com/maps?q=${encodeURIComponent(c.q)}"
+             target="_blank" rel="noopener noreferrer"
+             class="gd-btn-sm gd-btn-map">
+            <i class="fa-solid fa-map"></i> Ver mapa</a>
+        </div>
+      </div>`;
+          }).join('');
+        }
+
+        /* ── Buscador ────────────────────────────────────────────── */
+        document.getElementById('inputBuscarCentro').addEventListener('input', function () {
+          renderCentros(filtrarCentros(this.value));
+        });
+
+        /* ── Tabs ────────────────────────────────────────────────── */
+        document.querySelectorAll('.gd-tab').forEach(tab => {
+          tab.addEventListener('click', () => {
+            document.querySelectorAll('.gd-tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.gd-panel').forEach(p => p.classList.remove('active'));
+            tab.classList.add('active');
+            document.getElementById('tab-' + tab.dataset.tab).classList.add('active');
+          });
+        });
+
+        /* ── Mapa ────────────────────────────────────────────────── */
+        const loaderHTML = `<div class="gd-map-loader">
+    <div class="spinner-grow text-primary"
+         style="width:2.2rem;height:2.2rem" role="status"></div>
+    <p class="mt-3 mb-1 font-weight-bold text-muted">Cargando mapa…</p>
+    <small class="text-black-50">Buscando centros cercanos a tu ubicación</small>
+  </div>`;
+
+        function cargarMapa() {
+          /* Búsqueda con los datos del registro del paciente — igual que antes */
+          const busqueda = `centros de salud mental comunitaria en ${PAC_DISTRITO_ORIG}, `
+            + `${PAC_PROVINCIA_ORIG}, ${PAC_DEPARTAMENTO_ORIG}`;
+          const enc = encodeURIComponent(busqueda);
+
+          document.getElementById('btnAbrirMaps').href =
+            'https://maps.google.com/maps?q=' + enc;
+
+          const cont = document.getElementById('mapaContenedor');
+          cont.innerHTML = loaderHTML;
+
+          setTimeout(() => {
+            cont.innerHTML = `<iframe
+        width="100%" height="370" frameborder="0"
+        style="border:0;display:block"
+        src="https://maps.google.com/maps?q=${enc}&t=&z=14&ie=UTF8&iwloc=&output=embed"
+        allowfullscreen loading="lazy"></iframe>`;
+          }, 750);
+        }
+
+        /* ── Apertura del modal ──────────────────────────────────── */
+        $('#recursosModal').on('show.bs.modal', function () {
+          renderCentros(filtrarCentros(''));   /* lista filtrada por ubicación */
+          cargarMapa();                        /* mapa con datos del paciente  */
+        });
+
+        /* ── Reset al cerrar ─────────────────────────────────────── */
+        $('#recursosModal').on('hidden.bs.modal', function () {
+          document.getElementById('mapaContenedor').innerHTML = loaderHTML;
+          document.getElementById('inputBuscarCentro').value = '';
+          /* Volver al primer tab */
+          document.querySelectorAll('.gd-tab').forEach((t, i) => t.classList.toggle('active', i === 0));
+          document.querySelectorAll('.gd-panel').forEach((p, i) => p.classList.toggle('active', i === 0));
+        });
+
+      })();
+
+
       /* ── CAMBIO DE TEMA ── */
       $('#gdThemeGrid .gd-theme-card').click(function () {
         const nuevoTema = $(this).data('tema');
