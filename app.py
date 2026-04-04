@@ -84,7 +84,7 @@ client_openai = OpenAI(api_key=OPENAI_API_KEY)
 
 GMAIL_USER     = os.getenv("GMAIL_USER")
 GMAIL_PASSWORD = os.getenv("GMAIL_PASSWORD")
-APP_URL        = os.getenv("APP_URL", "http://localhost:8080")
+APP_URL        = os.getenv("APP_URL", "http://3.137.168.49:8080")
 
 embeddings = download_embeddings()
 docsearch  = PineconeVectorStore.from_existing_index(
